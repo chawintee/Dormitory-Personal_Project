@@ -20,11 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         DateReceive: {
             type: DataTypes.DATE,
-            defaultValue: Sequelize.NOW
+            defaultValue: sequelize.NOW
         },
         DateComplete: {
             type: DataTypes.DATE,
-            defaultValue: Sequelize.NOW
+            defaultValue: sequelize.NOW
         }
 
 

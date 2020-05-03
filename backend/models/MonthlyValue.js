@@ -35,10 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         PaidDate : {
             type : DataTypes.DATE,
-            defaultValue : Sequelize.NOW
+            defaultValue : sequelize.NOW
         }
     })
 
-    
+
     return MonthlyValue
 }
