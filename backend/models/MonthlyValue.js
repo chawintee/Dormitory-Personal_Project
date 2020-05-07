@@ -44,5 +44,5 @@ module.exports = (sequelize, DataTypes) => {
     }
 
 
-    return MonthlyValue
+    return MonthlyValue;
 }
