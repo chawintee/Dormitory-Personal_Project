@@ -39,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
 
+        MonthlyValue.associate = models => {
+            MonthlyValue.belongsTo(models.Room)
+        }
+
 
     return MonthlyValue
 }

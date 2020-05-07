@@ -38,7 +38,13 @@ module.exports = (sequelize,DataTypes) => {
         BookAccount : {
             type : DataTypes.INTEGER
         }
-    })
+    });
+
+    Lesson.associate = models => {
+        Lesson.hasMany(models.Occupant)
+        Lesson.hasMany(models.Room)
+
+    }
 
     
     

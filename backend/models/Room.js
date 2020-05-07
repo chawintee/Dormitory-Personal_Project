@@ -30,5 +30,10 @@ module.exports = (sequelize, DataTypes) => {
 
     });
 
+        Room.associate = models => {
+            Room.belongsTo(models.Lesson)
+            Room.hasMany(models.MonthlyValue)
+        }
+
     return Room;
 }

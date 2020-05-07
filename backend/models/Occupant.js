@@ -25,5 +25,9 @@ module.exports = (sequelize, DataTypes) => {
         } 
     });
 
+    Occupant.associate = models => {
+        Occupant.belongsTo(models.Lesson)
+    }
+
     return Occupant
 }
