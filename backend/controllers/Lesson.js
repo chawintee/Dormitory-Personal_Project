@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 
 const registerLesson = async (req, res) => {
+    console.log("Hello")
     const Username = req.body.Username;
     const Password = req.body.Password;
     const Name = req.body.Name;
@@ -16,16 +17,51 @@ const registerLesson = async (req, res) => {
     const PostCode = req.body.PostCode;
     const BookAccount = req.body.BookAccount;
 
+    console.log(Username)
     const user = await db.Lesson.findOne({ Where: { Username: Username } })
+
+
 
     if (user) {
         res.status(400).send({ message: "Username already use" })
     } else {
 
-        const salt = bcryptjs.genSalt(8);
-        const hashedPassword = bcryptjs.hashSync(Password,salt);
+        // res.send(`${Username}
+        // ${Password}
+        // ${Name}
+        // ${Mobile} 
+        // ${Address}  
+        // ${Photo}  
+        // ${DormitoryPhone}  
+        // ${Province}  
+        // ${PostCode}  
+        // ${BookAccount} ` )
 
-        db.Lesson.create({
+        // console.log(object)(`${Username}
+        // ${Password}
+        // ${Name}
+        // ${Mobile} 
+        // ${Address}  
+        // ${Photo}  
+        // ${DormitoryPhone}  
+        // ${Province}  
+        // ${PostCode}  
+        // ${BookAccount} ` )
+
+
+
+
+
+
+
+        const salt = bcryptjs.genSaltSync(8);
+        const hashedPassword = bcryptjs.hashSync(Password,salt);
+        // res.send(hashedPassword)
+
+
+
+
+        await db.Lesson.create({
             Username,
             Password: hashedPassword,
             Name,
@@ -39,16 +75,12 @@ const registerLesson = async (req, res) => {
             BookAccount,
         })
 
+        // res.send(user);
         res.status(201).send({message: "User created."})
 
     }
 }
 
-const check = (req,res) => {
-    const Hello = req.body.hello;
-
-    res.status(200).send({message: `OK ${Hello}`})
-}
 
 
 
@@ -56,4 +88,4 @@ const check = (req,res) => {
 
 
 
-module.exports = {registerLesson,check}
+module.exports = { registerLesson, }

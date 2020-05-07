@@ -3,7 +3,7 @@ const router = express.Router();
 const LessonController = require('../controllers/Lesson')
 
 
-router.post('/Register',LessonController.check)
+router.post('/Register',LessonController.registerLesson)
 // router.post('/Login',)
 
 

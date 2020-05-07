@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
     const Lesson = sequelize.define('Lesson', {
         Username: {
             type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
+            // allowNull: false,
+            // unique: true,
         },
         Password: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(1000),
         },
         Name: {
             type: DataTypes.STRING,
