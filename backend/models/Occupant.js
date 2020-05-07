@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Occupant.associate = models => {
-        Occupant.belongsTo(models.Lesson)
+        Occupant.belongsToMany(models.Room, {through : models.LiveIn})
     }
 
     return Occupant

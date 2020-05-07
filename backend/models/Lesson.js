@@ -41,13 +41,9 @@ module.exports = (sequelize,DataTypes) => {
     });
 
     Lesson.associate = models => {
-        Lesson.hasMany(models.Occupant)
         Lesson.hasMany(models.Room)
-
     }
 
-    
-    
     return Lesson
     
 }

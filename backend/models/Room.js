@@ -5,34 +5,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         Floor : {
             type: DataTypes.INTEGER
-        },
-        PostNumber : {
-            type: DataTypes.STRING
-        },
-        Detail : {
-            type: DataTypes.STRING
-        },
-        Status: {
-            type: DataTypes.STRING
-        },
-        PostOwnerName: {
-            type: DataTypes.STRING
-        },
-        DateReceive: {
-            type: DataTypes.DATE,
-            defaultValue: sequelize.NOW
-        },
-        DateComplete: {
-            type: DataTypes.DATE,
-            defaultValue: sequelize.NOW
         }
-
 
     });
 
         Room.associate = models => {
             Room.belongsTo(models.Lesson)
             Room.hasMany(models.MonthlyValue)
+            Room.hasMany(models.Post)
+            Room.hasMany(models.Report)
+            Room.belongsToMany(models.Occupant, {through : models.LiveIn})
         }
 
     return Room;
