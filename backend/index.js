@@ -12,8 +12,11 @@ const LessonRoute = require('./routes/Lesson');
 app.use('/Lesson', LessonRoute);
 
 app.get('/', (req, res) => {
-    res.send("Hello");
-    console.log("Test");
+    db.Lesson.findAll()
+    .then(result=>res.send(result))
+    .catch(err=>res.send(err))
+    // res.send("Hello");
+    // console.log("Test");
 })
 
 
