@@ -1,42 +1,42 @@
-module.exports = (sequelize,DataTypes) => {
-    const Lesson = sequelize.define('Lesson',{
-        Email: {
+module.exports = (sequelize, DataTypes) => {
+    const Lesson = sequelize.define('Lesson', {
+        UserName: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
         Password: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
         },
         Name: {
-            type : DataTypes.STRING
+            type: DataTypes.STRING,
         },
-        Surname : {
-            type : DataTypes.STRING
+        Surname: {
+            type: DataTypes.STRING,
         },
-        Mobile : {
-            type : DataTypes.INTEGER
+        Mobile: {
+            type: DataTypes.INTEGER,
         },
-        Address : {
-            type : DataTypes.STRING
+        Address: {
+            type: DataTypes.STRING,
         },
-        Photo : {
-            type : DataTypes.STRING
-        }, 
+        Photo: {
+            type: DataTypes.STRING,
+        },
         DormitoryId: {
-            type : DataTypes.INTEGER
+            type: DataTypes.INTEGER,
         },
         DormitoryPhone: {
-            type : DataTypes.INTEGER
+            type: DataTypes.INTEGER,
         },
-        Province : {
-            type : DataTypes.STRING
+        Province: {
+            type: DataTypes.STRING,
         },
-        PostCode : {
-            type : DataTypes.INTEGER
+        PostCode: {
+            type: DataTypes.INTEGER,
         },
-        BookAccount : {
-            type : DataTypes.INTEGER
+        BookAccount: {
+            type: DataTypes.INTEGER,
         }
     });
 
@@ -45,5 +45,5 @@ module.exports = (sequelize,DataTypes) => {
     }
 
     return Lesson
-    
+
 }

@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
-    const LiveIn = sequelize.define('LiveIn',{
+    const LiveIn = sequelize.define('LiveIn', {
         Status: {
-            type : DataTypes.STRING,
+            type: DataTypes.BOOLEAN,
         },
-        DateCheckIn : {
-            type : DataTypes.DATE,
+        DateCheckIn: {
+            type: DataTypes.DATE,
         },
-        DateCheckOut : {
-            type : DataTypes.DATE,
+        DateCheckOut: {
+            type: DataTypes.DATE,
         }
     });
     return LiveIn;

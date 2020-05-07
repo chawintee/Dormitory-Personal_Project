@@ -1,22 +1,22 @@
 module.exports = (sequelize, DataTypes) => {
-    const Post = sequelize.define('Post',{
-        PostNo : {
-            type : DataTypes.STRING,
+    const Post = sequelize.define('Post', {
+        PostNo: {
+            type: DataTypes.STRING,
         },
-        Status : {
-            type : DataTypes.BOOLEAN,
+        Status: {
+            type: DataTypes.BOOLEAN,
         },
-        ReceiveDate : {
-            type : DataTypes.DATE,
+        ReceiveDate: {
+            type: DataTypes.DATE,
         },
         CompleteDate: {
-            type : DataTypes.DATE,
+            type: DataTypes.DATE,
         },
-        PostOwnerName : {
-            type : DataTypes.STRING,
+        PostOwnerName: {
+            type: DataTypes.STRING,
         },
-        Detail : {
-            type : DataTypes.STRING,
+        Detail: {
+            type: DataTypes.STRING,
         },
     });
 
