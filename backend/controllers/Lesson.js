@@ -19,36 +19,36 @@ const registerLesson = async (req, res) => {
 
     console.log(Username)
     // const user = await db.Lesson.findOne({Where:{Username:req.body.Username}});
-    const user = await db.Lesson.findOne({Where:{Username:Username}});
+    const user = await db.Lesson.findOne({ where :{Username:Username}});
     // console.log(user)
-    res.send(user)
+    // res.send(user)
 
-    // if (user) {
-    //     res.status(400).send({ message: "Username already use" })
-    // } else {
+    if (user) {
+        res.status(400).send({ message: "Username already use" })
+    } else {
 
-    //     const salt = bcryptjs.genSaltSync(8);
-    //     const hashedPassword = bcryptjs.hashSync(Password,salt);
-    //     // res.send(hashedPassword)
+        const salt = bcryptjs.genSaltSync(8);
+        const hashedPassword = bcryptjs.hashSync(Password,salt);
+        // res.send(hashedPassword)
 
-    //     await db.Lesson.create({
-    //         Username,
-    //         Password: hashedPassword,
-    //         Name,
-    //         Surname,
-    //         Mobile,
-    //         Address,
-    //         Photo,
-    //         DormitoryPhone,
-    //         Province,
-    //         PostCode,
-    //         BookAccount,
-    //     })
+        await db.Lesson.create({
+            Username,
+            Password: hashedPassword,
+            Name,
+            Surname,
+            Mobile,
+            Address,
+            Photo,
+            DormitoryPhone,
+            Province,
+            PostCode,
+            BookAccount,
+        })
 
-    //     // res.send(user);
-    //     res.status(201).send({message: "User created."})
+        // res.send(user);
+        res.status(201).send({message: "User created."})
 
-    // }
+    }
 }
 
 
