@@ -9,8 +9,6 @@ const option = {
 
 const jwtStrategy = new Strategy(option, async (payload, done) => {
     const user = await db.Lesson.findOne({ where: { id: payload.id } })
-    
-
     if (user) {
         done(null, user)
     } else {

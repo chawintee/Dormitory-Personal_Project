@@ -4,7 +4,7 @@ const LessonController = require('../controllers/Lesson')
 
 
 router.post('/Register',LessonController.registerLesson)
-router.post('/Login',)
+router.post('/Login',LessonController.loginLesson)
 
 
 

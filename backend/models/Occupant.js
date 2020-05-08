@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
     const Occupant = sequelize.define('Occupant', {
-        UserName: {
+        Username: {
             type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
+            // allowNull: false,
+            // unique: true,
         },
         Password: {
             type: DataTypes.STRING,

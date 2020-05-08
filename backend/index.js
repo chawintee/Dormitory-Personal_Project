@@ -7,10 +7,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 app.use(cors());
 
-
-const LessonRoute = require('./routes/Lesson');
-app.use('/Lesson', LessonRoute);
-
 app.get('/', (req, res) => {
     db.Lesson.findAll()
     .then(result=>res.send(result))
@@ -18,6 +14,13 @@ app.get('/', (req, res) => {
     // res.send("Hello");
     // console.log("Test");
 })
+
+const LessonRoute = require('./routes/Lesson');
+app.use('/Lesson', LessonRoute);
+
+const OccupantRoute = require('./routes/Occupant');
+app.use('/Occupant', OccupantRoute);
+
 
 
 db.sequelize.sync({ force: false }).then(() => {
