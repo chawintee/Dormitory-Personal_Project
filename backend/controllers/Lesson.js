@@ -47,9 +47,13 @@ const registerLesson = async (req, res) => {
 
         // res.send(user);
         res.status(201).send({message: "User created."})
-
     }
 }
+
+
+
+
+
 
 
 
