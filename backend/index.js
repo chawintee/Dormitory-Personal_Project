@@ -21,6 +21,8 @@ app.use('/Lesson', LessonRoute);
 const OccupantRoute = require('./routes/Occupant');
 app.use('/Occupant', OccupantRoute);
 
+const roomRoute = require('./routes/Room');
+app.use('/Room',roomRoute);
 
 
 db.sequelize.sync({ force: false }).then(() => {
