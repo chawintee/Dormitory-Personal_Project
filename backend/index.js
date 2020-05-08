@@ -24,6 +24,9 @@ app.use('/Occupant', OccupantRoute);
 const roomRoute = require('./routes/Room');
 app.use('/Room',roomRoute);
 
+const MonthlyValue = require('./routes/MonthlyValue');
+app.use('/MonthlyValue',MonthlyValue);
+
 
 db.sequelize.sync({ force: false }).then(() => {
 
