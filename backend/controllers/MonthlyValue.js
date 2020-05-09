@@ -78,10 +78,9 @@ const createMonthlyValue = async (req, res) => {
                 ElectricityPrice,
                 RentPrice,
                 TotalRentPrice,
-                PaidStatus,
+                PaidStatus: false,
                 PaidDate,
                 RoomId,
-                PaidStatus: false,
             })
 
             res.status(201).send({ message: "Data crated" });
@@ -96,13 +95,49 @@ const createMonthlyValue = async (req, res) => {
 const getMonthlyValue = async (req, res) => {
     const RoomId = req.params.RoomId;
     console.log(RoomId)
-    const result = await db.MonthlyValue.findAll({where : {RoomId:RoomId}})
+    const result = await db.MonthlyValue.findAll({ where: { RoomId: RoomId } })
+    res.status(200).send(result)
     // console.log(result)
-    const now1 = Date.now();
-    console.log(now1)
-    res.send(result)
+    // const now1 = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    // const now1 = new Date()
+    // const now1 = new Date().toJSON()
+    // const now1 = new Date().toJSON().slice(0, 10)
+    // const now1 = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    // const currentDate = new Date();
+    // const day = currentDate.getDate();
+    // const month = currentDate.getMonth() + 1;
+    // const year = currentDate.getFullYear();
+    // console.log(currentDate)
+    // console.log(day)
+    // console.log(month)
+    // console.log(year)
+    // console.log(now1)
 }
- 
+
+
+
+
+const editMonthlyValueById = async (req,res) => {
+    const id = req.params.id;
+    const WaterMeter = req.body.WaterMeter;
+    const ElectricityMeter = req.body.ElectricityMeter;
+    const RentPrice = req.body.RentPrice;
+    const PaidStatus = req.body.PaidStatus;
+    const PaidDate = req.body.PaidDate;
+
+    await db.MonthlyValue.update(
+        {WaterMeter,
+        ElectricityMeter,
+        RentPrice,
+        PaidStatus,
+        PaidDate},
+        {where:{id:id}}
+        );
+
+        res.status(200).send({message: "Data updated"})
+
+
+}
 
 
 
@@ -114,4 +149,5 @@ const getMonthlyValue = async (req, res) => {
 
 
 
-module.exports = { createMonthlyValue, getMonthlyValue }
+
+module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById }
