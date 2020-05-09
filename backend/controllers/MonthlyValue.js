@@ -117,7 +117,7 @@ const getMonthlyValue = async (req, res) => {
 
 
 
-const editMonthlyValueById = async (req,res) => {
+const editMonthlyValueById = async (req, res) => {
     const id = req.params.id;
     const WaterMeter = req.body.WaterMeter;
     const ElectricityMeter = req.body.ElectricityMeter;
@@ -125,16 +125,37 @@ const editMonthlyValueById = async (req,res) => {
     const PaidStatus = req.body.PaidStatus;
     const PaidDate = req.body.PaidDate;
 
-    await db.MonthlyValue.update(
-        {WaterMeter,
-        ElectricityMeter,
-        RentPrice,
-        PaidStatus,
-        PaidDate},
-        {where:{id:id}}
-        );
+    const DataOfId = await 
 
-        res.status(200).send({message: "Data updated"})
+    if (WaterMeter) {
+        const 
+    }
+
+
+
+
+
+
+    await db.MonthlyValue.update(
+        {
+            Year,
+            Month,
+            WaterMeter,
+            WaterPricePerUnit,
+            WaterPrice,
+            ElectricityMeter,
+            ElectricityPricePerUnit,
+            ElectricityPrice,
+            RentPrice,
+            TotalRentPrice,
+            PaidStatus,
+            PaidDate,
+            RoomId,
+        },
+        { where: { id: id } }
+    );
+
+    res.status(200).send({ message: "Data updated" })
 
 
 }
