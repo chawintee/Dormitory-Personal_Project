@@ -81,8 +81,9 @@ const createMonthlyValue = async (req, res) => {
                 PaidStatus,
                 PaidDate,
                 RoomId,
-                PaidStatus:false,
+                PaidStatus: false,
             })
+
             res.status(201).send({ message: "Data crated" });
         }
     }
@@ -92,6 +93,25 @@ const createMonthlyValue = async (req, res) => {
 
 
 
+const getMonthlyValue = async (req, res) => {
+    const RoomId = req.params.RoomId;
+    console.log(RoomId)
+    const result = await db.MonthlyValue.findAll({where : {RoomId:RoomId}})
+    // console.log(result)
+    const now1 = Date.now();
+    console.log(now1)
+    res.send(result)
+}
+ 
 
 
-module.exports = { createMonthlyValue, }
+
+
+
+
+
+
+
+
+
+module.exports = { createMonthlyValue, getMonthlyValue }
