@@ -35,21 +35,21 @@ const createMonthlyValue = async (req, res) => {
             let lastYear;
             let lastMonthData;
             // res.send(String(lastMonth));
-            if (lastMonth<=0) {
+            if (lastMonth <= 0) {
                 lastYear = Number(Year - 1);
                 // console.log(lastYear)
                 lastMonth = 12;
                 // console.log(lastMonth)
                 // res.send(String(lastYear));
                 lastMonthData = await db.MonthlyValue.findOne({ where: { Year: lastYear, Month: lastMonth, RoomId: RoomId } });
-            }else{
+            } else {
                 // console.log(Year)
                 // console.log(lastMonth)
                 // res.send(String(lastMonth));
                 lastMonthData = await db.MonthlyValue.findOne({ where: { Year: Year, Month: lastMonth, RoomId: RoomId } });
             }
 
-            console.log('_______________________________________________________________________________________________________________________________________')
+            // console.log('_______________________________________________________________________________________________________________________________________')
 
             if (!lastMonthData) {
 
@@ -139,40 +139,74 @@ const editMonthlyValueById = async (req, res) => {
     const id = req.params.id;
     const WaterMeter = req.body.WaterMeter;
     const ElectricityMeter = req.body.ElectricityMeter;
-    const RentPrice = req.body.RentPrice;
+    let RentPrice = req.body.RentPrice;
     const PaidStatus = req.body.PaidStatus;
     const PaidDate = req.body.PaidDate;
+    let WaterPrice;
+    let ElectricityPrice;
+    let WaterPricePerUnit = req.body.WaterPricePerUnit;
+    let ElectricityPricePerUnit = req.body.ElectricityPricePerUnit;
+
 
     const dataOfId = await db.MonthlyValue.findOne({ where: { id: id } });
     const inThisYear = dataOfId.Year;
     const inThisMonth = dataOfId.Month;
     const inThisRoomId = dataOfId.RoomId;
     let lastMonth = (inThisMonth - 1);
+    let lastYear;
+    let lastMonthDataOfId;
     if (lastMonth <= 0) {
-        const lastYear = inThisYear - 1;
+        lastYear = inThisYear - 1;
         lastMonth = 12;
-        const lastMonthDataOfId = await db.MonthlyValue.findOne({ where: { Year: inThisYear, Month: lastMonth, RoomId: inThisRoomId } });
+        lastMonthDataOfId = await db.MonthlyValue.findOne({ where: { Year: lastYear, Month: lastMonth, RoomId: inThisRoomId } });
     } else {
-        const lastMonthDataOfId = await db.MonthlyValue.findOne({ where: { Year: inThisYear, Month: lastMonth, RoomId: inThisRoomId } });
+        lastMonthDataOfId = await db.MonthlyValue.findOne({ where: { Year: inThisYear, Month: lastMonth, RoomId: inThisRoomId } });
+    }
+    // console.log(dataOfId.Month)
+    // console.log(dataOfId.Year)
+    // console.log(lastMonthDataOfId.Month)
+    // console.log(lastMonthDataOfId.Year)
+    // res.send(dataOfId)
+
+
+    WaterPrice = dataOfId.WaterPrice
+    ElectricityPrice = dataOfId.ElectricityPrice;
+    if (!RentPrice) {
+        RentPrice = dataOfId.RentPrice;
+    }
+    if (!WaterPricePerUnit) {
+        WaterPricePerUnit = dataOfId.WaterPricePerUnit
+    }
+    if (!ElectricityPricePerUnit) {
+        ElectricityPricePerUnit = dataOfId.ElectricityPricePerUnit
+    }
+    if (WaterMeter) {
+        WaterPrice = (Number(WaterMeter) - Number(lastMonthDataOfId.WaterMeter)) * Number(WaterPricePerUnit);
+        // console.log(WaterPrice);
+    }
+    if (ElectricityMeter) {
+        ElectricityPrice = (Number(ElectricityMeter) - Number(lastMonthDataOfId.ElectricityMeter)) * Number(ElectricityPricePerUnit);
     }
 
+    const TotalRentPrice = Number(RentPrice) + Number(WaterPrice) + Number(ElectricityPrice);
 
+    // res.send(String(TotalRentPrice));
 
-
-
-
-    console.log(dataOfId.Month)
-    console.log(lastMonthDataOfId.Month)
-    res.send(lastMonthDataOfId)
-    // if (WaterMeter) {
-
-    // }
-
-
-
-
-
-
+    await db.MonthlyValue.update(
+        {
+            WaterMeter,
+            WaterPricePerUnit,
+            WaterPrice,
+            ElectricityMeter,
+            ElectricityPricePerUnit,
+            ElectricityPrice,
+            RentPrice,
+            TotalRentPrice,
+            PaidStatus,
+            PaidDate,
+        },
+        { where: { id: id } }
+    );
     // await db.MonthlyValue.update(
     //     {
     //         Year,
@@ -191,11 +225,7 @@ const editMonthlyValueById = async (req, res) => {
     //     },
     //     { where: { id: id } }
     // );
-
-
-    // res.status(200).send({ message: "Data updated" })
-
-
+    res.status(200).send({ message: "Data updated" })
 }
 
 
