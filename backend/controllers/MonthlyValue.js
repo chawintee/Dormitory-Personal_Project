@@ -30,7 +30,25 @@ const createMonthlyValue = async (req, res) => {
         }
         else {
 
-            const lastMonthData = await db.MonthlyValue.findOne({ where: { Year, Month: (Month - 1), RoomId } });
+            let lastMonth = Number(Month - 1);
+            // console.log(lastMonth)
+            let lastYear;
+            let lastMonthData;
+            // res.send(String(lastMonth));
+            if (lastMonth<=0) {
+                lastYear = Number(Year - 1);
+                // console.log(lastYear)
+                lastMonth = 12;
+                // console.log(lastMonth)
+                // res.send(String(lastYear));
+                lastMonthData = await db.MonthlyValue.findOne({ where: { Year: lastYear, Month: lastMonth, RoomId: RoomId } });
+            }else{
+                // console.log(Year)
+                // console.log(lastMonth)
+                // res.send(String(lastMonth));
+                lastMonthData = await db.MonthlyValue.findOne({ where: { Year: Year, Month: lastMonth, RoomId: RoomId } });
+            }
+
             console.log('_______________________________________________________________________________________________________________________________________')
 
             if (!lastMonthData) {
@@ -125,10 +143,17 @@ const editMonthlyValueById = async (req, res) => {
     const PaidStatus = req.body.PaidStatus;
     const PaidDate = req.body.PaidDate;
 
-    const DataOfId = await 
-
-    if (WaterMeter) {
-        const 
+    const dataOfId = await db.MonthlyValue.findOne({ where: { id: id } });
+    const inThisYear = dataOfId.Year;
+    const inThisMonth = dataOfId.Month;
+    const inThisRoomId = dataOfId.RoomId;
+    let lastMonth = (inThisMonth - 1);
+    if (lastMonth <= 0) {
+        const lastYear = inThisYear - 1;
+        lastMonth = 12;
+        const lastMonthDataOfId = await db.MonthlyValue.findOne({ where: { Year: inThisYear, Month: lastMonth, RoomId: inThisRoomId } });
+    } else {
+        const lastMonthDataOfId = await db.MonthlyValue.findOne({ where: { Year: inThisYear, Month: lastMonth, RoomId: inThisRoomId } });
     }
 
 
@@ -136,26 +161,39 @@ const editMonthlyValueById = async (req, res) => {
 
 
 
-    await db.MonthlyValue.update(
-        {
-            Year,
-            Month,
-            WaterMeter,
-            WaterPricePerUnit,
-            WaterPrice,
-            ElectricityMeter,
-            ElectricityPricePerUnit,
-            ElectricityPrice,
-            RentPrice,
-            TotalRentPrice,
-            PaidStatus,
-            PaidDate,
-            RoomId,
-        },
-        { where: { id: id } }
-    );
+    console.log(dataOfId.Month)
+    console.log(lastMonthDataOfId.Month)
+    res.send(lastMonthDataOfId)
+    // if (WaterMeter) {
 
-    res.status(200).send({ message: "Data updated" })
+    // }
+
+
+
+
+
+
+    // await db.MonthlyValue.update(
+    //     {
+    //         Year,
+    //         Month,
+    //         WaterMeter,
+    //         WaterPricePerUnit,
+    //         WaterPrice,
+    //         ElectricityMeter,
+    //         ElectricityPricePerUnit,
+    //         ElectricityPrice,
+    //         RentPrice,
+    //         TotalRentPrice,
+    //         PaidStatus,
+    //         PaidDate,
+    //         RoomId,
+    //     },
+    //     { where: { id: id } }
+    // );
+
+
+    // res.status(200).send({ message: "Data updated" })
 
 
 }
