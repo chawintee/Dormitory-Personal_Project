@@ -30,56 +30,63 @@ const createMonthlyValue = async (req, res) => {
         }
         else {
 
-            // const lastMonthData = await db.MonthlyValue.fineOne({ where: { Year, Month: (Month - 1), RoomId } });
-            // let lastMonthElectricityMeter = Number(lastMonthData.ElectricityMeter);
-            // let lastMonthWaterMeter = Number(lastMonthData.WaterMeter);
-            // RentPrice = Number(lastMonthData.RentPrice);
-            // WaterPricePerUnit = Number(lastMonthData.WaterPricePerUnit);
-            // ElectricityPricePerUnit = Number(lastMonthData.ElectricityPricePerUnit);
-            // if (!lastMonthData) {
-                //     lastMonthElectricityMeter = 0;
-                //     lastMonthWaterMeter = 0;
-                //     WaterPrice = (WaterMeter - lastMonthWaterMeter) * WaterPricePerUnit;
-                //     ElectricityPrice = (ElectricityMeter - lastMonthElectricityMeter) * ElectricityPricePerUnit
-                // } else {
-                    //     WaterPrice = (WaterMeter - lastMonthWaterMeter) * WaterPricePerUnit;
-                    //     ElectricityPrice = (ElectricityMeter - lastMonthElectricityMeter) * ElectricityPricePerUnit
-                    // }
-                    // TotalRentPrice = Number(RentPrice) + Number(WaterPrice) + Number(ElectricityPrice);
-                    
-                    
-                    
-                    const lastMonthData = await db.MonthlyValue.fineOne({ where: { Year, Month: Number(Month - 1), RoomId } });
-                    let lastMonthElectricityMeter = Number(lastMonthData.ElectricityMeter);
-                    let lastMonthWaterMeter = Number(lastMonthData.WaterMeter);
-                    WaterPrice = (WaterMeter) * WaterPricePerUnit;
-                    ElectricityPrice = (ElectricityMeter) * ElectricityPricePerUnit
-                    TotalRentPrice = Number(RentPrice) + Number(WaterPrice) + Number(ElectricityPrice);
+            const lastMonthData = await db.MonthlyValue.findOne({ where: { Year, Month: (Month - 1), RoomId } });
+            console.log('_______________________________________________________________________________________________________________________________________')
 
-                    
-            //         await db.MonthlyValue.create({
-            //             Year,
-            //             Month,
-            //             WaterMeter,
-            //             WaterPricePerUnit,
-            //             WaterPrice,
-            //             ElectricityMeter,
-            //             ElectricityPricePerUnit,
-            //             ElectricityPrice,
-            //             RentPrice,
-            //     TotalRentPrice,
-            //     PaidStatus,
-            //     PaidDate,
-            //     RoomId,
-            // })
-            res.status(201).send({ message: "Data created" });
+            if (!lastMonthData) {
+
+                res.status(400).send({ message: "Please Enter your initial data" })
+                // console.log("Don't have lastMonth Data")
+                // const lastMonthElectricityMeter = 0;
+                // const lastMonthWaterMeter = 0;
+                // RentPrice = Number(lastMonthData.RentPrice);
+                // WaterPrice = (WaterMeter - lastMonthWaterMeter) * WaterPricePerUnit;
+                // ElectricityPrice = (ElectricityMeter - lastMonthElectricityMeter) * ElectricityPricePerUnit
+
+            } else {
+
+                console.log("Have lastMonth Data")
+                let lastMonthElectricityMeter = Number(lastMonthData.ElectricityMeter);
+                console.log(`lastMonthElectricityMeter: ${lastMonthElectricityMeter}`)
+                let lastMonthWaterMeter = Number(lastMonthData.WaterMeter);
+                console.log(`lastMonthWaterMeter: ${lastMonthWaterMeter}`)
+                RentPrice = Number(lastMonthData.RentPrice);
+                console.log(`RentPrice: ${RentPrice}`)
+
+                WaterPricePerUnit = Number(lastMonthData.WaterPricePerUnit);
+                console.log(`WaterPricePerUnit: ${WaterPricePerUnit}`)
+                ElectricityPricePerUnit = Number(lastMonthData.ElectricityPricePerUnit);
+                console.log(`ElectricityPricePerUnit: ${ElectricityPricePerUnit}`)
+
+                WaterPrice = (WaterMeter - lastMonthWaterMeter) * WaterPricePerUnit;
+                console.log(`WaterPrice: ${WaterPrice}`)
+                ElectricityPrice = (ElectricityMeter - lastMonthElectricityMeter) * ElectricityPricePerUnit
+                console.log(`ElectricityPrice: ${ElectricityPrice}`)
+            }
+
+            TotalRentPrice = Number(RentPrice) + Number(WaterPrice) + Number(ElectricityPrice);
+            console.log(TotalRentPrice)
+
+            await db.MonthlyValue.create({
+                Year,
+                Month,
+                WaterMeter,
+                WaterPricePerUnit,
+                WaterPrice,
+                ElectricityMeter,
+                ElectricityPricePerUnit,
+                ElectricityPrice,
+                RentPrice,
+                TotalRentPrice,
+                PaidStatus,
+                PaidDate,
+                RoomId,
+                PaidStatus:false,
+            })
+            res.status(201).send({ message: "Data crated" });
         }
-
     }
-
-
     // res.send(Year)
-
 }
 
 
