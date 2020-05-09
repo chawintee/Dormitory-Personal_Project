@@ -19,7 +19,7 @@ const registerLesson = async (req, res) => {
     const BookAccount = req.body.BookAccount;
 
     console.log(Username)
-    // const user = await db.Lesson.findOne({Where:{Username:req.body.Username}});
+    // const user = await db.Lesson.findOne({where:{Username:req.body.Username}});
     const user = await db.Lesson.findOne({ where :{Username:Username}});
     // console.log(user)
     // res.send(user)
