@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Input from './Components/Input'
+import axios from '../../config/axios'
 
 function RegisterLesson() {
     const [username, setUsername] = useState("");

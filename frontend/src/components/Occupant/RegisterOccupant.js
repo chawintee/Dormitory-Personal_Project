@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Input from './Components/Input'
+import axios from '../../config/axios'
 
 function RegisterOccupant() {
     const [username, setUsername] = useState("")
@@ -25,8 +26,11 @@ function RegisterOccupant() {
 
 
 
-    const submit = () => {
-
+    const submit = async () => {
+        // const targetId = 1;
+        // const result = await axios.get(`/occupant//getOccupantById/${targetId}`)
+        const result = await axios.get(`/occupant/getOccupantById/1`)
+        console.log(result.data)
     }
 
 
