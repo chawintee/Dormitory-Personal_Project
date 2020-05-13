@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Input from './Components/Input'
 import axios from '../../config/axios'
+import {Redirect} from 'react-router-dom'
 
 function RegisterOccupant() {
     const [username, setUsername] = useState("");
@@ -12,6 +13,7 @@ function RegisterOccupant() {
     const [address, setAddress] = useState("");
     const [checkPass, setCheckPass] = useState(false);
     const [checkUsernameSt, setUsernameSt] = useState(false);
+    const [go, setGo] = useState(false);
 
 
 
@@ -51,23 +53,14 @@ function RegisterOccupant() {
                 }
                 try {
                     const result = await axios.post('/occupant/register', body);
+                    // console.log(result.data)
                     alert(result.data.message)
+                    alert(`Your id is ${result.data.result.id}`)
+                    setGo(true)
                 } catch {
                     alert("Cannot Register")
                 }
                 // alert("OK")
-
-                try {
-                    const id = await axios.post(`/occupant/checkUsername`, body);
-                    console.log(id.data.id)
-                    if (id.data) {
-                        alert(id.data.id)
-                    }
-                } catch {
-                    alert("Cannot Register")
-                }
-
-
             }
         } else {
             if (!username) {
@@ -113,7 +106,7 @@ function RegisterOccupant() {
         }
         try {
             const result = await axios.post(`/occupant/checkUsername`, body);
-            console.log(result.data)
+            // console.log(result.data)
             if (result.data) {
                 setUsernameSt(false)
             }
@@ -155,6 +148,8 @@ function RegisterOccupant() {
 
             <button onClick={submit}>Submit</button>
             <button onClick={logLogLog}>Log</button>
+
+            {go ? <Redirect to='/'/> : null}
         </div>
     )
 }

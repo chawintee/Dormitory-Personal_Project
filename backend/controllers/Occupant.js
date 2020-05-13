@@ -29,7 +29,11 @@ const registerOccupant = async (req, res) => {
             Address,
             Photo,
         })
-        res.status(201).send({ message: "User created" });
+
+        const user1 = await db.Occupant.findOne({where :{Username: Username}})
+        console.log(user1.data)
+        // res.status(201).send({ message: "User created" });
+        res.status(201).send({result : user1,message:"User created"});
     }
 }
 
@@ -69,7 +73,7 @@ const getOccupantById = async (req,res) => {
 
 const checkUsername = async (req,res) => {
     const username = req.body.username;
-    console.log(username)
+    // console.log(username)
     const user = await db.Occupant.findOne({where : {Username: username}});
     if(user){
         res.status(404).send({message:"Invalid Username"})
