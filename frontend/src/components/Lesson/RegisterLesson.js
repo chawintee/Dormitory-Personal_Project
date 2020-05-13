@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import Input from './Components/Input'
-import axios from '../../config/axios'
+import React, { useState } from 'react';
+import Input from './Components/Input';
+import axios from '../../config/axios';
+import {Redirect} from 'react-router-dom';
 
 function RegisterLesson() {
     const [username, setUsername] = useState("");
@@ -15,6 +16,7 @@ function RegisterLesson() {
     const [postcode, setPostcode] = useState("");
     const [dormPhone, setDormPhone] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
+    const [go, setGo] = useState(false)
 
 
     const [checkUsernameSame, setCheckUsernameSame] = useState(false);
@@ -68,9 +70,11 @@ function RegisterLesson() {
                     // console.log(result)
                     alert(result.data.message);
                     alert(`Your id is ${result.data.users.id}`);
+                    setGo(true)
                 } catch {
                     alert("Please Register again")
                     // console.log("Please Register again")
+                    setGo(false)
                 }
 
             }
@@ -174,6 +178,9 @@ function RegisterLesson() {
 
             <button onClick={submit}>Submit</button>
             <button onClick={logLogLog}>log</button>
+
+
+           {go ? <Redirect to='/'/> : null}
         </div>
     )
 }
