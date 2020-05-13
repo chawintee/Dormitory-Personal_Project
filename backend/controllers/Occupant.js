@@ -67,6 +67,17 @@ const getOccupantById = async (req,res) => {
 }
 
 
+const checkUsername = async (req,res) => {
+    const username = req.body.username;
+    console.log(username)
+    const user = await db.Occupant.findOne({where : {Username: username}});
+    if(user){
+        res.status(404).send({message:"Invalid Username"})
+    }
+    else{
+        res.status(201).send({result:user})
+    }
+}
 
 
 
@@ -80,4 +91,5 @@ const getOccupantById = async (req,res) => {
 
 
 
-module.exports = { registerOccupant, loginOccupant,getOccupantById }
+
+module.exports = { registerOccupant, loginOccupant,getOccupantById,checkUsername }

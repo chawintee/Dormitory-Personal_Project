@@ -3,14 +3,16 @@ import Input from './Components/Input'
 import axios from '../../config/axios'
 
 function RegisterOccupant() {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const [name, setName] = useState("")
-    const [surname, setSurname] = useState("")
-    const [mobile, setMobile] = useState("")
-    const [address, setAddress] = useState("")
-    const [checkPass, setCheckPass] = useState(false)
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [address, setAddress] = useState("");
+    const [checkPass, setCheckPass] = useState(false);
+    const [checkUsernameSt, setUsernameSt] = useState(false);
+
 
 
     const textUsername = e => setUsername(e.target.value);
@@ -38,41 +40,57 @@ function RegisterOccupant() {
                 setCheckPass(true)
             } else {
                 setCheckPass(false)
-                // const body = {
-                //     username,
-                //     password,
-                //     confirmPassword,
-                //     name,
-                //     surname,
-                //     mobile,
-                //     address,
-                // }
-                alert("OK")
+                const body = {
+                    Username: username,
+                    Password: password,
+                    Name: name,
+                    Surname: surname,
+                    Mobile: mobile,
+                    Address: address,
+                    // Photo: photo,
+                }
+                try {
+                    const result = await axios.post('/occupant/register', body);
+                    alert(result.data.message)
+                } catch {
+                    alert("Cannot Register")
+                }
+                // alert("OK")
+
+                try {
+                    const id = await axios.post(`/occupant/checkUsername`, body);
+                    console.log(id.data.id)
+                    if (id.data) {
+                        alert(id.data.id)
+                    }
+                } catch {
+                    alert("Cannot Register")
+                }
+
 
             }
         } else {
-            console.log("What")
-            // if(!username){
-            //     alert("Please Enter your Username")
-            // }
-            // if(!password){
-            //     alert("Please Enter your Password")
-            // }
-            // if(!confirmPassword){
-            //     alert("Please Enter your Confirm Password")
-            // }
-            // if(!name){
-            //     alert("Please Enter your Name")
-            // }
-            // if(!surname){
-            //     alert("Please Enter your Surname")
-            // }
-            // if(!mobile){
-            //     alert("Please Enter your Mobile")
-            // }
-            // if(!address){
-            //     alert("Please Enter your Address")
-            // }
+            if (!username) {
+                alert("Please Enter your Username")
+            }
+            if (!password) {
+                alert("Please Enter your Password")
+            }
+            if (!confirmPassword) {
+                alert("Please Enter your Confirm Password")
+            }
+            if (!name) {
+                alert("Please Enter your Name")
+            }
+            if (!surname) {
+                alert("Please Enter your Surname")
+            }
+            if (!mobile) {
+                alert("Please Enter your Mobile")
+            }
+            if (!address) {
+                alert("Please Enter your Address")
+            }
         }
 
     }
@@ -85,6 +103,22 @@ function RegisterOccupant() {
             setCheckPass(true)
         } else {
             setCheckPass(false)
+        }
+    }
+
+
+    const checkUserName = async () => {
+        const body = {
+            username,
+        }
+        try {
+            const result = await axios.post(`/occupant/checkUsername`, body);
+            console.log(result.data)
+            if (result.data) {
+                setUsernameSt(false)
+            }
+        } catch {
+            setUsernameSt(true)
         }
     }
 
@@ -107,9 +141,9 @@ function RegisterOccupant() {
         <div>
             <h1>RegisterOccupant</h1>
             <form>
-                <Input name="Username" text={textUsername} value={username} type="text" />
-                <Input name="Password" text={textPassword} value={password} type="password" onblur={checkThisPassword}/>
-                <Input name="Confirm Password" text={textConfirmPassword} value={confirmPassword} type="password" onblur={checkThisPassword} />{checkPass? <div style={{color: "red"}}>your password and confirm password are not match</div>: null}
+                <Input name="Username" text={textUsername} value={username} type="text" onblur={checkUserName} />{checkUsernameSt ? <div style={{ color: "red" }}>Invalid your username</div> : null}
+                <Input name="Password" text={textPassword} value={password} type="password" onblur={checkThisPassword} />
+                <Input name="Confirm Password" text={textConfirmPassword} value={confirmPassword} type="password" onblur={checkThisPassword} />{checkPass ? <div style={{ color: "red" }}>your password and confirm password are not match</div> : null}
                 <Input name="Name" text={textName} value={name} type="text" />
                 <Input name="Surname" text={textSurname} value={surname} type="text" />
                 <Input name="Mobile" text={textMobile} value={mobile} type="text" />
