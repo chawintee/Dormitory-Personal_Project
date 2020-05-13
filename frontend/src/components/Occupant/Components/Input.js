@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Input(props) {
-    const { text, value, name } = props;
+    const { text, value, name, type, onblur } = props;
 
 
     return (
@@ -9,7 +9,7 @@ function Input(props) {
             <div>
                 <label>{name}</label>
             </div>
-            <input onChange={text} value={value} placeholder={name} />
+                <input onChange={text} value={value} placeholder={name} type={type} required onBlur={onblur} />
         </div>
     )
 }
