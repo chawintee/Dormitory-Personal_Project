@@ -27,6 +27,7 @@ app.use('/Room',roomRoute);
 const MonthlyValue = require('./routes/MonthlyValue');
 app.use('/MonthlyValue',MonthlyValue);
 
+require('./config/passport/passport');
 
 db.sequelize.sync({ force: false }).then(() => {
 

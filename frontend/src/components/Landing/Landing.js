@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Input from './component/Input';
+import jwtDecode from 'jwt-decode';
+import LoginForm from './component/Loginform';
 
 function Landing() {
 
     const [lesson, setLesson] = useState(false);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    
+    const [isLogin, setIsLogin] = useState(false);
+    const [userInfo, setUserInfo] = useState({});
 
-    const textUsername = (e) => setUsername(e.target.value);
-    const textPassword = (e) => setPassword(e.target.value);
 
 
 
@@ -24,11 +25,7 @@ function Landing() {
             </span>
 
             <div>
-                <Input name="Username" value={username} textValue={textUsername}/>
-                <Input name="Password" value={password} textValue={textPassword}/>
-                <div>
-                    <button>Login</button>
-                </div>
+                <LoginForm lesson={lesson} isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />
             </div>
 
             {lesson ?
@@ -40,7 +37,8 @@ function Landing() {
                     <Link to='/RegisterOccupant'>RegisterOccupant</Link>
                 </div>)
             }
-            <button onClick={() => console.log(`You are lesson ${lesson} username is ${username} Password is ${password}`)}>Log</button>
+            <button onClick={() => console.log(`You are lesson ${lesson}`)}>Log</button>
+            
         </div>
     )
 }
