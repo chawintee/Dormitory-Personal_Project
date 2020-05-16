@@ -4,17 +4,15 @@ import Input from './component/Input';
 import jwtDecode from 'jwt-decode';
 import LoginForm from './component/Loginform';
 
-function Landing() {
+function Landing(props) {
 
     const [lesson, setLesson] = useState(false);
+
+    const {isLogin, setIsLogin, userInfo, setUserInfo} = props;
     
-    const [isLogin, setIsLogin] = useState(false);
-    const [userInfo, setUserInfo] = useState({});
-
-
-
-
-
+    // const [isLogin, setIsLogin] = useState(false);
+    // const [userInfo, setUserInfo] = useState({});
+    // console.log(isLogin)
 
     return (
         <div>
