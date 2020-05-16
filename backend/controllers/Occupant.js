@@ -48,13 +48,13 @@ const loginOccupant = async (req, res) => {
     } else {
         const isSuccess = bcryptjs.compareSync(Password, user.Password);
         // res.send(isSuccess);
-        const payload = {
-            id: user.id,
-            // Name: user.Name,
-            // Surname: user.Surname,
-            // Photo: user.Photo,
-        }
         if (isSuccess) {
+            const payload = {
+                id: user.id,
+                // Name: user.Name,
+                // Surname: user.Surname,
+                // Photo: user.Photo,
+            }
             const token = jwt.sign(payload, "Dorm", { expiresIn: 7200 });
             res.status(200).send({token: token})
         } else {

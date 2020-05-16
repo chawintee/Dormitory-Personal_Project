@@ -21,11 +21,11 @@ function OccupantFistPage(props) {
     useEffect(() => {
         // console.log("Hello")
         if (localStorage.getItem("ACCESS_TOKEN_OCCUPANT")) {
+            setIsLogin(true);
             // console.log(jwtDecode(localStorage.getItem("ACCESS_TOKEN_OCCUPANT")));
             const user = jwtDecode(localStorage.getItem("ACCESS_TOKEN_OCCUPANT"))
             // console.log(user)
             setUserInfo(user)
-            setIsLogin(true);
             // fetchData()
         }
     }, []);
@@ -61,7 +61,7 @@ function OccupantFistPage(props) {
 
 
                 <button onClick={logout}>Log Out</button>
-                {isLogin ? null :<Redirect to='/'/>}
+                {isLogin||lessonDataFront ? null : <Redirect to='/'/>}
             </span>
         </div>
     )

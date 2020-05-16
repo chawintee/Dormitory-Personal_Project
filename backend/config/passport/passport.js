@@ -17,3 +17,5 @@ const jwtStrategy = new Strategy(option, async (payload, done) => {
 });
 
 passport.use("jwr-authentication",jwtStrategy);
+
+
