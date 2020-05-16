@@ -13,8 +13,8 @@ function OccupantFistPage(props) {
         // console.log(LessonData.data)
         console.log(LessonData.data.LessonData)
         setLessonData(LessonData.data.LessonData)
+        // setLessonData(LessonData)
     }
-
 
 
     useEffect(() => {
@@ -25,16 +25,13 @@ function OccupantFistPage(props) {
             // console.log(user)
             setUserInfo(user)
             setIsLogin(true);
-            // fetchData(); 
-            if(user){
-                console.log("object")
-            }
+            // fetchData()
         }
     }, []);
 
-    // useEffect(() => {
-    //     fetchData();
-    // }, [userInfo])
+    useEffect(() => {
+        fetchData();
+    }, [userInfo])
 
 
 
@@ -47,8 +44,10 @@ function OccupantFistPage(props) {
                 <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
 
                 <span style={{ fontSize: "20px" }}>Name: &nbsp; </span>
+                
                 {/* <span style={{fontSize:"28px"}}>{lessonData.Name} &nbsp; {lessonData.Surname}  &nbsp;&nbsp;</span> */}
-                <span style={{ fontSize: "28px" }}> &nbsp;   &nbsp;&nbsp;</span>
+                {lessonDataFront ? <span style={{fontSize:"28px"}}>{lessonDataFront.Name} &nbsp; {lessonDataFront.Surname}  &nbsp;&nbsp;</span> : null}
+                {/* <span style={{ fontSize: "28px" }}> {lessonDataFront.data.LessonData.Name} &nbsp;   &nbsp;&nbsp;</span> */}
 
                 <span style={{ fontSize: "20px" }}>Room: &nbsp; </span>
                 <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
