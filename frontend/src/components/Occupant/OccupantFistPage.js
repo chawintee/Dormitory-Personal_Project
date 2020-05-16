@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode';
 import axios from '../../config/axios'
+import { Redirect } from 'react-router-dom';
 
 function OccupantFistPage(props) {
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
@@ -33,6 +34,12 @@ function OccupantFistPage(props) {
         fetchData();
     }, [userInfo])
 
+    const logout = () => {
+        localStorage.removeItem("ACCESS_TOKEN_OCCUPANT");
+        setUserInfo({})
+        setIsLogin(false)
+    }
+
 
 
     return (
@@ -44,13 +51,17 @@ function OccupantFistPage(props) {
                 <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
 
                 <span style={{ fontSize: "20px" }}>Name: &nbsp; </span>
-                
+
                 {/* <span style={{fontSize:"28px"}}>{lessonData.Name} &nbsp; {lessonData.Surname}  &nbsp;&nbsp;</span> */}
                 {lessonDataFront ? <span style={{fontSize:"28px"}}>{lessonDataFront.Name} &nbsp; {lessonDataFront.Surname}  &nbsp;&nbsp;</span> : null}
                 {/* <span style={{ fontSize: "28px" }}> {lessonDataFront.data.LessonData.Name} &nbsp;   &nbsp;&nbsp;</span> */}
 
                 <span style={{ fontSize: "20px" }}>Room: &nbsp; </span>
                 <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
+
+
+                <button onClick={logout}>Log Out</button>
+                {isLogin ? null :<Redirect to='/'/>}
             </span>
         </div>
     )
