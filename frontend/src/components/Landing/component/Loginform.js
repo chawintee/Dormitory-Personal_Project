@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import jwtDecode from 'jwt-decode';
 import axios from '../../../config/axios'
 import Input from '../component/Input'
+import { Redirect } from 'react-router-dom';
 
 
 function LoginForm(props) {
 
+    const { isLogin, setIsLogin, userInfo, setUserInfo, lesson } = props
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const { isLogin, setIsLogin, userInfo, setUserInfo, lesson } = props
+    const [goToOccupantFirstPage, setGoToOccupantFirstPage] = useState(false);
 
     const textUsername = (e) => setUsername(e.target.value);
     const textPassword = (e) => setPassword(e.target.value);
@@ -22,7 +25,7 @@ function LoginForm(props) {
             try {
                 const result = await axios.post('/occupant/login', body);
                 // console.log(result)
-                localStorage.setItem("ACCESS_TOKEN", result.data.token);
+                localStorage.setItem("ACCESS_TOKEN_OCCUPANT", result.data.token);
                 const user = jwtDecode(result.data.token);
                 user.role = "Occupant";
                 console.log(user);
@@ -30,6 +33,7 @@ function LoginForm(props) {
                 setIsLogin(true);
                 setUsername("");
                 setPassword("");
+                setGoToOccupantFirstPage(true)
             } catch (error){
                 console.log("Invalid Username or Password")
             }
@@ -59,6 +63,10 @@ function LoginForm(props) {
 
             </div>
             <button onClick={() => console.log(`You are lesson ${lesson} username is ${username} Password is ${password}`)}>Log</button>
+
+
+
+            {goToOccupantFirstPage ? <Redirect to='/OccupantFirstPage' /> : null}
         </div>
     )
 }

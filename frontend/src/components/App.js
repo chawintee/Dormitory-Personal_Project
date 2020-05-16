@@ -19,7 +19,7 @@ function App() {
         <Route exact path='/registerOccupant' component={RegisterOccupant} />
         <Route exact path='/registerLesson' component={RegisterLesson} />
         <Route exact path='/error' component={Error} />
-        <Route exact path='/OccupantFistPage' component={()=><OccupantFistPage userInfo={userInfo} />}  />
+        <Route exact path='/OccupantFirstPage' render={()=><OccupantFistPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
         <Redirect to='/error' />
       </Switch>
     </div>
