@@ -60,7 +60,13 @@ function OccupantFistPage(props) {
                 <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
 
 
+                <div>
                 <button onClick={logout}>Log Out</button>
+                </div>
+
+
+
+
                 {isLogin||lessonDataFront ? null : <Redirect to='/'/>}
             </span>
         </div>

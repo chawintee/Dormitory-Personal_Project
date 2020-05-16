@@ -5,7 +5,8 @@ import Landing from './Landing/Landing'
 import Error from './Error'
 import RegisterOccupant from './Occupant/RegisterOccupant'
 import RegisterLesson from './Lesson/RegisterLesson'
-import OccupantFistPage from './Occupant/OccupantFistPage';
+import OccupantFirstPage from './Occupant/OccupantFistPage';
+import LessonFirstPage from './Lesson/LessonFirstPage';
 
 function App() {
 
@@ -19,7 +20,8 @@ function App() {
         <Route exact path='/registerOccupant' component={RegisterOccupant} />
         <Route exact path='/registerLesson' component={RegisterLesson} />
         <Route exact path='/error' component={Error} />
-        <Route exact path='/OccupantFirstPage' render={()=><OccupantFistPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
+        <Route exact path='/OccupantFirstPage' render={()=><OccupantFirstPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
+        <Route exact path='/LessonFirstPage' render={()=><LessonFirstPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
         <Redirect to='/error' />
       </Switch>
     </div>
