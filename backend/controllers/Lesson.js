@@ -48,8 +48,8 @@ const registerLesson = async (req, res) => {
         // res.send(user);
         // res.status(201).send({ message: "User created." })
 
-        const users = await db.Lesson.findOne({where:{Username: Username}})
-            res.status(201).send({users:users,message:"User created."});
+        const users = await db.Lesson.findOne({ where: { Username: Username } })
+        res.status(201).send({ users: users, message: "User created." });
     }
 }
 
@@ -84,19 +84,26 @@ const loginLesson = async (req, res) => {
 }
 
 
-const checkUsername = async (req,res) => {
+const checkUsername = async (req, res) => {
     const Username = req.body.Username;
-    const user = await db.Lesson.findOne({where: {Username: Username}});
+    const user = await db.Lesson.findOne({ where: { Username: Username } });
     // console.log("-----------------------------------------------------------------------------------------------------------------------------------------------");
     // console.log("Hello");
     // console.log(user);
     // console.log("-----------------------------------------------------------------------------------------------------------------------------------------------");
-    if(user){
-        res.status(400).send({message: "Invalid Username"});
+    if (user) {
+        res.status(400).send({ message: "Invalid Username" });
     }
-    else{
-        res.status(200).send({message: "OK"})
+    else {
+        res.status(200).send({ message: "OK" })
     }
+}
+
+
+const getLessonById = async (req, res) => {
+    const id = req.params.id;
+    const user = await db.Lesson.findOne({ where: { id: id } })
+    res.status(200).send({ result: user });
 }
 
 
@@ -107,6 +114,4 @@ const checkUsername = async (req,res) => {
 
 
 
-
-
-module.exports = { registerLesson, loginLesson, checkUsername }
+module.exports = { registerLesson, loginLesson, checkUsername, getLessonById }
