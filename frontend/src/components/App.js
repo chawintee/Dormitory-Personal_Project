@@ -7,6 +7,8 @@ import RegisterOccupant from './Occupant/RegisterOccupant'
 import RegisterLesson from './Lesson/RegisterLesson'
 import OccupantFirstPage from './Occupant/OccupantFistPage';
 import LessonFirstPage from './Lesson/LessonFirstPage';
+import AddNewOccupant from './Lesson/AddNewOccupant';
+import MeterManage from './Lesson/MeterManage';
 
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
         <Route exact path='/error' component={Error} />
         <Route exact path='/OccupantFirstPage' render={()=><OccupantFirstPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
         <Route exact path='/LessonFirstPage' render={()=><LessonFirstPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
+        <Route exact path='/AddNewOccupant' component={AddNewOccupant}/>
+        <Route exact path='/MeterManage' component={MeterManage}/>
         <Redirect to='/error' />
       </Switch>
     </div>
