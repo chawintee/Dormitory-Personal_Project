@@ -6,6 +6,7 @@ function AddNewOccupant(props) {
 
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
     const [lessonData, setLessonData] = useState({});
+    const [year, setYear] = useState([]);
 
 
     const fetchData = async () => {
@@ -13,11 +14,6 @@ function AddNewOccupant(props) {
         console.log(lessonData)
         setLessonData(lessonData.data.result)
     }
-
-
-
-
-
 
     useEffect(() => {
         if (localStorage.getItem("ACCESS_TOKEN_LESSON")) {
@@ -30,7 +26,17 @@ function AddNewOccupant(props) {
 
     useEffect(() => {
         fetchData()
+        genYear()
     }, [userInfo])
+
+
+    const genYear = () => {
+        const year = []
+        for(let i= new Date().getFullYear() ;i>1950 ;i--){
+            year.push(i)
+        }
+        setYear(year);
+    }
 
 
 
@@ -45,6 +51,14 @@ function AddNewOccupant(props) {
             <div><span>Owner : </span><span>{lessonData.Name} {lessonData.Surname}</span></div>
             </>
              : null}
+
+             <hr/>
+
+
+             <select id="Year"> 
+                {year.map(item=><option value={item}>{item}</option>)}
+                {/* <option value="1950">1950</option> */}
+             </select>
             
 
         </div>
