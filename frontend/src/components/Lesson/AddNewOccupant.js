@@ -1,5 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import jwtDecode from 'jwt-decode'
+import axios from '../../config/axios'
 
 function AddNewOccupant(props) {
     const {isLogin,setIsLogin,userInfo,setUserInfo} = props;

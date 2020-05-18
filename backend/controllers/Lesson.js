@@ -70,10 +70,10 @@ const loginLesson = async (req, res) => {
         if (isSuccess) {
             const payload = {
                 id: user.id,
-                Name: user.Name,
-                Surname: user.Surname,
-                Photo: user.Photo,
-                DormitoryName: user.DormitoryName,
+                // Name: user.Name,
+                // Surname: user.Surname,
+                // Photo: user.Photo,
+                // DormitoryName: user.DormitoryName,
             }
             const token = jwt.sign(payload, "Dorm", { expiresIn: 7200 })
             res.status(200).send({ token: token });
