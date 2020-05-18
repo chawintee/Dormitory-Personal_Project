@@ -5,8 +5,8 @@ function LessonFirstPage() {
     return (
         <div>
             <h1>This is LessonFirstPage</h1>
-            <Link to='/AddNewOccupant'/>
-            <Link to='/MeterManage'/>
+            <div><Link to='/AddNewOccupant'> Add New Occupants </Link></div>
+            <div><Link to='/MeterManage'> Meter Manage </Link></div>
         </div>
     )
 }
