@@ -103,6 +103,13 @@ function AddNewOccupant(props) {
     }
 
 
+    const addOccupantToRoom = () => {
+        const body={
+            
+        }
+    }
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,11 +170,11 @@ function AddNewOccupant(props) {
                                 <td>{occupantData.Name}</td>
                                 <td>{occupantData.Surname}</td>
                                 <td>{occupantData.Mobile}</td>
-                                <th><button>{item}Add</button></th>
+                                <th><button onClick={addOccupantToRoom}>{item}Add</button></th>
                             </tr>
                             {roomDetail.map(occupant =>
                                 <tbody>
-                                    <tr>
+                                    <tr> 
                                         <td>{occupant.Room}</td>
                                         <td>{occupant.id}</td>
                                         <td>{occupant.Name}</td>

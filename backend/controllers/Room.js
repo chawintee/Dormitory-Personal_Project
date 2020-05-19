@@ -5,19 +5,19 @@ const createRoom = async (req, res) => {
     const Floor = req.body.Floor;
     const LessonId = req.body.LessonId;
     console.log(RoomNumber);
-    const room = await db.Room.findOne({ where: { RoomNumber: RoomNumber, LessonId } });
+    const room = await db.Room.findOne({ where: { RoomNumber: RoomNumber, LessonId : LessonId} }, {include : {model: LiveIn,where:{Status: true, RoomId:}}});
     // res.send(room)
 
-    if (room) {
-        res.status(400).send({ message: "Room already token" })
-    } else {
-        await db.Room.create({
-            RoomNumber,
-            Floor,
-            LessonId,
-        })
-        res.status(201).send({ message: "Room created" })
-    }
+    // if (room) {
+    //     res.status(400).send({ message: "Room already token" })
+    // } else {
+    //     await db.Room.create({
+    //         RoomNumber,
+    //         Floor,
+    //         LessonId,
+    //     })
+    //     res.status(201).send({ message: "Room created" })
+    // }
 }
 
 const getRoomByLessonId = async (req, res) => {
@@ -28,5 +28,10 @@ const getRoomByLessonId = async (req, res) => {
 }
 
 
+const addRoomByAllId = async () => {
 
-module.exports = { createRoom, getRoomByLessonId }
+}
+
+
+
+module.exports = { createRoom, getRoomByLessonId, addRoomByAllId}
