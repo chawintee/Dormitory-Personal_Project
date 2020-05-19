@@ -11,10 +11,13 @@ function AddNewOccupant(props) {
     // const [month, setMonth] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-
+    
     const [floor, setFloor] = useState([1]);
-    const [roomDetail, setRoomDetail] = useState([{ Room: "101",id: '1' ,Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102",id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103',id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
-
+    const [roomDetail, setRoomDetail] = useState([{ Room: "101", id: '1', Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102", id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103', id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
+    
+    const [occupantId, setOccupantId] = useState("");
+    const [roomNumber, setRoomNumber] = useState("");
+    const [occupantData, setOccupantData] = useState({});
 
 
     const fetchData = async () => {
@@ -85,8 +88,24 @@ function AddNewOccupant(props) {
         setFloor(add)
     }
 
+    const textOccupantId = (e) => {
+        setOccupantId(e.target.value)
+    }
+
+    const textRoomNumber = (e) => {
+        setRoomNumber(e.target.value)
+    }
+
+    const getOccupantData = async () => {
+        const result = await axios.get(`/Occupant//getOccupantById/${occupantId}`)
+        console.log(result.data.LessonData);
+        setOccupantData(result.data.LessonData);
+    }
 
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div>
@@ -130,20 +149,22 @@ function AddNewOccupant(props) {
                     {floor.map(item =>
                         <tr>
                             <td>{item}</td>
-                                <tr>
-                                    <th>Room</th>
-                                    <th>Occupant Id</th>
-                                    <th>Name</th>
-                                    <th>Surname</th>
-                                    <th>Mobile</th>
-                                </tr>
-                                <tr>
-                                    <th><input></input></th>
-                                    <th><input></input></th>
-                                    <th>Name</th>
-                                    <th>Surname</th>
-                                    <th>Mobile</th>
-                                </tr>
+                            <tr>
+                                <th>Room</th>
+                                <th>Occupant Id</th>
+                                <th>Name</th>
+                                <th>Surname</th>
+                                <th>Mobile</th>
+                                <th>Add</th>
+                            </tr>
+                            <tr>
+                                <th><input placeholder="Room Number" value={roomNumber} onChange={textRoomNumber} ></input></th>
+                                <th><input placeholder="Occupant Id" value={occupantId} onChange={textOccupantId} onBlur={getOccupantData}></input></th>
+                                <td>{occupantData.Name}</td>
+                                <td>{occupantData.Surname}</td>
+                                <td>{occupantData.Mobile}</td>
+                                <th><button>{item}Add</button></th>
+                            </tr>
                             {roomDetail.map(occupant =>
                                 <tbody>
                                     <tr>
@@ -154,11 +175,7 @@ function AddNewOccupant(props) {
                                         <td>{occupant.Mobile}</td>
                                     </tr>
                                 </tbody>
-                                )}
-                            {/* <td>{item}</td>
-                             <td>{item}</td>
-                             <td>{item}</td>
-                             <td>{item}</td> */}
+                            )}
                         </tr>
                     )}
 
