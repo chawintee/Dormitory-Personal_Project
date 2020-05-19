@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 import axios from '../../config/axios'
+import './AddNewOccupant.css'
 
 function AddNewOccupant(props) {
 
@@ -10,6 +11,10 @@ function AddNewOccupant(props) {
     // const [month, setMonth] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+
+    const [floor, setFloor] = useState([1]);
+    const [roomDetail, setRoomDetail] = useState([{ Room: "101",id: '1' ,Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102",id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103',id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
+
 
 
     const fetchData = async () => {
@@ -72,6 +77,14 @@ function AddNewOccupant(props) {
         setSelectedMonth(monthValue)
     }
 
+    const AddFloor = () => {
+        // const add = floor.push()
+        const add = [...floor, Math.max(...floor) + 1]
+        // console.log(floor)
+        // floor.push(6)
+        setFloor(add)
+    }
+
 
 
 
@@ -96,12 +109,64 @@ function AddNewOccupant(props) {
                 {/* <option value="1950">1950</option> */}
             </select>
 
-            <select id="Month" onChange={handleSelectedMonth} defaultValue={months[selectedMonth-1]}>
+            <select id="Month" onChange={handleSelectedMonth} defaultValue={months[selectedMonth - 1]}>
                 {months.map((item) => <option value={item}>{item}</option>)}
             </select>
 
 
-            <hr/>
+            <hr />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Floor</th>
+                        <th>Room Detail</th>
+                        {/* <th>Name</th>
+                        <th>Surname</th>
+                        <th>Mobile</th> */}
+                    </tr>
+                </thead>
+                <tbody>
+                    {floor.map(item =>
+                        <tr>
+                            <td>{item}</td>
+                                <tr>
+                                    <th>Room</th>
+                                    <th>Occupant Id</th>
+                                    <th>Name</th>
+                                    <th>Surname</th>
+                                    <th>Mobile</th>
+                                </tr>
+                                <tr>
+                                    <th><input></input></th>
+                                    <th><input></input></th>
+                                    <th>Name</th>
+                                    <th>Surname</th>
+                                    <th>Mobile</th>
+                                </tr>
+                            {roomDetail.map(occupant =>
+                                <tbody>
+                                    <tr>
+                                        <td>{occupant.Room}</td>
+                                        <td>{occupant.id}</td>
+                                        <td>{occupant.Name}</td>
+                                        <td>{occupant.Surname}</td>
+                                        <td>{occupant.Mobile}</td>
+                                    </tr>
+                                </tbody>
+                                )}
+                            {/* <td>{item}</td>
+                             <td>{item}</td>
+                             <td>{item}</td>
+                             <td>{item}</td> */}
+                        </tr>
+                    )}
+
+
+                </tbody>
+            </table>
+
+            <button onClick={AddFloor}>Add Floor</button>
 
 
 
