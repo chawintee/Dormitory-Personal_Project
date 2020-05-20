@@ -4,8 +4,13 @@ const createRoom = async (req, res) => {
     const RoomNumber = req.body.RoomNumber;
     const Floor = req.body.Floor;
     const LessonId = req.body.LessonId;
+    const Status = req.body.Status;
+    // const DateCheckIn = req.body.DateCheckIn;
+    const DateCheckIn = new Date();
+    const OccupantId = req.body.OccupantId;
+    const RoomId = req.body.RoomId;
     console.log(RoomNumber);
-    const room = await db.Room.findOne({ where: { RoomNumber: RoomNumber, LessonId : LessonId} }, {include : {model: LiveIn,where:{Status: true, RoomId:}}});
+    // const room = await db.Room.findOne({ where: { RoomNumber: RoomNumber, LessonId : LessonId} });
     // res.send(room)
 
     // if (room) {
@@ -18,6 +23,9 @@ const createRoom = async (req, res) => {
     //     })
     //     res.status(201).send({ message: "Room created" })
     // }
+
+    const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId, include: [{ model: db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId}) }] })
+    res.status(201).send({ result: roomInput })
 }
 
 const getRoomByLessonId = async (req, res) => {
@@ -28,10 +36,10 @@ const getRoomByLessonId = async (req, res) => {
 }
 
 
-const addRoomByAllId = async () => {
+// const addRoomByAllId = async () => {
 
-}
+// }
 
 
 
-module.exports = { createRoom, getRoomByLessonId, addRoomByAllId}
+module.exports = { createRoom, getRoomByLessonId }
