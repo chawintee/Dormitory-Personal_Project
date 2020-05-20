@@ -24,8 +24,10 @@ const createRoom = async (req, res) => {
     //     res.status(201).send({ message: "Room created" })
     // }
 
-    const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId, include: [{ model: db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId}) }] })
-    res.status(201).send({ result: roomInput })
+    // const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId, include: [{ model: db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId}) }] })
+    const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId});
+    const LiveInInput = await db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId:roomInput.id});
+    res.status(201).send({ result: roomInput ,result1: LiveInInput })
 }
 
 const getRoomByLessonId = async (req, res) => {
