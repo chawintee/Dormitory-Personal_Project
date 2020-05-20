@@ -5,8 +5,8 @@ const createRoom = async (req, res) => {
     const Floor = req.body.Floor;
     const LessonId = req.body.LessonId;
     const Status = req.body.Status;
-    // const DateCheckIn = req.body.DateCheckIn;
-    const DateCheckIn = new Date();
+    const DateCheckIn = req.body.DateCheckIn;
+    // const DateCheckIn = new Date();
     const OccupantId = req.body.OccupantId;
     const RoomId = req.body.RoomId;
     console.log(RoomNumber);

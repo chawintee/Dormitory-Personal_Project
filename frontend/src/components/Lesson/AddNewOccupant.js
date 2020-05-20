@@ -103,10 +103,17 @@ function AddNewOccupant(props) {
     }
 
 
-    const addOccupantToRoom = () => {
+    const addOccupantToRoom = async (floor) => {
         const body={
-            
+            RoomNumber: roomNumber,
+            Floor: floor,
+            LessonId:lessonData.id,
+            Status: true,
+            DateCheckIn: new Date(),
         }
+        // console.log(floor)
+        const data = await axios.post('/room/createRoom',body)
+        console.log(data)
     }
 
 
@@ -170,7 +177,7 @@ function AddNewOccupant(props) {
                                 <td>{occupantData.Name}</td>
                                 <td>{occupantData.Surname}</td>
                                 <td>{occupantData.Mobile}</td>
-                                <th><button onClick={addOccupantToRoom}>{item}Add</button></th>
+                                <th><button onClick={()=>addOccupantToRoom(item)}>{item}Add</button></th>
                             </tr>
                             {roomDetail.map(occupant =>
                                 <tbody>
