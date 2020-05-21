@@ -115,6 +115,7 @@ function AddNewOccupant(props) {
             setOccupantData(result.data.LessonData);
         } catch{
             alert("Don't have data of occupantId")
+            setOccupantData({})
         }
     }
 
