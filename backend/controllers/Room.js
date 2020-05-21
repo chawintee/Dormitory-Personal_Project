@@ -5,8 +5,8 @@ const createRoom = async (req, res) => {
     const Floor = req.body.Floor;
     const LessonId = req.body.LessonId;
     const Status = req.body.Status;
-    const DateCheckIn = req.body.DateCheckIn;
-    // const DateCheckIn = new Date();
+    // const DateCheckIn = req.body.DateCheckIn;
+    const DateCheckIn = new Date();
     const OccupantId = req.body.OccupantId;
     const RoomId = req.body.RoomId;
     console.log(RoomNumber);
@@ -28,6 +28,10 @@ const createRoom = async (req, res) => {
     const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId});
     const LiveInInput = await db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId:roomInput.id});
     res.status(201).send({ result: roomInput ,result1: LiveInInput })
+    // if(roomInput){
+    //     const LiveInInput = await db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId:roomInput.id});
+    //     res.status(201).send({ result: roomInput ,result1: LiveInInput })
+    // }
 }
 
 const getRoomByLessonId = async (req, res) => {

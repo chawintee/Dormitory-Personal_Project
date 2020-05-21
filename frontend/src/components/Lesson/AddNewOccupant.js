@@ -109,7 +109,7 @@ function AddNewOccupant(props) {
             Floor: floor,
             LessonId:lessonData.id,
             Status: true,
-            DateCheckIn: new Date(),
+            // DateCheckIn: new Date(),
         }
         // console.log(floor)
         const data = await axios.post('/room/createRoom',body)
