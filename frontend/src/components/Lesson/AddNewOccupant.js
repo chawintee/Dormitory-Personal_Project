@@ -97,9 +97,13 @@ function AddNewOccupant(props) {
     }
 
     const getOccupantData = async () => {
-        const result = await axios.get(`/Occupant//getOccupantById/${occupantId}`)
-        console.log(result.data.LessonData);
-        setOccupantData(result.data.LessonData);
+        try{
+            const result = await axios.get(`/Occupant/getOccupantById/${occupantId}`)
+            console.log(result.data.LessonData);
+            setOccupantData(result.data.LessonData);
+        } catch{
+            alert("Don't have data of occupantId")
+        }
     }
 
 
@@ -109,6 +113,7 @@ function AddNewOccupant(props) {
             Floor: floor,
             LessonId:lessonData.id,
             Status: true,
+            OccupantId: occupantId,
             // DateCheckIn: new Date(),
         }
         // console.log(floor)

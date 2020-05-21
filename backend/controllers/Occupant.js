@@ -69,7 +69,11 @@ const getOccupantById = async (req,res) => {
     const LessonData = await db.Occupant.findOne({where : {id : id}});
     // console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
     // console.log(LessonData)
-    res.status(200).send({LessonData:LessonData})
+    if(LessonData){
+        res.status(200).send({LessonData:LessonData})
+    }else{
+        res.status(400).send({message:"Don't have data of occupantId"})
+    }
 }
 
 
