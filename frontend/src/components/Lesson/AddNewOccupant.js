@@ -11,10 +11,10 @@ function AddNewOccupant(props) {
     // const [month, setMonth] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-    
-    const [floor, setFloor] = useState([1]);
+
+    const [floor, setFloor] = useState("");
     const [roomDetail, setRoomDetail] = useState([{ Room: "101", id: '1', Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102", id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103', id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
-    
+
     const [occupantId, setOccupantId] = useState("");
     const [roomNumber, setRoomNumber] = useState("");
     const [occupantData, setOccupantData] = useState({});
@@ -48,6 +48,11 @@ function AddNewOccupant(props) {
         // handleSelectedYear();
     }, [selectedYear])
 
+    // useEffect(() => {
+    //     getOccupantData()
+    //     // handleSelectedYear();
+    // }, [occupantData])
+
 
 
 
@@ -68,6 +73,9 @@ function AddNewOccupant(props) {
         setSelectedYear(e.target.value)
         // console.log(selectedYear)
     }
+
+
+
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -96,8 +104,12 @@ function AddNewOccupant(props) {
         setRoomNumber(e.target.value)
     }
 
+    const textFloor = (e) => {
+        setFloor(e.target.value)
+    }
+
     const getOccupantData = async () => {
-        try{
+        try {
             const result = await axios.get(`/Occupant/getOccupantById/${occupantId}`)
             console.log(result.data.LessonData);
             setOccupantData(result.data.LessonData);
@@ -107,24 +119,27 @@ function AddNewOccupant(props) {
     }
 
 
-    const addOccupantToRoom = async (floor) => {
-        const body={
+    const addOccupantToRoom = async () => {
+        const body = {
             RoomNumber: roomNumber,
             Floor: floor,
-            LessonId:lessonData.id,
+            LessonId: lessonData.id,
             Status: true,
             OccupantId: occupantId,
             // DateCheckIn: new Date(),
         }
         // console.log(floor)
-        const data = await axios.post('/room/createRoom',body)
-        console.log(data)
+        const data = await axios.post('/room/createRoom', body);
+        console.log(data);
+        setFloor("");
+        setRoomNumber("")
+        setOccupantId("");
     }
 
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <div>
@@ -154,14 +169,58 @@ function AddNewOccupant(props) {
 
             <hr />
 
+
+            <label><strong>Add New Occupant</strong></label>
             <table>
+                <tr>
+                    <th>Floor</th>
+                    <th>Room</th>
+                    <th>OccupantId</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Mobile</th>
+                    <th>Add</th>
+                </tr>
+                <tr>
+                    <th><input placeholder="Floor" value={floor} onChange={textFloor} ></input></th>
+                    <th><input placeholder="Room Number" value={roomNumber} onChange={textRoomNumber} ></input></th>
+                    <th><input placeholder="Occupant Id" value={occupantId} onChange={textOccupantId} onBlur={getOccupantData}></input></th>
+                    <td>{occupantData.Name}</td>
+                    <td>{occupantData.Surname}</td>
+                    <td>{occupantData.Mobile}</td>
+                    <th><button onClick={addOccupantToRoom}>Add</button></th>
+                </tr>
+            </table>
+
+            <hr />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {/* <table>
                 <thead>
                     <tr>
                         <th>Floor</th>
                         <th>Room Detail</th>
-                        {/* <th>Name</th>
+                        <th>Name</th>
                         <th>Surname</th>
-                        <th>Mobile</th> */}
+                        <th>Mobile</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -182,11 +241,11 @@ function AddNewOccupant(props) {
                                 <td>{occupantData.Name}</td>
                                 <td>{occupantData.Surname}</td>
                                 <td>{occupantData.Mobile}</td>
-                                <th><button onClick={()=>addOccupantToRoom(item)}>{item}Add</button></th>
+                                <th><button onClick={() => addOccupantToRoom(item)}>{item}Add</button></th>
                             </tr>
                             {roomDetail.map(occupant =>
                                 <tbody>
-                                    <tr> 
+                                    <tr>
                                         <td>{occupant.Room}</td>
                                         <td>{occupant.id}</td>
                                         <td>{occupant.Name}</td>
@@ -197,12 +256,9 @@ function AddNewOccupant(props) {
                             )}
                         </tr>
                     )}
-
-
                 </tbody>
             </table>
-
-            <button onClick={AddFloor}>Add Floor</button>
+            <button onClick={AddFloor}>Add Floor</button> */}
 
 
 
