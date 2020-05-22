@@ -42,10 +42,13 @@ const getRoomByLessonId = async (req, res) => {
 }
 
 
-// const addRoomByAllId = async () => {
+const getRoomLiveInOccupantDataByLessonId = async (req,res) => {
+    const LessonId = req.params.LessonId;
+    // const room = await db.Room.findAll({ where: { LessonId : LessonId}, include: [models:] });
 
-// }
+}
 
 
 
-module.exports = { createRoom, getRoomByLessonId }
+
+module.exports = { createRoom, getRoomByLessonId, getRoomLiveInOccupantDataByLessonId }

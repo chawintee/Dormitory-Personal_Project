@@ -116,6 +116,7 @@ function AddNewOccupant(props) {
         } catch{
             alert("Don't have data of occupantId")
             setOccupantData({})
+            setOccupantId("")
         }
     }
 
@@ -133,8 +134,9 @@ function AddNewOccupant(props) {
         const data = await axios.post('/room/createRoom', body);
         console.log(data);
         setFloor("");
-        setRoomNumber("")
+        setRoomNumber("");
         setOccupantId("");
+        setOccupantData({});
     }
 
 
