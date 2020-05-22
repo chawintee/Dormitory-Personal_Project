@@ -25,9 +25,9 @@ const createRoom = async (req, res) => {
     // }
 
     // const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId, include: [{ model: db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId}) }] })
-    const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId});
-    const LiveInInput = await db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId:roomInput.id});
-    res.status(201).send({ result: roomInput ,result1: LiveInInput })
+    const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId });
+    const LiveInInput = await db.LiveIn.create({ Status, DateCheckIn, OccupantId, RoomId: roomInput.id });
+    res.status(201).send({ result: roomInput, result1: LiveInInput })
     // if(roomInput){
     //     const LiveInInput = await db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId:roomInput.id});
     //     res.status(201).send({ result: roomInput ,result1: LiveInInput })
@@ -42,23 +42,35 @@ const getRoomByLessonId = async (req, res) => {
 }
 
 
-const getRoomLiveInOccupantDataByLessonId = async (req,res) => {
+const getRoomLiveInOccupantDataByLessonId = async (req, res) => {
     const LessonId = req.params.LessonId;
+    const Status = req.body.Status;
+    const Floor = req.body.Floor;
     // const room = await db.Room.findAll({ where: { LessonId : LessonId}, include: [models:] });
-    try{
-        const RoomByLessonId = await db.Room.findAll({where: {LessonId: LessonId}});
-        const RoomId = RoomByLessonId.map(ele => ele.id);
-        const LiveIn = await db.LiveIn.findAll({where: {RoomId: RoomId.map(item=>item)}});
-        const OccupantId = LiveIn.map(ele=>ele.OccupantId);
-        const OccupantData = await db.Occupant.findAll({where: {id: OccupantId.map(item=>item)}})
+    try {
+        if (Floor) {
+            const RoomByLessonId = await db.Room.findAll({ where: { LessonId: LessonId, Floor: Floor } });
+            const RoomId = RoomByLessonId.map(ele => ele.id);
+            const LiveIn = await db.LiveIn.findAll({ where: { RoomId: RoomId.map(item => item), Status: Status } });
+            const OccupantId = LiveIn.map(ele => ele.OccupantId);
+            const OccupantData = await db.Occupant.findAll({ where: { id: OccupantId.map(item => item) } })
+            res.status(200).send({ result: RoomByLessonId, result1: RoomId, result2: LiveIn, result3: OccupantId, result4: OccupantData, message: "OK" });
+        } else {
+            const RoomByLessonId = await db.Room.findAll({ where: { LessonId: LessonId } });
+            const RoomId = RoomByLessonId.map(ele => ele.id);
+            const LiveIn = await db.LiveIn.findAll({ where: { RoomId: RoomId.map(item => item), Status: Status } });
+            const OccupantId = LiveIn.map(ele => ele.OccupantId);
+            const OccupantData = await db.Occupant.findAll({ where: { id: OccupantId.map(item => item) } })
+            res.status(200).send({ result: RoomByLessonId, result1: RoomId, result2: LiveIn, result3: OccupantId, result4: OccupantData, message: "OK" });
+        }
 
         // const LiveInByRoomId = await db.Room.findAll({where: {RoomId: RoomByLessonId.id}})
         // const RoomOccupantDataByLessonId = await db.Room.findAll({where: {LessonId: LessonId}, include:[{models:db.LiveIn.findAll({where:{RoomId:RoomId}})}]})
         // const RoomOccupantDataByLessonId = await db.Room.findAll({where: {LessonId: LessonId}, include:[{models:db.LiveIn.findAll({where:{RoomId:RoomId}}), include: [{models: db.Occupant.findAll({where: {OccupantId: OccupantId}})}]}]})
-        res.status(200).send({result: RoomByLessonId,result1 : RoomId ,result2: LiveIn,result3: OccupantId, result4: OccupantData, message: "OK"});
+        res.status(200).send({ result: RoomByLessonId, result1: RoomId, result2: LiveIn, result3: OccupantId, result4: OccupantData, message: "OK" });
         // res.status(200).send({result: RoomByLessonId,result1: LiveInByRoomId , message: "OK"})
     } catch {
-        res.status(400).send({message: "can't seach"})
+        res.status(400).send({ message: "can't search" })
     }
 }
 

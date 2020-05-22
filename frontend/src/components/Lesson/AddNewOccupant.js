@@ -22,12 +22,26 @@ function AddNewOccupant(props) {
 
     const fetchData = async () => {
         const lessonData = await axios.get(`/lesson/getLessonById/${userInfo.id}`);
-        console.log(lessonData)
-        setLessonData(lessonData.data.result)
+        console.log(lessonData);
+        setLessonData(lessonData.data.result);
         console.log(selectedYear);
         console.log(selectedMonth);
     }
+    
+    
+    const fetchRoomData = async () => {
+        const body = {
+            
+    
+        }
+        const getRoomLiveInOccupantDataByLessonId = await axios.post(``,body);
+        
+    }
 
+
+
+
+ 
     useEffect(() => {
         if (localStorage.getItem("ACCESS_TOKEN_LESSON")) {
             // console.log(jwtDecode(localStorage.getItem("ACCESS_TOKEN_LESSON")))
