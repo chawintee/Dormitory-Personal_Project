@@ -16,7 +16,8 @@ function AddNewOccupant(props) {
 
 
     const [floor, setFloor] = useState("");
-    const [roomDetail, setRoomDetail] = useState([{ Room: "101", id: '1', Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102", id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103', id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
+    // const [roomDetail, setRoomDetail] = useState([{ Room: "101", id: '1', Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102", id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103', id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
+    const [roomDetail, setRoomDetail] = useState([])
 
     const [occupantId, setOccupantId] = useState("");
     const [roomNumber, setRoomNumber] = useState("");
@@ -34,14 +35,14 @@ function AddNewOccupant(props) {
 
     const fetchRoomData = async () => {
         const body = {
-            Status: selectedStatus,
-            Floor: null,
+            Status: String(selectedStatus),
+            Floor: floor,
         }
         const getRoomLiveInOccupantDataByLessonId = await axios.post(`/Room/getRoomLiveInOccupantDataByLessonId/${userInfo.id}`, body);
+        console.log("Hello")
         console.log(getRoomLiveInOccupantDataByLessonId)
-        console.log(getRoomLiveInOccupantDataByLessonId.data.LiveIn)
-        console.log(getRoomLiveInOccupantDataByLessonId.data.OccupantData)
-        console.log(getRoomLiveInOccupantDataByLessonId.data.RoomByLessonId)
+        setRoomDetail(getRoomLiveInOccupantDataByLessonId)
+        console.log(`Roomdetail = ${roomDetail}`)
     }
 
 
@@ -59,7 +60,6 @@ function AddNewOccupant(props) {
 
     useEffect(() => {
         fetchData();
-        fetchRoomData();
         genYear();
     }, [userInfo])
 
@@ -68,6 +68,14 @@ function AddNewOccupant(props) {
         console.log(selectedMonth)
         // handleSelectedYear();
     }, [selectedYear])
+
+    useEffect(() => {
+        fetchRoomData();
+    }, [lessonData])
+
+
+
+
 
     // useEffect(() => {
     //     getOccupantData()
@@ -110,7 +118,7 @@ function AddNewOccupant(props) {
     }
 
 
-    const status = ["Old","Current"];
+    const status = ["Old", "Current"];
 
     const handleSelectedStatus = (e) => {
         // console.log(e.target.value)
@@ -247,6 +255,22 @@ function AddNewOccupant(props) {
                     <th>Surname</th>
                     <th>Mobile</th>
                 </tr>
+
+                {roomDetail == undefined ?
+
+                    roomDetail.map(obj =>
+                        <tr>
+                            <th>{obj.data.OccupantRoomData.Floor}</th>
+                            <th>{obj.data.OccupantRoomData.RoomNumber}</th>
+                            <th>{obj.data.OccupantRoomData.Occupants.id}</th>
+                            <th>{obj.data.OccupantRoomData.Occupants.Name}</th>
+                            <th>{obj.data.OccupantRoomData.Occupants.Surname}</th>
+                            <th>{obj.data.OccupantRoomData.Occupants.Mobile}</th>
+                        </tr>
+                    ) :
+                    null
+
+                }
 
             </table>
 

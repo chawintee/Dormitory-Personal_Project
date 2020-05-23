@@ -52,11 +52,11 @@ const getRoomLiveInOccupantDataByLessonId = async (req, res) => {
             filters['Floor'] = Floor
         }
         if (Status) {
-            filters['$Occupants->LiveIn.Status$'] = Status === 'true' || Status === '1'
+            filters['$Occupants->LiveIn.Status$'] = Status === 'true' || Status ==='1'
         }
 
         const OccupantRoomData = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant }] })
-        res.status(200).send({ OccupantRoomData, message: "OK" });
+        res.status(200).send({ OccupantRoomData, length: OccupantRoomData.length, message: "OK" });
 
     } catch (e) {
         console.log(e);
