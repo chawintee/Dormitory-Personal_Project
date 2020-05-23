@@ -39,10 +39,13 @@ function AddNewOccupant(props) {
             Floor: floor,
         }
         const getRoomLiveInOccupantDataByLessonId = await axios.post(`/Room/getRoomLiveInOccupantDataByLessonId/${userInfo.id}`, body);
-        console.log("Hello")
-        console.log(getRoomLiveInOccupantDataByLessonId)
-        setRoomDetail(getRoomLiveInOccupantDataByLessonId)
-        console.log(`Roomdetail = ${roomDetail}`)
+        // console.log("Hello")
+        // console.log(getRoomLiveInOccupantDataByLessonId)
+        // console.log(getRoomLiveInOccupantDataByLessonId.data.OccupantRoomData)
+        setRoomDetail(getRoomLiveInOccupantDataByLessonId.data.OccupantRoomData)
+        console.log(`Roomdetail = ${roomDetail.length}`)
+
+
     }
 
 
@@ -71,7 +74,7 @@ function AddNewOccupant(props) {
 
     useEffect(() => {
         fetchRoomData();
-    }, [lessonData])
+    }, [lessonData,occupantData])
 
 
 
@@ -181,6 +184,12 @@ function AddNewOccupant(props) {
         setOccupantData({});
     }
 
+    const logLogLog = () => {
+        console.log(roomDetail)
+        console.log(`Roomdetail = ${roomDetail.length}`)
+
+    }
+
 
 
 
@@ -256,16 +265,19 @@ function AddNewOccupant(props) {
                     <th>Mobile</th>
                 </tr>
 
-                {roomDetail == undefined ?
+                {roomDetail.length > 0 ?
 
                     roomDetail.map(obj =>
                         <tr>
-                            <th>{obj.data.OccupantRoomData.Floor}</th>
-                            <th>{obj.data.OccupantRoomData.RoomNumber}</th>
-                            <th>{obj.data.OccupantRoomData.Occupants.id}</th>
-                            <th>{obj.data.OccupantRoomData.Occupants.Name}</th>
-                            <th>{obj.data.OccupantRoomData.Occupants.Surname}</th>
-                            <th>{obj.data.OccupantRoomData.Occupants.Mobile}</th>
+                            <td>{obj.Floor}</td>
+                            <td>{obj.RoomNumber}</td>
+                            {obj.Occupants.map(item =>
+                                <>
+                                    <td>{item.id}</td>
+                                    <td>{item.Name}</td>
+                                    <td>{item.Surname}</td>
+                                    <td>{item.Mobile}</td>
+                                </>)}
                         </tr>
                     ) :
                     null
@@ -273,6 +285,8 @@ function AddNewOccupant(props) {
                 }
 
             </table>
+
+            <button onClick={logLogLog}>log</button>
 
 
 
