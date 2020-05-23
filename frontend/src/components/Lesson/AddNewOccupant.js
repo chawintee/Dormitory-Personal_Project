@@ -11,6 +11,9 @@ function AddNewOccupant(props) {
     // const [month, setMonth] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+    const [selectedStatus, setSelectedStatus] = useState(1);
+
+
 
     const [floor, setFloor] = useState("");
     const [roomDetail, setRoomDetail] = useState([{ Room: "101", id: '1', Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102", id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103', id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
@@ -27,21 +30,24 @@ function AddNewOccupant(props) {
         console.log(selectedYear);
         console.log(selectedMonth);
     }
-    
-    
+
+
     const fetchRoomData = async () => {
         const body = {
-            
-    
+            Status: selectedStatus,
+            Floor: null,
         }
-        const getRoomLiveInOccupantDataByLessonId = await axios.post(``,body);
-        
+        const getRoomLiveInOccupantDataByLessonId = await axios.post(`/Room/getRoomLiveInOccupantDataByLessonId/${userInfo.id}`, body);
+        console.log(getRoomLiveInOccupantDataByLessonId)
+        console.log(getRoomLiveInOccupantDataByLessonId.data.LiveIn)
+        console.log(getRoomLiveInOccupantDataByLessonId.data.OccupantData)
+        console.log(getRoomLiveInOccupantDataByLessonId.data.RoomByLessonId)
     }
 
 
 
 
- 
+
     useEffect(() => {
         if (localStorage.getItem("ACCESS_TOKEN_LESSON")) {
             // console.log(jwtDecode(localStorage.getItem("ACCESS_TOKEN_LESSON")))
@@ -53,6 +59,7 @@ function AddNewOccupant(props) {
 
     useEffect(() => {
         fetchData();
+        fetchRoomData();
         genYear();
     }, [userInfo])
 
@@ -101,6 +108,19 @@ function AddNewOccupant(props) {
         console.log(monthValue);
         setSelectedMonth(monthValue)
     }
+
+
+    const status = ["Old","Current"];
+
+    const handleSelectedStatus = (e) => {
+        // console.log(e.target.value)
+        const StatusIndex = status.findIndex(status => status == e.target.value)
+        // console.log(StatusIndex)
+        setSelectedStatus(StatusIndex);
+        // console.log(selectedStatus)
+    }
+
+
 
     const AddFloor = () => {
         // const add = floor.push()
@@ -183,6 +203,13 @@ function AddNewOccupant(props) {
                 {months.map((item) => <option value={item}>{item}</option>)}
             </select>
 
+            <select id="Status" onChange={handleSelectedStatus} defaultValue={status[1]}>
+                {status.map((item) => <option value={item}>{item}</option>)}
+            </select>
+
+            <select id="Floor" onChange={handleSelectedMonth} defaultValue={months[selectedMonth - 1]}>
+                {months.map((item) => <option value={item}>{item}</option>)}
+            </select>
 
             <hr />
 
@@ -210,6 +237,18 @@ function AddNewOccupant(props) {
             </table>
 
             <hr />
+
+            <table>
+                <tr>
+                    <th>Floor</th>
+                    <th>Room</th>
+                    <th>OccupantId</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Mobile</th>
+                </tr>
+
+            </table>
 
 
 
