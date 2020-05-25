@@ -7,7 +7,10 @@ function MeterManage(props) {
 
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
 
-    const [lessonData, setLessonData] = useState({})
+    const [lessonData, setLessonData] = useState({});
+    const [year, setYear] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+
 
     const fetchData = async () => {
         // console.log(userInfo.id)
@@ -23,11 +26,32 @@ function MeterManage(props) {
             setIsLogin(true)
             setUserInfo(user)
         }
+        genYear();
     }, [])
 
     useEffect(() => {
         fetchData();
     }, [userInfo])
+
+
+
+    const genYear = () => {
+        const nowYear = new Date().getFullYear();
+        // console.log(nowYear)
+        for (let i = nowYear; i > nowYear - 100; i--) {
+            year.push(i);
+        }
+        // console.log(year)
+        setYear(year)
+        // console.log(selectedYear)
+    }
+
+    const handleSelectedYear = (e) => {
+        // console.log(e.target.value)
+        setSelectedYear(e.target.value)
+    }
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
 
@@ -40,7 +64,17 @@ function MeterManage(props) {
                 :
                 null
             }
-            <hr/>
+            <hr />
+
+            {year ?
+                <select id="year" onChange={handleSelectedYear}>
+                    {year.map(item => <option key={item} value={item}>{item}</option>)}
+                </select>
+
+                :
+                null
+
+            }
         </div>
     )
 }
