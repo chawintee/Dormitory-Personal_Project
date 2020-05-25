@@ -25,7 +25,7 @@ function App() {
         <Route exact path='/OccupantFirstPage' render={()=><OccupantFirstPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
         <Route exact path='/LessonFirstPage' render={()=><LessonFirstPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
         <Route exact path='/AddNewOccupant' render={()=><AddNewOccupant isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
-        <Route exact path='/MeterManage' component={MeterManage}/>
+        <Route exact path='/MeterManage' render={()=><MeterManage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
         <Redirect to='/error' />
       </Switch>
     </div>
