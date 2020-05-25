@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 import axios from '../../config/axios'
 import './AddNewOccupant.css'
+import ShowLessonInfo from './Components/ShowLessonInfo';
 
 function AddNewOccupant(props) {
 
@@ -74,7 +75,7 @@ function AddNewOccupant(props) {
 
     useEffect(() => {
         fetchRoomData();
-    }, [lessonData,occupantData])
+    }, [lessonData, occupantData])
 
 
 
@@ -198,15 +199,9 @@ function AddNewOccupant(props) {
     return (
         <div>
             {/* This is AddNewOccupant */}
-            {lessonData ? <>
-                <span>
-                    <span>Lesson id : </span><span>{lessonData.id}</span>
-                    <span>Dormitory Name : </span><span>{lessonData.DormitoryName}</span>
-                </span>
-                <div><span>Owner : </span><span>{lessonData.Name} {lessonData.Surname}</span></div>
-            </>
+            {lessonData ?
+                <ShowLessonInfo lessonData={lessonData} />
                 : null}
-
 
             <hr />
 
