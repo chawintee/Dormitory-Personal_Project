@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode'
 import axios from '../../config/axios'
 import ShowLessonInfo from './Components/ShowLessonInfo';
 import ShowSelected from './Components/ShowSelected';
+import InputPricePerUnit from './Components/InputPricePerUnit';
 
 function MeterManage(props) {
 
@@ -37,9 +38,9 @@ function MeterManage(props) {
         fetchData();
     }, [userInfo])
 
-    useEffect(()=> {
-        console.log({selectedYear, selectedMonth})
-    },[selectedYear])
+    useEffect(() => {
+        console.log({ selectedYear, selectedMonth })
+    }, [selectedYear])
 
 
 
@@ -68,6 +69,20 @@ function MeterManage(props) {
         setSelectMonth(monthIndex)
     }
 
+    const [electricityPricePerUnit, setElectricityPricePerUnit] = useState("");
+    const [waterPricePerUnit, setWaterPricePerUnit] = useState("");
+
+    const handleElectricityPricePerUnit = (e) => {
+        console.log(e.target.value)
+        setElectricityPricePerUnit(e.target.value)
+    }
+
+
+    const handleWaterPricePerUnit = (e) => {
+        console.log(e.target.value)
+        setWaterPricePerUnit(e.target.value)
+    }
+
 
 
     return (
@@ -84,13 +99,22 @@ function MeterManage(props) {
             <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
 
 
-            {/* <select id="year" onChange={handleSelectedYear} defaultValue={selectedYear}>
-                {year.map(item => <option key={item} value={item}>{item}</option>)}
-            </select> */}
+            <InputPricePerUnit name="Electricity price per unit" pricePerUnitValue={electricityPricePerUnit} handle={handleElectricityPricePerUnit}/>
 
-            {/* <select id="month" onChange={handleSelectedMonth} defaultValue={months[selectedMonth - 1]}>
-                {months.map(month => <option key={month} value={month}>{month}</option>)}
-            </select> */}
+
+            {/* <span>
+                <label>Electricity price per unit</label>
+                <input placeholder="Electricity price per unit" value={electricityPricePerUnit} onChange={handleElectricityPricePerUnit}></input> 
+                Baht
+            </span> */}
+            <span>
+                <label>Water price per unit</label>
+                <input  placeholder="Water price per unit" value={waterPricePerUnit} onChange={handleWaterPricePerUnit}></input>
+                Baht
+            </span>
+            <hr />
+
+
 
 
         </div >
