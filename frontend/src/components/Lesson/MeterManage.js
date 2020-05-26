@@ -39,7 +39,7 @@ function MeterManage(props) {
     }, [userInfo])
 
     useEffect(() => {
-        console.log({ selectedYear, selectedMonth })
+        console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit })
     }, [selectedYear])
 
 
@@ -69,8 +69,8 @@ function MeterManage(props) {
         setSelectMonth(monthIndex)
     }
 
-    const [electricityPricePerUnit, setElectricityPricePerUnit] = useState("");
-    const [waterPricePerUnit, setWaterPricePerUnit] = useState("");
+    const [electricityPricePerUnit, setElectricityPricePerUnit] = useState("7");
+    const [waterPricePerUnit, setWaterPricePerUnit] = useState("20");
 
     const handleElectricityPricePerUnit = (e) => {
         console.log(e.target.value)
@@ -99,19 +99,9 @@ function MeterManage(props) {
             <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
 
 
-            <InputPricePerUnit name="Electricity price per unit" pricePerUnitValue={electricityPricePerUnit} handle={handleElectricityPricePerUnit}/>
+            <InputPricePerUnit name="Electricity price per unit" pricePerUnitValue={electricityPricePerUnit} handle={handleElectricityPricePerUnit} defaultPricePerUnit={electricityPricePerUnit} />
+            <InputPricePerUnit name="Water price per unit" pricePerUnitValue={waterPricePerUnit} handle={handleWaterPricePerUnit} defaultPricePerUnit={waterPricePerUnit} />
 
-
-            {/* <span>
-                <label>Electricity price per unit</label>
-                <input placeholder="Electricity price per unit" value={electricityPricePerUnit} onChange={handleElectricityPricePerUnit}></input> 
-                Baht
-            </span> */}
-            <span>
-                <label>Water price per unit</label>
-                <input  placeholder="Water price per unit" value={waterPricePerUnit} onChange={handleWaterPricePerUnit}></input>
-                Baht
-            </span>
             <hr />
 
 
