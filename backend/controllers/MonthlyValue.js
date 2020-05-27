@@ -15,10 +15,21 @@ const initialMonthlyValue = async (req, res) => {
         }
     
     const RoomData = await db.MonthlyValue.findAll({where: filters ,include: [{model: db.Room, where:{LessonId : LessonId}}]})
-    console.log(RoomData)
+    // console.log(RoomData)
 
-    res.send({result: RoomData})
+    // res.send({result: RoomData})
+    if(!RoomData){
+        res.send({result:RoomData ,message: "have Room Data"})
+    }
+    if(RoomData){
+        const createValue = {Year: Year}
+        if(Month){
+            createValue['Month'] = Month;
+        }
+        const createNewRoom = await db.MonthlyValue.create({value,include:[{model: db.Room, where:{LessonId: LessonId}}]} )
+        res.send({result:RoomData ,result1: createNewRoom,message: "Don't have Room Data"})
 
+    }
 
 
     // try {
