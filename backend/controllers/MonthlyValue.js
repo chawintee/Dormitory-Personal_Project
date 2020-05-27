@@ -1,5 +1,56 @@
 const db = require('../models');
 
+const initialMonthlyValue = async (req, res) => {
+    const Month = req.body.Month;
+    const Year = req.body.Year;
+    const RoomId = req.body.RoomId;
+
+    try {
+        const filters = { RoomId: RoomId }
+        if (Month) {
+            filters['Month'] = Month;
+        }
+        if (Year) {
+            filters['Year'] = Year;
+        }
+
+
+        const user = await db.MonthlyValue.findOne({ where: filters })
+        console.log(user)
+        if(!user){
+            await db.MonthlyValue.create({
+                Year,
+                Month,
+                RoomId,
+            })
+            
+            res.status(200).send({message : "should create",user})
+        }
+        if(user){
+            res.status(400).send("already created")
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({ message: "Not OK" })
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const createMonthlyValue = async (req, res) => {
 
     const Year = req.body.Year;
@@ -239,4 +290,4 @@ const editMonthlyValueById = async (req, res) => {
 
 
 
-module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById }
+module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById, initialMonthlyValue }

@@ -6,7 +6,6 @@ function InputPricePerUnit(props) {
         <span>
             <label>{name}</label>
             <input placeholder={name} value={pricePerUnitValue} onChange={handle} defaultValue={defaultPricePerUnit}></input>
-                Baht
         </span>
     )
 }

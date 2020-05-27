@@ -5,6 +5,7 @@ const MonthlyValueController = require('../controllers/MonthlyValue');
 router.post('/createMonthlyValue',MonthlyValueController.createMonthlyValue)
 router.get('/getMonthlyValue/:RoomId',MonthlyValueController.getMonthlyValue)
 router.patch('/editSomeValue/:id',MonthlyValueController.editMonthlyValueById)
+router.post('/initialCreate', MonthlyValueController.initialMonthlyValue)
 
 
 
