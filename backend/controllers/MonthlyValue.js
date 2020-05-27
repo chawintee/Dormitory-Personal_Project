@@ -1,39 +1,48 @@
 const db = require('../models');
 
 const initialMonthlyValue = async (req, res) => {
+    console.log("--------------------------------------------------------------------------------------------------------------------------")
+    
+    const LessonId = req.body.LessonId;
+
     const Month = req.body.Month;
     const Year = req.body.Year;
     const RoomId = req.body.RoomId;
 
-    try {
-        const filters = { RoomId: RoomId }
+        const filters = { Year: Year }
         if (Month) {
             filters['Month'] = Month;
         }
-        if (Year) {
-            filters['Year'] = Year;
-        }
+    
+    const RoomData = await db.MonthlyValue.findAll({where: filters ,include: [{model: db.Room, where:{LessonId : LessonId}}]})
+    console.log(RoomData)
+
+    res.send({result: RoomData})
 
 
-        const user = await db.MonthlyValue.findOne({ where: filters })
-        console.log(user)
-        if(!user){
-            await db.MonthlyValue.create({
-                Year,
-                Month,
-                RoomId,
-            })
+
+    // try {
+
+
+    //     const user = await db.MonthlyValue.findOne({ where: filters })
+    //     console.log(user)
+    //     if(!user){
+    //         await db.MonthlyValue.create({
+    //             Year,
+    //             Month,
+    //             RoomId,
+    //         })
             
-            res.status(200).send({message : "should create",user})
-        }
-        if(user){
-            res.status(400).send("already created")
-        }
+    //         res.status(200).send({message : "should create",user})
+    //     }
+    //     if(user){
+    //         res.status(400).send("already created")
+    //     }
 
-    } catch (error) {
-        console.log(error);
-        res.status(400).send({ message: "Not OK" })
-    }
+    // } catch (error) {
+    //     console.log(error);
+    //     res.status(400).send({ message: "Not OK" })
+    // }
 
 
 }
@@ -187,6 +196,7 @@ const getMonthlyValue = async (req, res) => {
 
 
 const editMonthlyValueById = async (req, res) => {
+    console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
     const id = req.params.id;
     const WaterMeter = req.body.WaterMeter;
     const ElectricityMeter = req.body.ElectricityMeter;
@@ -243,40 +253,41 @@ const editMonthlyValueById = async (req, res) => {
 
     // res.send(String(TotalRentPrice));
 
-    await db.MonthlyValue.update(
-        {
-            WaterMeter,
-            WaterPricePerUnit,
-            WaterPrice,
-            ElectricityMeter,
-            ElectricityPricePerUnit,
-            ElectricityPrice,
-            RentPrice,
-            TotalRentPrice,
-            PaidStatus,
-            PaidDate,
-        },
-        { where: { id: id } }
-    );
-    // await db.MonthlyValue.update(
-    //     {
-    //         Year,
-    //         Month,
-    //         WaterMeter,
-    //         WaterPricePerUnit,
-    //         WaterPrice,
-    //         ElectricityMeter,
-    //         ElectricityPricePerUnit,
-    //         ElectricityPrice,
-    //         RentPrice,
-    //         TotalRentPrice,
-    //         PaidStatus,
-    //         PaidDate,
-    //         RoomId,
-    //     },
-    //     { where: { id: id } }
-    // );
-    res.status(200).send({ message: "Data updated" })
+        await db.MonthlyValue.update(
+            {
+                WaterMeter,
+                WaterPricePerUnit,
+                WaterPrice,
+                ElectricityMeter,
+                ElectricityPricePerUnit,
+                ElectricityPrice,
+                RentPrice,
+                TotalRentPrice,
+                PaidStatus,
+                PaidDate,
+            },
+            { where: { id: id } }
+        );
+        // await db.MonthlyValue.update(
+        //     {
+        //         Year,
+        //         Month,
+        //         WaterMeter,
+        //         WaterPricePerUnit,
+        //         WaterPrice,
+        //         ElectricityMeter,
+        //         ElectricityPricePerUnit,
+        //         ElectricityPrice,
+        //         RentPrice,
+        //         TotalRentPrice,
+        //         PaidStatus,
+        //         PaidDate,
+        //         RoomId,
+        //     },
+        //     { where: { id: id } }
+        // );
+        res.status(200).send({ message: "Data updated" })
+  
 }
 
 
