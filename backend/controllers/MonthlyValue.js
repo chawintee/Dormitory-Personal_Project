@@ -2,60 +2,37 @@ const db = require('../models');
 
 const initialMonthlyValue = async (req, res) => {
     console.log("--------------------------------------------------------------------------------------------------------------------------")
-    
+
     const LessonId = req.body.LessonId;
 
     const Month = req.body.Month;
     const Year = req.body.Year;
     const RoomId = req.body.RoomId;
+    const PaidStatus = false
 
-        const filters = { Year: Year }
-        if (Month) {
-            filters['Month'] = Month;
-        }
-    
-    const RoomData = await db.MonthlyValue.findAll({where: filters ,include: [{model: db.Room, where:{LessonId : LessonId}}]})
-    // console.log(RoomData)
-
+    const filters = { Year: Year }
+    if (Month) {
+        filters['Month'] = Month;
+    }
+    const RoomData = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, where: { LessonId: LessonId } }] })
+    console.log(Boolean(RoomData))
+    console.log(Boolean(RoomData.length))
     // res.send({result: RoomData})
-    if(!RoomData){
-        res.send({result:RoomData ,message: "have Room Data"})
+    if (RoomData && RoomData.length) {
+        res.send({ result: RoomData, message: "Have Data" })
     }
-    if(RoomData){
-        const createValue = {Year: Year}
-        if(Month){
-            createValue['Month'] = Month;
-        }
-        const createNewRoom = await db.MonthlyValue.create({value,include:[{model: db.Room, where:{LessonId: LessonId}}]} )
-        res.send({result:RoomData ,result1: createNewRoom,message: "Don't have Room Data"})
-
+    if (RoomData === undefined || RoomData.length == 0) {
+        console.log("In Don't Have Data Loop")
+        ///////////////create Room if not have Data ////////////////////////////////////////////////////////
+        const filters2 = { LessonId: LessonId }
+        filters2['$Occupants->LiveIn.Status$'] = true
+        const RoomIdOK = await db.Room.findAll({ where: filters2, include: [{ model: db.Occupant }] })
+        console.log({Year,Month,PaidStatus})
+        const RoomIdOKK = await RoomIdOK.map(item => db.MonthlyValue.create({ Year: Year, Month: Month, PaidStatus: PaidStatus, RoomId: item.id }))
+        // res.send({RoomIdOK:RoomIdOKK})
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        res.send({RoomIdOK:RoomIdOKK, message: "Don't have Data" })
     }
-
-
-    // try {
-
-
-    //     const user = await db.MonthlyValue.findOne({ where: filters })
-    //     console.log(user)
-    //     if(!user){
-    //         await db.MonthlyValue.create({
-    //             Year,
-    //             Month,
-    //             RoomId,
-    //         })
-            
-    //         res.status(200).send({message : "should create",user})
-    //     }
-    //     if(user){
-    //         res.status(400).send("already created")
-    //     }
-
-    // } catch (error) {
-    //     console.log(error);
-    //     res.status(400).send({ message: "Not OK" })
-    // }
-
-
 }
 
 
@@ -264,41 +241,41 @@ const editMonthlyValueById = async (req, res) => {
 
     // res.send(String(TotalRentPrice));
 
-        await db.MonthlyValue.update(
-            {
-                WaterMeter,
-                WaterPricePerUnit,
-                WaterPrice,
-                ElectricityMeter,
-                ElectricityPricePerUnit,
-                ElectricityPrice,
-                RentPrice,
-                TotalRentPrice,
-                PaidStatus,
-                PaidDate,
-            },
-            { where: { id: id } }
-        );
-        // await db.MonthlyValue.update(
-        //     {
-        //         Year,
-        //         Month,
-        //         WaterMeter,
-        //         WaterPricePerUnit,
-        //         WaterPrice,
-        //         ElectricityMeter,
-        //         ElectricityPricePerUnit,
-        //         ElectricityPrice,
-        //         RentPrice,
-        //         TotalRentPrice,
-        //         PaidStatus,
-        //         PaidDate,
-        //         RoomId,
-        //     },
-        //     { where: { id: id } }
-        // );
-        res.status(200).send({ message: "Data updated" })
-  
+    await db.MonthlyValue.update(
+        {
+            WaterMeter,
+            WaterPricePerUnit,
+            WaterPrice,
+            ElectricityMeter,
+            ElectricityPricePerUnit,
+            ElectricityPrice,
+            RentPrice,
+            TotalRentPrice,
+            PaidStatus,
+            PaidDate,
+        },
+        { where: { id: id } }
+    );
+    // await db.MonthlyValue.update(
+    //     {
+    //         Year,
+    //         Month,
+    //         WaterMeter,
+    //         WaterPricePerUnit,
+    //         WaterPrice,
+    //         ElectricityMeter,
+    //         ElectricityPricePerUnit,
+    //         ElectricityPrice,
+    //         RentPrice,
+    //         TotalRentPrice,
+    //         PaidStatus,
+    //         PaidDate,
+    //         RoomId,
+    //     },
+    //     { where: { id: id } }
+    // );
+    res.status(200).send({ message: "Data updated" })
+
 }
 
 
