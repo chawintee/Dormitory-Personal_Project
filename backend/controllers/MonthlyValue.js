@@ -8,30 +8,57 @@ const initialMonthlyValue = async (req, res) => {
     const Month = req.body.Month;
     const Year = req.body.Year;
     const RoomId = req.body.RoomId;
-    const PaidStatus = false
+    const PaidStatus = false;
+    const WaterPricePerUnit = req.body.WaterPricePerUnit;
+    const ElectricityPricePerUnit = req.body.ElectricityPricePerUnit;
+    const RentPrice = req.body.RentPrice;
+
+
 
     const filters = { Year: Year }
     if (Month) {
         filters['Month'] = Month;
     }
+
+    const value = { Year: Year , PaidStatus: PaidStatus}
+    if (Month) {
+        value['Month'] = Month;
+    }
+    if (WaterPricePerUnit) {
+        value['WaterPricePerUnit'] = WaterPricePerUnit;
+    }
+    if (ElectricityPricePerUnit) {
+        value['ElectricityPricePerUnit'] = ElectricityPricePerUnit;
+    }
+    if (RentPrice) {
+        value['RentPrice'] = RentPrice;
+    }
+
+
+
+
+
+    console.log(value)
+
     const RoomData = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, where: { LessonId: LessonId } }] })
     console.log(Boolean(RoomData))
     console.log(Boolean(RoomData.length))
     // res.send({result: RoomData})
     if (RoomData && RoomData.length) {
         res.send({ result: RoomData, message: "Have Data" })
+         
     }
     if (RoomData === undefined || RoomData.length == 0) {
         console.log("In Don't Have Data Loop")
-        ///////////////create Room if not have Data ////////////////////////////////////////////////////////
+        ///////////////create Room if not have Data ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         const filters2 = { LessonId: LessonId }
         filters2['$Occupants->LiveIn.Status$'] = true
-        const RoomIdOK = await db.Room.findAll({ where: filters2, include: [{ model: db.Occupant }] })
-        console.log({Year,Month,PaidStatus})
-        const RoomIdOKK = await RoomIdOK.map(item => db.MonthlyValue.create({ Year: Year, Month: Month, PaidStatus: PaidStatus, RoomId: item.id }))
-        // res.send({RoomIdOK:RoomIdOKK})
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        res.send({RoomIdOK:RoomIdOKK, message: "Don't have Data" })
+        const RoomIdByYearMonthLessonId = await db.Room.findAll({ where: filters2, include: [{ model: db.Occupant }] })
+        console.log({ Year, Month, PaidStatus })
+        const createMonthlyValue = await RoomIdByYearMonthLessonId.map(item => db.MonthlyValue.create({ ...value, RoomId: item.id }))
+        // res.send({RoomIdOK:RoomIdOKK}) 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        res.send({ RoomIdOK: createMonthlyValue, message: "Don't have Data" })
     }
 }
 
