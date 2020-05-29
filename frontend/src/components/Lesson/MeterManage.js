@@ -13,6 +13,7 @@ function MeterManage(props) {
     const [year, setYear] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectMonth] = useState(new Date().getMonth() + 1);
+    const [monthlyValueData, setMonthlyValueData] = useState([]);
 
 
     const fetchData = async () => {
@@ -20,6 +21,16 @@ function MeterManage(props) {
         const lessonData = await axios.get(`/lesson/getLessonById/${userInfo.id}`)
         setLessonData(lessonData.data.result);
         // console.log(lessonData)
+    }
+
+    const fetchMonthlyValueData = async() => {
+        const body = {
+            Year: selectedYear,
+            Month: selectedMonth,
+        }
+        const monthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`,body)
+        console.log({result: monthlyValueData, lessonId : userInfo.id})
+        setMonthlyValueData(monthlyValueData)
     }
 
 
@@ -36,10 +47,11 @@ function MeterManage(props) {
 
     useEffect(() => {
         fetchData();
+        fetchMonthlyValueData();
     }, [userInfo])
 
     useEffect(() => {
-        console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit })
+        console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit,monthlyValueData })
     }, [selectedYear])
 
 
