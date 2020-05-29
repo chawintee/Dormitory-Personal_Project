@@ -47,7 +47,14 @@ const initialMonthlyValue = async (req, res) => {
     if (RoomDataByMonthlyValueLessonId && RoomDataByMonthlyValueLessonId.length) {
         const RoomIdByRoomDataByMonthlyValueLessonId = RoomDataByMonthlyValueLessonId.map(item => item.RoomId)
         const RoomIdByRoom = await db.Room.findAll({where: {LessonId: LessonId}}).map(item=>item.id)
-        
+        for (let i=0 ; i< RoomIdByRoomDataByMonthlyValueLessonId.length ;i++){
+            index = RoomIdByRoom.indexOf(RoomIdByRoomDataByMonthlyValueLessonId[i])
+            console.log(index)
+            if(index > -1){
+                RoomIdByRoom.splice(index,1);
+            }
+        }
+        console.log(RoomIdByRoom)
         res.send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom, message: "Have Data" })
          
     }
