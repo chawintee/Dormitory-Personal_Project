@@ -3,7 +3,7 @@ const db = require('../models');
 const initialMonthlyValue = async (req, res) => {
     console.log("--------------------------------------------------------------------------------------------------------------------------")
 
-    const LessonId = req.body.LessonId;
+    const LessonId = req.params.LessonId;
 
     const Month = req.body.Month;
     const Year = req.body.Year;
@@ -40,15 +40,18 @@ const initialMonthlyValue = async (req, res) => {
 
     console.log(value)
 
-    const RoomData = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, where: { LessonId: LessonId } }] })
-    console.log(Boolean(RoomData))
-    console.log(Boolean(RoomData.length))
-    // res.send({result: RoomData})
-    if (RoomData && RoomData.length) {
-        res.send({ result: RoomData, message: "Have Data" })
+    const RoomDataByMonthlyValueLessonId = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, where: { LessonId: LessonId } }] })
+    // console.log(Boolean(RoomDataByMonthlyValueLessonId))
+    // console.log(Boolean(RoomDataByMonthlyValueLessonId.length))
+    // res.send({result: RoomDataByMonthlyValueLessonId})
+    if (RoomDataByMonthlyValueLessonId && RoomDataByMonthlyValueLessonId.length) {
+        const RoomIdByRoomDataByMonthlyValueLessonId = RoomDataByMonthlyValueLessonId.map(item => item.RoomId)
+        const RoomIdByRoom = await db.Room.findAll({where: {LessonId: LessonId}}).map(item=>item.id)
+        
+        res.send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom, message: "Have Data" })
          
     }
-    if (RoomData === undefined || RoomData.length == 0) {
+    if (RoomDataByMonthlyValueLessonId === undefined || RoomDataByMonthlyValueLessonId.length == 0) {
         console.log("In Don't Have Data Loop")
         ///////////////create Room if not have Data ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         const filters2 = { LessonId: LessonId }
