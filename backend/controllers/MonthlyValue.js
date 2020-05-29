@@ -55,7 +55,8 @@ const initialMonthlyValue = async (req, res) => {
             }
         }
         console.log(RoomIdByRoom)
-        res.send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom, message: "Have Data" })
+        const createMonthlyValueIfNotSame = RoomIdByRoom.map(item => db.MonthlyValue.create({...value, RoomId : item}))
+        res.send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom,createMonthlyValueIfNotSame:createMonthlyValueIfNotSame, message: "Have Data" })
          
     }
     if (RoomDataByMonthlyValueLessonId === undefined || RoomDataByMonthlyValueLessonId.length == 0) {
