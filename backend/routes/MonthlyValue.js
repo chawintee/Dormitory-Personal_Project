@@ -6,7 +6,7 @@ router.post('/createMonthlyValue',MonthlyValueController.createMonthlyValue)
 router.get('/getMonthlyValue/:RoomId',MonthlyValueController.getMonthlyValue)
 router.patch('/editSomeValue/:id',MonthlyValueController.editMonthlyValueById)
 router.post('/initialCreate/:LessonId', MonthlyValueController.initialMonthlyValue)
-router.get('/getMonthlyValueByLessonId/:LessonId', MonthlyValueController.getMonthlyValueByLessonId)
+router.post('/getMonthlyValueByLessonId/:LessonId', MonthlyValueController.getMonthlyValueByLessonId)
 
 
 
