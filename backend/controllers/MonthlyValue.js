@@ -76,9 +76,20 @@ const initialMonthlyValue = async (req, res) => {
 
 
 const getMonthlyValueByLessonId = async (req,res) => {
-    console.log("TestGetMonthlyValueByLessonId OK")
+    // console.log("TestGetMonthlyValueByLessonId OK")
     const LessonId = req.params.LessonId
-    const MonthlyValueByLessonId = await db.MonthlyValue.findAll({include: [{model: db.Room, where: {LessonId:LessonId}}]})
+    const filters = {}
+    filters['$Room.LessonId$'] = LessonId
+    // filters['$Room->Occupants->LiveIn.Status$'] = true
+    try{
+        // const MonthlyValueByLessonId = await db.MonthlyValue.findAll({include: [{model: db.Room,where:{LessonId:LessonId},include:[{model:db.Occupant}]}]}) OK
+        const MonthlyValueByLessonId = await db.MonthlyValue.findAll({where: filters,include: [{model: db.Room,include:[{model:db.Occupant}]}]})
+        res.send({MonthlyValueByLessonId:MonthlyValueByLessonId.length})
+    } catch(error) {
+        console.log(error)
+        res.send(error)
+    }
+        
 }
 
 
