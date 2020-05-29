@@ -56,7 +56,7 @@ const initialMonthlyValue = async (req, res) => {
         }
         console.log(RoomIdByRoom)
         const createMonthlyValueIfNotSame = RoomIdByRoom.map(item => db.MonthlyValue.create({...value, RoomId : item}))
-        res.send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom,createMonthlyValueIfNotSame:createMonthlyValueIfNotSame, message: "Have Data" })
+        res.status(201).send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom,createMonthlyValueIfNotSame:createMonthlyValueIfNotSame, message: "Have Data" })
          
     }
     if (RoomDataByMonthlyValueLessonId === undefined || RoomDataByMonthlyValueLessonId.length == 0) {
@@ -69,8 +69,16 @@ const initialMonthlyValue = async (req, res) => {
         const createMonthlyValue = await RoomIdByYearMonthLessonId.map(item => db.MonthlyValue.create({ ...value, RoomId: item.id }))
         // res.send({RoomIdOK:RoomIdOKK}) 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        res.send({ RoomIdOK: createMonthlyValue, message: "Don't have Data" })
+        res.status(201).send({ RoomIdOK: createMonthlyValue, message: "Don't have Data" })
     }
+}
+
+
+
+const getMonthlyValueByLessonId = async (req,res) => {
+    console.log("TestGetMonthlyValueByLessonId OK")
+    const LessonId = req.params.LessonId
+    const MonthlyValueByLessonId = await db.MonthlyValue.findAll({include: [{model: db.Room, where: {LessonId:LessonId}}]})
 }
 
 
@@ -327,4 +335,4 @@ const editMonthlyValueById = async (req, res) => {
 
 
 
-module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById, initialMonthlyValue }
+module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById, initialMonthlyValue, getMonthlyValueByLessonId }
