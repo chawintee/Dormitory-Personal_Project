@@ -14,6 +14,18 @@ function MeterManage(props) {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectMonth] = useState(new Date().getMonth() + 1);
     const [monthlyValueData, setMonthlyValueData] = useState([]);
+    const [lastMonthlyValueData, setLastMonthlyValueData] = useState([]);
+
+    const initialCreateMonthlyValue = async () => {
+        const body = {
+            Month: selectedMonth,
+            Year: selectedYear,
+            WaterPricePerUnit: waterPricePerUnit,
+            ElectricityPricePerUnit: electricityPricePerUnit,
+            RentPrice:rentPrice,
+        }
+        await axios.post(`/monthlyValue/initialCreate/${userInfo.id}`,body)
+    }
 
 
     const fetchData = async () => {
@@ -23,14 +35,24 @@ function MeterManage(props) {
         // console.log(lessonData)
     }
 
-    const fetchMonthlyValueData = async() => {
+    const fetchMonthlyValueData = async () => {
         const body = {
             Year: selectedYear,
             Month: selectedMonth,
         }
-        const monthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`,body)
-        console.log({result: monthlyValueData, lessonId : userInfo.id})
-        setMonthlyValueData(monthlyValueData)
+        const monthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
+        // console.log({result: monthlyValueData, lessonId : userInfo.id})
+        // console.log(monthlyValueData.data.MonthlyValueByLessonId)
+        setMonthlyValueData(monthlyValueData.data.MonthlyValueByLessonId)
+    }
+
+    const fetchLastMonthValueData = async() => {
+        const body = {
+            Year : selectedYear,
+            Month: selectedMonth - 1 ,
+        }
+        const lastMonthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
+        setLastMonthlyValueData(lastMonthlyValueData.data.MonthlyValueByLessonId)
     }
 
 
@@ -48,11 +70,15 @@ function MeterManage(props) {
     useEffect(() => {
         fetchData();
         fetchMonthlyValueData();
+        fetchLastMonthValueData();
     }, [userInfo])
-
+    
     useEffect(() => {
-        console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit,monthlyValueData })
-    }, [selectedYear])
+        console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit, monthlyValueData,lastMonthlyValueData })
+        fetchMonthlyValueData();
+        fetchLastMonthValueData();
+        initialCreateMonthlyValue();
+    }, [selectedYear, selectedMonth])
 
 
 
@@ -83,6 +109,7 @@ function MeterManage(props) {
 
     const [electricityPricePerUnit, setElectricityPricePerUnit] = useState("7");
     const [waterPricePerUnit, setWaterPricePerUnit] = useState("20");
+    const [rentPrice, setRentPrice] = useState("4400")
 
     const handleElectricityPricePerUnit = (e) => {
         console.log(e.target.value)
@@ -95,6 +122,15 @@ function MeterManage(props) {
         setWaterPricePerUnit(e.target.value)
     }
 
+
+    const handleRentPrice = (e) => {
+        setRentPrice(e.target.value)
+    }
+
+
+    const showLogLog = () => {
+        console.log({ monthlyValueData, lastMonthlyValueData })
+    }
 
 
     return (
@@ -113,11 +149,44 @@ function MeterManage(props) {
 
             <InputPricePerUnit name="Electricity price per unit" pricePerUnitValue={electricityPricePerUnit} handle={handleElectricityPricePerUnit} defaultPricePerUnit={electricityPricePerUnit} />
             <InputPricePerUnit name="Water price per unit" pricePerUnitValue={waterPricePerUnit} handle={handleWaterPricePerUnit} defaultPricePerUnit={waterPricePerUnit} />
+            <InputPricePerUnit name="RentPrice/month" pricePerUnitValue={rentPrice} handle={handleRentPrice} defaultPricePerUnit={rentPrice} />
 
             <hr />
 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Floor</th>
+                        <th>Room</th>
+                        <th>Rent/month</th>
+                        <th>Last month EE meter</th>
+                        <th>This month EE meter</th>
+                        <th>Last month Water meter</th>
+                        <th>This month Water meter</th>
+                        <th>Total Rent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {monthlyValueData.map(obj =>
+                        
+                        <tr key={obj.id}>
+                            <td>{obj.Room.Floor}</td>
+                            <td>{obj.Room.RoomNumber}</td>
+                            <td>{obj.RentPrice}</td>
+                            <td>{obj.ElectricityMeter}</td>
+                            <td>{obj.ElectricityMeter}</td>
+                            <td>{obj.WaterMeter}</td>
+                            <td>{obj.WaterMeter}</td>
+                            <td>{obj.TotalRentPrice}</td>
+                        </tr>
+                         
+                    )}
+                </tbody>
+            </table>
 
 
+            <hr />
+            <button onClick={showLogLog}>log</button>
 
         </div >
     )
