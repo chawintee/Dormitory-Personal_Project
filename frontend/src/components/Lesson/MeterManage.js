@@ -15,6 +15,9 @@ function MeterManage(props) {
     const [selectedMonth, setSelectMonth] = useState(new Date().getMonth() + 1);
     const [monthlyValueData, setMonthlyValueData] = useState([]);
     const [lastMonthlyValueData, setLastMonthlyValueData] = useState([]);
+    const [editThisMonthEEMeter, setEditThisMonthEEMeter] = useState(false);
+    const [editThisMonthWaterMeter, setEditThisMonthWaterMeter] = useState(false);
+
 
     const initialCreateMonthlyValue = async () => {
         const body = {
@@ -22,9 +25,9 @@ function MeterManage(props) {
             Year: selectedYear,
             WaterPricePerUnit: waterPricePerUnit,
             ElectricityPricePerUnit: electricityPricePerUnit,
-            RentPrice:rentPrice,
+            RentPrice: rentPrice,
         }
-        await axios.post(`/monthlyValue/initialCreate/${userInfo.id}`,body)
+        await axios.post(`/monthlyValue/initialCreate/${userInfo.id}`, body)
     }
 
 
@@ -43,13 +46,24 @@ function MeterManage(props) {
         const monthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
         // console.log({result: monthlyValueData, lessonId : userInfo.id})
         // console.log(monthlyValueData.data.MonthlyValueByLessonId)
-        setMonthlyValueData(monthlyValueData.data.MonthlyValueByLessonId)
+        const tempMonthlyValueData = monthlyValueData.data.MonthlyValueByLessonId
+        const monthlyValueAddEdit = tempMonthlyValueData.map(ele => {
+            return {
+                ...ele,
+                editThisMonthEEMeter: false,
+                editThisMonthWaterMeter: false,
+                editTextMonthEEMeter: "",
+                editTextMonthWaterMeter: "",
+            }
+        })
+        setMonthlyValueData(monthlyValueAddEdit);
+        // setMonthlyValueData(monthlyValueData.data.MonthlyValueByLessonId)
     }
 
-    const fetchLastMonthValueData = async() => {
+    const fetchLastMonthValueData = async () => {
         const body = {
-            Year : selectedYear,
-            Month: selectedMonth - 1 ,
+            Year: selectedYear,
+            Month: selectedMonth - 1,
         }
         const lastMonthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
         setLastMonthlyValueData(lastMonthlyValueData.data.MonthlyValueByLessonId)
@@ -72,9 +86,9 @@ function MeterManage(props) {
         fetchMonthlyValueData();
         fetchLastMonthValueData();
     }, [userInfo])
-    
+
     useEffect(() => {
-        console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit, monthlyValueData,lastMonthlyValueData })
+        console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit, monthlyValueData, lastMonthlyValueData })
         fetchMonthlyValueData();
         fetchLastMonthValueData();
         initialCreateMonthlyValue();
@@ -132,6 +146,23 @@ function MeterManage(props) {
         console.log({ monthlyValueData, lastMonthlyValueData })
     }
 
+    const finishedAddEEMeter = (targetId) => {
+        console.log(targetId)
+        monthlyValueData.map((obj) => {
+            
+            if(obj.id == targetId){
+                console.log(`OK in loop ${obj.id}`)
+                obj.editThisMonthEEMeter = true
+                console.log(obj)
+                return obj
+            }else {
+                return obj
+            }
+        })
+        console.log(monthlyValueData)
+        setMonthlyValueData(monthlyValueData)
+    }
+
 
     return (
         <div>
@@ -168,18 +199,18 @@ function MeterManage(props) {
                 </thead>
                 <tbody>
                     {monthlyValueData.map(obj =>
-                        
+
                         <tr key={obj.id}>
                             <td>{obj.Room.Floor}</td>
                             <td>{obj.Room.RoomNumber}</td>
                             <td>{obj.RentPrice}</td>
                             <td>{obj.ElectricityMeter}</td>
-                            <td>{obj.ElectricityMeter}</td>
+                            {editThisMonthEEMeter ? <td><button>Hello</button></td> : <input onBlur={() => finishedAddEEMeter(obj.id)} placeholder={obj.id}></input>}
                             <td>{obj.WaterMeter}</td>
                             <td>{obj.WaterMeter}</td>
                             <td>{obj.TotalRentPrice}</td>
                         </tr>
-                         
+
                     )}
                 </tbody>
             </table>
