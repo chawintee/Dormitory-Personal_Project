@@ -351,13 +351,16 @@ const deleteMonthlyValueByYearMonthLessonId = async (req,res) => {
     const Month = req.body.Month;
     
     const filters = {Year : Year};
-
-    // filters['LessonId'] = Year;
+    // filters['$Room.LessonId$'] = LessonId;
     filters['Month'] = Month;
-
-
-    const deletedMonthlyValue = await db.MonthlyValue.findAll({where: filters ,include:[{model: db.Room  }]})
-    // const deletedMonthlyValue = await db.MonthlyValue.destroy({where: filters ,include:[{model: db.Room  }]})
+    try {
+        // const deletedMonthlyValue = await db.MonthlyValue.findAll({where: filters ,include:[{model: db.Room}]})
+        const deletedMonthlyValue = await db.MonthlyValue.destroy({where: filters ,include:[{model: db.Room, where:{LessonId: LessonId} }]})
+        res.send({deletedMonthlyValue:deletedMonthlyValue, Length: deletedMonthlyValue.length})
+    } catch (e) {
+        console.log(e)
+        res.send("error")
+    }
 }
 
 
