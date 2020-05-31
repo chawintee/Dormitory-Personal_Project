@@ -15,8 +15,8 @@ function MeterManage(props) {
     const [selectedMonth, setSelectMonth] = useState(new Date().getMonth() + 1);
     const [monthlyValueData, setMonthlyValueData] = useState([]);
     const [lastMonthlyValueData, setLastMonthlyValueData] = useState([]);
-    const [editThisMonthEEMeter, setEditThisMonthEEMeter] = useState(false);
-    const [editThisMonthWaterMeter, setEditThisMonthWaterMeter] = useState(false);
+    // const [editThisMonthEEMeter, setEditThisMonthEEMeter] = useState(false);
+    // const [editThisMonthWaterMeter, setEditThisMonthWaterMeter] = useState(false);
 
 
     const initialCreateMonthlyValue = async () => {
@@ -61,9 +61,18 @@ function MeterManage(props) {
     }
 
     const fetchLastMonthValueData = async () => {
+        let lastYear ;
+        let lastMonth ;
+        if(selectedMonth == 1){
+            lastYear = selectedYear - 1;
+            lastMonth = 12
+        }else {
+            lastYear = selectedYear;
+            lastMonth = selectedMonth - 1;
+        }
         const body = {
-            Year: selectedYear,
-            Month: selectedMonth - 1,
+            Year: lastYear,
+            Month: lastMonth,
         }
         const lastMonthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
         setLastMonthlyValueData(lastMonthlyValueData.data.MonthlyValueByLessonId)
@@ -239,6 +248,7 @@ function MeterManage(props) {
                             <td>{obj.ElectricityMeter}</td>
                             {obj.editThisMonthEEMeter ? <td onDoubleClick={()=>editAddMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <input onBlur={() => finishedAddEEMeter(obj.id, textEEMeter)} onChange={textEEMeterText(obj.id)} value={textEEMeter} placeholder={obj.id}></input>}
                             <td>{obj.WaterMeter}</td>
+                            {obj.editThisMonthWaterMeter ? <td></td>: <input placeholder={obj.id}></input>}
                             <td>{obj.WaterMeter}</td>
                             <td>{obj.TotalRentPrice}</td>
                         </tr>

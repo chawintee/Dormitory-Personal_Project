@@ -38,7 +38,7 @@ const initialMonthlyValue = async (req, res) => {
 
 
 
-    console.log(value)
+    // console.log(value)
 
     const RoomDataByMonthlyValueLessonId = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, where: { LessonId: LessonId } }] })
     // console.log(Boolean(RoomDataByMonthlyValueLessonId))
@@ -49,12 +49,12 @@ const initialMonthlyValue = async (req, res) => {
         const RoomIdByRoom = await db.Room.findAll({where: {LessonId: LessonId}}).map(item=>item.id)
         for (let i=0 ; i< RoomIdByRoomDataByMonthlyValueLessonId.length ;i++){
             index = RoomIdByRoom.indexOf(RoomIdByRoomDataByMonthlyValueLessonId[i])
-            console.log(index)
+            // console.log(index)
             if(index > -1){
                 RoomIdByRoom.splice(index,1);
             }
         }
-        console.log(RoomIdByRoom)
+        // console.log(RoomIdByRoom)
         const createMonthlyValueIfNotSame = RoomIdByRoom.map(item => db.MonthlyValue.create({...value, RoomId : item}))
         res.status(201).send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom,createMonthlyValueIfNotSame:createMonthlyValueIfNotSame, message: "Have Data" })
          
@@ -65,7 +65,7 @@ const initialMonthlyValue = async (req, res) => {
         const filters2 = { LessonId: LessonId }
         filters2['$Occupants->LiveIn.Status$'] = true
         const RoomIdByYearMonthLessonId = await db.Room.findAll({ where: filters2, include: [{ model: db.Occupant }] })
-        console.log({ Year, Month, PaidStatus })
+        // console.log({ Year, Month, PaidStatus })
         const createMonthlyValue = await RoomIdByYearMonthLessonId.map(item => db.MonthlyValue.create({ ...value, RoomId: item.id }))
         // res.send({RoomIdOK:RoomIdOKK}) 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,6 +85,7 @@ const getMonthlyValueByLessonId = async (req,res) => {
     filters['$Room.LessonId$'] = LessonId;
     filters['$Room->Occupants->LiveIn.Status$'] = true;
     
+    
     try{
         console.log("-------------------------------------------------------------------------------------------------------------------------------------")
         const MonthlyValueByLessonId = await db.MonthlyValue.findAll({where: filters,include: [{model: db.Room,include:[{model:db.Occupant}]}]})
@@ -93,7 +94,6 @@ const getMonthlyValueByLessonId = async (req,res) => {
         console.log(error)
         res.send(error)
     }
-        
 }
 
 
