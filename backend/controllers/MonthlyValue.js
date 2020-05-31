@@ -345,9 +345,32 @@ const editMonthlyValueById = async (req, res) => {
 
 
 
+const deleteMonthlyValueByYearMonthLessonId = async (req,res) => {    
+    const LessonId = req.params.LessonId;
+    const Year = req.body.Year;
+    const Month = req.body.Month;
+    
+    const filters = {Year : Year};
+
+    // filters['LessonId'] = Year;
+    filters['Month'] = Month;
+
+
+    const deletedMonthlyValue = await db.MonthlyValue.findAll({where: filters ,include:[{model: db.Room  }]})
+    // const deletedMonthlyValue = await db.MonthlyValue.destroy({where: filters ,include:[{model: db.Room  }]})
+}
 
 
 
 
 
-module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById, initialMonthlyValue, getMonthlyValueByLessonId }
+
+
+
+
+
+
+
+
+
+module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById, initialMonthlyValue, getMonthlyValueByLessonId ,deleteMonthlyValueByYearMonthLessonId}

@@ -146,10 +146,12 @@ function MeterManage(props) {
         console.log({ monthlyValueData, lastMonthlyValueData })
     }
 
-    const finishedAddEEMeter = (targetId) => {
+    const [textEEMeter, setTextEEMeter] = useState("");
+    
+    const finishedAddEEMeter = (targetId,textEEMeter) => {
         console.log(targetId)
+        console.log(textEEMeter)
         monthlyValueData.map((obj) => {
-            
             if(obj.id == targetId){
                 console.log(`OK in loop ${obj.id}`)
                 obj.editThisMonthEEMeter = true
@@ -162,6 +164,11 @@ function MeterManage(props) {
         console.log(monthlyValueData)
         setMonthlyValueData(monthlyValueData)
     }
+
+    const textEEMeterText = (e,targetId) => {
+        
+    }
+
 
 
     return (
@@ -205,7 +212,7 @@ function MeterManage(props) {
                             <td>{obj.Room.RoomNumber}</td>
                             <td>{obj.RentPrice}</td>
                             <td>{obj.ElectricityMeter}</td>
-                            {editThisMonthEEMeter ? <td><button>Hello</button></td> : <input onBlur={() => finishedAddEEMeter(obj.id)} placeholder={obj.id}></input>}
+                            {editThisMonthEEMeter ? <td><button>Hello</button></td> : <input onBlur={() => finishedAddEEMeter(obj.id,textEEMeter)} onChange={textEEMeterText} value={textEEMeter} placeholder={obj.id}></input>}
                             <td>{obj.WaterMeter}</td>
                             <td>{obj.WaterMeter}</td>
                             <td>{obj.TotalRentPrice}</td>

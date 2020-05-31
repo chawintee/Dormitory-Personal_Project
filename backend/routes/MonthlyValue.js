@@ -7,6 +7,7 @@ router.get('/getMonthlyValue/:RoomId',MonthlyValueController.getMonthlyValue)
 router.patch('/editSomeValue/:id',MonthlyValueController.editMonthlyValueById)
 router.post('/initialCreate/:LessonId', MonthlyValueController.initialMonthlyValue)
 router.post('/getMonthlyValueByLessonId/:LessonId', MonthlyValueController.getMonthlyValueByLessonId)
+router.delete('/deleteByYearMonthLessonId/:LessonId',MonthlyValueController.deleteMonthlyValueByYearMonthLessonId)
 
 
 
