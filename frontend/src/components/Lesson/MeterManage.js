@@ -95,6 +95,7 @@ function MeterManage(props) {
         fetchMonthlyValueData();
         fetchLastMonthValueData();
         initialCreateMonthlyValue();
+        reArrangeArray();
     }, [userInfo])
 
     useEffect(() => {
@@ -102,6 +103,7 @@ function MeterManage(props) {
         fetchMonthlyValueData();
         fetchLastMonthValueData();
         initialCreateMonthlyValue();
+        reArrangeArray();
     }, [selectedYear, selectedMonth])
 
 
@@ -153,7 +155,7 @@ function MeterManage(props) {
 
 
     const showLogLog = () => {
-        console.log({ monthlyValueData, lastMonthlyValueData })
+        console.log({ monthlyValueData, lastMonthlyValueData, newLastMonthlyValue })
     }
 
     const [textEEMeter, setTextEEMeter] = useState("");
@@ -234,6 +236,38 @@ function MeterManage(props) {
         setMonthlyValueData(newMonthlyValue);
     }
 
+ 
+    const [newLastMonthlyValue,setNewLastMonthlyValue] = useState([])
+    const reArrangeArray = () => {
+        console.log("test")
+        const newLastMonthlyValue = [...lastMonthlyValueData];
+        const newNewLastMonthlyValue = newLastMonthlyValue.map((obj) => ({'RoomId':obj.RoomId , 'ElectricityMeter':obj.ElectricityMeter, 'WaterMeter':obj.WaterMeter}))
+        // newLastMonthlyValue.map(({RoomId}) =>({RoomId}))
+        console.log(newNewLastMonthlyValue)
+        setNewLastMonthlyValue(newNewLastMonthlyValue)
+        const newMonthlyValue = [...monthlyValueData];
+        const newNewNewMonthlyValue = []
+        const newNewMonthlyValue = newMonthlyValue.map(obj=> newLastMonthlyValue.map(lastObj=> {
+            // console.log(obj.RoomId)
+            // console.log(lastObj.RoomId)
+            // console.log(lastObj.ElectricityMeter)
+            // console.log(lastObj.lastElectricityMeter)
+            if(obj.RoomId === lastObj.RoomId){
+                console.log("In Eq Look")
+                // console.log(lastObj.lastElectricityMeter)
+                obj.lastElectricityMeter = lastObj.ElectricityMeter;
+                obj.lastWaterMeter = lastObj.WaterMeter;
+                return newNewNewMonthlyValue.push(obj)
+            }
+            // else {
+            //     console.log("Not same Loop")
+            //     return obj
+            // }
+        }))
+        console.log(newNewNewMonthlyValue)
+        setMonthlyValueData(newNewNewMonthlyValue)
+    }
+
 
 
 
@@ -278,9 +312,9 @@ function MeterManage(props) {
                             <td>{obj.Room.Floor}</td>
                             <td>{obj.Room.RoomNumber}</td>
                             <td>{obj.RentPrice}</td>
-                            <td>{obj.ElectricityMeter}</td>
+                            <td>{obj.lastElectricityMeter}</td>
                             {obj.editThisMonthEEMeter ? <td onDoubleClick={()=>editAddEEMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <input onBlur={() => finishedAddEEMeter(obj.id, textEEMeter)} onChange={textEEMeterText(obj.id)} value={textEEMeter} placeholder={obj.id}></input>}
-                            <td>{obj.WaterMeter}</td>
+                            <td>{obj.lastWaterMeter}</td>
                             {obj.editThisMonthWaterMeter ? <td onDoubleClick={()=>editAddWaterMeterStatus(obj.id)}></td>: <input placeholder={obj.id} onBlur={()=>finishedAddWaterMeter(obj.id)}></input>}
                             <td>{obj.WaterMeter}</td>
                             <td>{obj.TotalRentPrice}</td>
@@ -293,6 +327,7 @@ function MeterManage(props) {
 
             <hr />
             <button onClick={showLogLog}>log</button>
+            <button onClick={reArrangeArray}>Rearrange</button>
 
         </div >
     )
