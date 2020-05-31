@@ -182,7 +182,7 @@ function MeterManage(props) {
     }
 
 
-    const editAddMeterStatus = (targetId) => {
+    const editAddEEMeterStatus = (targetId) => {
         // console.log(targetId)
         // console.log("Hello")
         const newMonthlyValue = [...monthlyValueData];
@@ -199,6 +199,39 @@ function MeterManage(props) {
         })
         // console.log(newMonthlyValue)
         setMonthlyValueData(newMonthlyValue)
+    }
+
+    const finishedAddWaterMeter = (targetId) => {
+        // console.log(targetId)
+        const newMonthlyValue = [...monthlyValueData];
+        newMonthlyValue.map(ele => {
+            if(ele.id == targetId){
+                // console.log(ele.id)
+                ele.editThisMonthWaterMeter = true;
+                return ele
+            }else {
+                // console.log("same")
+                return ele
+            }
+        })
+        // console.log(newMonthlyValue)
+        setMonthlyValueData(newMonthlyValue)
+    }
+
+    const editAddWaterMeterStatus = (targetId) => {
+        // console.log(targetId)
+        const newMonthlyValue = [...monthlyValueData];
+        newMonthlyValue.map(ele=>{
+            if(ele.id == targetId){
+                // console.log(ele.id)
+                ele.editThisMonthWaterMeter = false;
+                return ele;
+            }else{
+                // console.log("in else loop")
+                return ele;
+            }
+        })
+        setMonthlyValueData(newMonthlyValue);
     }
 
 
@@ -246,9 +279,9 @@ function MeterManage(props) {
                             <td>{obj.Room.RoomNumber}</td>
                             <td>{obj.RentPrice}</td>
                             <td>{obj.ElectricityMeter}</td>
-                            {obj.editThisMonthEEMeter ? <td onDoubleClick={()=>editAddMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <input onBlur={() => finishedAddEEMeter(obj.id, textEEMeter)} onChange={textEEMeterText(obj.id)} value={textEEMeter} placeholder={obj.id}></input>}
+                            {obj.editThisMonthEEMeter ? <td onDoubleClick={()=>editAddEEMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <input onBlur={() => finishedAddEEMeter(obj.id, textEEMeter)} onChange={textEEMeterText(obj.id)} value={textEEMeter} placeholder={obj.id}></input>}
                             <td>{obj.WaterMeter}</td>
-                            {obj.editThisMonthWaterMeter ? <td></td>: <input placeholder={obj.id}></input>}
+                            {obj.editThisMonthWaterMeter ? <td onDoubleClick={()=>editAddWaterMeterStatus(obj.id)}></td>: <input placeholder={obj.id} onBlur={()=>finishedAddWaterMeter(obj.id)}></input>}
                             <td>{obj.WaterMeter}</td>
                             <td>{obj.TotalRentPrice}</td>
                         </tr>
