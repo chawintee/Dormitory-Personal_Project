@@ -20,7 +20,7 @@ const initialMonthlyValue = async (req, res) => {
         filters['Month'] = Month;
     }
 
-    const value = { Year: Year , PaidStatus: PaidStatus}
+    const value = { Year: Year, PaidStatus: PaidStatus }
     if (Month) {
         value['Month'] = Month;
     }
@@ -46,18 +46,18 @@ const initialMonthlyValue = async (req, res) => {
     // res.send({result: RoomDataByMonthlyValueLessonId})
     if (RoomDataByMonthlyValueLessonId && RoomDataByMonthlyValueLessonId.length) {
         const RoomIdByRoomDataByMonthlyValueLessonId = RoomDataByMonthlyValueLessonId.map(item => item.RoomId)
-        const RoomIdByRoom = await db.Room.findAll({where: {LessonId: LessonId}}).map(item=>item.id)
-        for (let i=0 ; i< RoomIdByRoomDataByMonthlyValueLessonId.length ;i++){
+        const RoomIdByRoom = await db.Room.findAll({ where: { LessonId: LessonId } }).map(item => item.id)
+        for (let i = 0; i < RoomIdByRoomDataByMonthlyValueLessonId.length; i++) {
             index = RoomIdByRoom.indexOf(RoomIdByRoomDataByMonthlyValueLessonId[i])
             // console.log(index)
-            if(index > -1){
-                RoomIdByRoom.splice(index,1);
+            if (index > -1) {
+                RoomIdByRoom.splice(index, 1);
             }
         }
         // console.log(RoomIdByRoom)
-        const createMonthlyValueIfNotSame = RoomIdByRoom.map(item => db.MonthlyValue.create({...value, RoomId : item}))
-        res.status(201).send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData:RoomIdByRoomDataByMonthlyValueLessonId,RoomIdByRoom:RoomIdByRoom,createMonthlyValueIfNotSame:createMonthlyValueIfNotSame, message: "Have Data" })
-         
+        const createMonthlyValueIfNotSame = RoomIdByRoom.map(item => db.MonthlyValue.create({ ...value, RoomId: item }))
+        res.status(201).send({ result: RoomDataByMonthlyValueLessonId, RoomIdByRoomData: RoomIdByRoomDataByMonthlyValueLessonId, RoomIdByRoom: RoomIdByRoom, createMonthlyValueIfNotSame: createMonthlyValueIfNotSame, message: "Have Data" })
+
     }
     if (RoomDataByMonthlyValueLessonId === undefined || RoomDataByMonthlyValueLessonId.length == 0) {
         console.log("In Don't Have Data Loop")
@@ -75,28 +75,66 @@ const initialMonthlyValue = async (req, res) => {
 
 
 
-const getMonthlyValueByLessonId = async (req,res) => {
+const getMonthlyValueByLessonId = async (req, res) => {
     // console.log("TestGetMonthlyValueByLessonId OK")
     const LessonId = req.params.LessonId;
     const Year = req.body.Year;
     const Month = req.body.Month;
-    const filters = {Year: Year};
+    const filters = { Year: Year };
     filters['Month'] = Month;
     filters['$Room.LessonId$'] = LessonId;
     filters['$Room->Occupants->LiveIn.Status$'] = true;
-    
-    
-    try{
+
+
+    try {
         console.log("-------------------------------------------------------------------------------------------------------------------------------------")
-        const MonthlyValueByLessonId = await db.MonthlyValue.findAll({where: filters,include: [{model: db.Room,include:[{model:db.Occupant}]}]})
-        res.send({MonthlyValueByLessonId:MonthlyValueByLessonId, length: MonthlyValueByLessonId.length})
-    } catch(error) {
+        const MonthlyValueByLessonId = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
+        res.send({ MonthlyValueByLessonId: MonthlyValueByLessonId, length: MonthlyValueByLessonId.length })
+    } catch (error) {
         console.log(error)
         res.send(error)
     }
 }
 
 
+const getMonthlyValueAndLastMonthlyValueByLessonId = async (req, res) => {
+    // console.log("TestGetMonthlyValueByLessonId OK")
+    const LessonId = req.params.LessonId;
+    const Year = req.body.Year;
+    const Month = req.body.Month;
+    const filters = { Year: Year };
+    filters['Month'] = Month;
+    filters['$Room.LessonId$'] = LessonId;
+    filters['$Room->Occupants->LiveIn.Status$'] = true;
+    
+    let lastMonth;
+    let lastYear;
+
+    if(Month == 1 ){
+        lastMonth = 12
+        lastYear = Year -1 ;
+    }else{
+        lastYear = Year ;
+        lastMonth = Month - 1;
+    }
+    
+    const lastMonthFilter = {Year : lastYear}
+    lastMonthFilter['Month'] = lastMonth;
+    lastMonthFilter['$Room.LessonId$'] = LessonId;
+    lastMonthFilter['$Room->Occupants->LiveIn.Status$'] = true;
+    
+
+
+    try {
+        console.log("-------------------------------------------------------------------------------------------------------------------------------------")
+        const MonthlyValueByLessonId = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
+        const lastMonthlyValueByLessonId = await db.MonthlyValue.findAll({ where: lastMonthFilter, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
+        res.send({ MonthlyValueByLessonId: MonthlyValueByLessonId,lastMonthlyValueByLessonId:lastMonthlyValueByLessonId , length: MonthlyValueByLessonId.length })
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+}
 
 
 
@@ -345,18 +383,18 @@ const editMonthlyValueById = async (req, res) => {
 
 
 
-const deleteMonthlyValueByYearMonthLessonId = async (req,res) => {    
+const deleteMonthlyValueByYearMonthLessonId = async (req, res) => {
     const LessonId = req.params.LessonId;
     const Year = req.body.Year;
     const Month = req.body.Month;
-    
-    const filters = {Year : Year};
+
+    const filters = { Year: Year };
     // filters['$Room.LessonId$'] = LessonId;
     filters['Month'] = Month;
     try {
         // const deletedMonthlyValue = await db.MonthlyValue.findAll({where: filters ,include:[{model: db.Room}]})
-        const deletedMonthlyValue = await db.MonthlyValue.destroy({where: filters ,include:[{model: db.Room, where:{LessonId: LessonId} }]})
-        res.send({deletedMonthlyValue:deletedMonthlyValue, Length: deletedMonthlyValue.length})
+        const deletedMonthlyValue = await db.MonthlyValue.destroy({ where: filters, include: [{ model: db.Room, where: { LessonId: LessonId } }] })
+        res.send({ deletedMonthlyValue: deletedMonthlyValue, Length: deletedMonthlyValue.length })
     } catch (e) {
         console.log(e)
         res.send("error")
@@ -376,4 +414,13 @@ const deleteMonthlyValueByYearMonthLessonId = async (req,res) => {
 
 
 
-module.exports = { createMonthlyValue, getMonthlyValue, editMonthlyValueById, initialMonthlyValue, getMonthlyValueByLessonId ,deleteMonthlyValueByYearMonthLessonId}
+module.exports =
+{
+    createMonthlyValue,
+    getMonthlyValue,
+    editMonthlyValueById,
+    initialMonthlyValue,
+    getMonthlyValueByLessonId,
+    deleteMonthlyValueByYearMonthLessonId,
+    getMonthlyValueAndLastMonthlyValueByLessonId
+}
