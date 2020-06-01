@@ -6,9 +6,9 @@ import ShowSelected from './Components/ShowSelected';
 import InputPricePerUnit from './Components/InputPricePerUnit';
 
 function MeterManage(props) {
-
+    
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
-
+    
     const [lessonData, setLessonData] = useState({});
     const [year, setYear] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -17,8 +17,10 @@ function MeterManage(props) {
     const [lastMonthlyValueData, setLastMonthlyValueData] = useState([]);
     // const [editThisMonthEEMeter, setEditThisMonthEEMeter] = useState(false);
     // const [editThisMonthWaterMeter, setEditThisMonthWaterMeter] = useState(false);
-
-
+    const [blur, setBlur] = useState(true)
+    const [textEEMeter, setTextEEMeter] = useState("");
+    
+    
     const initialCreateMonthlyValue = async () => {
         const body = {
             Month: selectedMonth,
@@ -48,16 +50,41 @@ function MeterManage(props) {
         // console.log(monthlyValueData.data.MonthlyValueByLessonId)
         const tempMonthlyValueData = monthlyValueData.data.MonthlyValueByLessonId
         const monthlyValueAddEdit = tempMonthlyValueData.map(ele => {
-            return {
-                ...ele,
-                editThisMonthEEMeter: false,
-                editThisMonthWaterMeter: false,
+            if (ele.ElectricityMeter == null && ele.WaterMeter == null) {
+                return {
+                    ...ele,
+                    editThisMonthEEMeter: false,
+                    editThisMonthWaterMeter: false,
+                }
+            }
+            if (ele.ElectricityMeter == null && ele.WaterMeter != null) {
+                return {
+                    ...ele,
+                    editThisMonthEEMeter: false,
+                    editThisMonthWaterMeter: true,
+                }
+            }
+            if (ele.ElectricityMeter != null && ele.WaterMeter == null) {
+                return {
+                    ...ele,
+                    editThisMonthEEMeter: true,
+                    editThisMonthWaterMeter: false,
+                }
+            }
+            if (ele.ElectricityMeter == null && ele.WaterMeter == null) {
+                return {
+                    ...ele,
+                    editThisMonthEEMeter: true,
+                    editThisMonthWaterMeter: true,
+                }
             }
         })
         setMonthlyValueData(monthlyValueAddEdit);
         // setMonthlyValueData(monthlyValueData.data.MonthlyValueByLessonId)
     }
 
+
+    /////////////////////////////////////////////////////////////////////////////////Don't Use//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // const fetchMonthlyValueData = async () => {
     //     const body = {
     //         Year: selectedYear,
@@ -97,7 +124,7 @@ function MeterManage(props) {
         const lastMonthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
         setLastMonthlyValueData(lastMonthlyValueData.data.MonthlyValueByLessonId)
     }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     useEffect(() => {
         if (localStorage.getItem("ACCESS_TOKEN_LESSON")) {
@@ -124,7 +151,7 @@ function MeterManage(props) {
         fetchLastMonthValueData();
         initialCreateMonthlyValue();
         reArrangeArray();
-    }, [selectedYear, selectedMonth])
+    }, [selectedYear, selectedMonth,blur])
 
 
 
@@ -178,7 +205,6 @@ function MeterManage(props) {
         console.log({ monthlyValueData, lastMonthlyValueData, newLastMonthlyValue, textEEMeter })
     }
 
-    const [textEEMeter, setTextEEMeter] = useState("");
 
     const finishedAddEEMeter = (targetId) => {
         console.log(targetId)
@@ -195,14 +221,18 @@ function MeterManage(props) {
                 const newValue = await axios.patch(`/monthlyValue//editSomeValue/${targetId}`, body)
                 console.log(newValue.data.newEditMonthlyValue)
                 const newNewValue = newValue.data.newEditMonthlyValue
+                setBlur(!blur)
                 return newNewValue
             } else {
+                setBlur(!blur)
                 return obj
             }
         })
         // console.log(newMonthlyValue)
         // setMonthlyValueData(newMonthlyValue)
-        fetchMonthlyValueData();
+        // fetchMonthlyValueData()
+        // setTextEEMeter("")
+        setBlur(!blur)
     }
 
     const textEEMeterText = (e) => {
@@ -265,6 +295,8 @@ function MeterManage(props) {
     }
 
 
+
+    ////////////////////////////////////////////////////////////////////////Don't Use/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [newLastMonthlyValue, setNewLastMonthlyValue] = useState([])
     const reArrangeArray = () => {
         console.log("test")
@@ -295,7 +327,7 @@ function MeterManage(props) {
         console.log(newNewNewMonthlyValue)
         setMonthlyValueData(newNewNewMonthlyValue)
     }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
