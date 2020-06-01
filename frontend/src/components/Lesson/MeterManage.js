@@ -6,9 +6,9 @@ import ShowSelected from './Components/ShowSelected';
 import InputPricePerUnit from './Components/InputPricePerUnit';
 
 function MeterManage(props) {
-    
+
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
-    
+
     const [lessonData, setLessonData] = useState({});
     const [year, setYear] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -19,8 +19,8 @@ function MeterManage(props) {
     // const [editThisMonthWaterMeter, setEditThisMonthWaterMeter] = useState(false);
     const [blur, setBlur] = useState(true)
     const [textEEMeter, setTextEEMeter] = useState("");
-    
-    
+
+
     const initialCreateMonthlyValue = async () => {
         const body = {
             Month: selectedMonth,
@@ -55,6 +55,7 @@ function MeterManage(props) {
                     ...ele,
                     editThisMonthEEMeter: false,
                     editThisMonthWaterMeter: false,
+                    editRentPrice: true,
                 }
             }
             if (ele.ElectricityMeter == null && ele.WaterMeter != null) {
@@ -62,6 +63,7 @@ function MeterManage(props) {
                     ...ele,
                     editThisMonthEEMeter: false,
                     editThisMonthWaterMeter: true,
+                    editRentPrice: true,
                 }
             }
             if (ele.ElectricityMeter != null && ele.WaterMeter == null) {
@@ -69,13 +71,15 @@ function MeterManage(props) {
                     ...ele,
                     editThisMonthEEMeter: true,
                     editThisMonthWaterMeter: false,
+                    editRentPrice: true,
                 }
             }
-            if (ele.ElectricityMeter == null && ele.WaterMeter == null) {
+            if (ele.ElectricityMeter != null && ele.WaterMeter != null) {
                 return {
                     ...ele,
                     editThisMonthEEMeter: true,
                     editThisMonthWaterMeter: true,
+                    editRentPrice: true,
                 }
             }
         })
@@ -124,7 +128,7 @@ function MeterManage(props) {
         const lastMonthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
         setLastMonthlyValueData(lastMonthlyValueData.data.MonthlyValueByLessonId)
     }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     useEffect(() => {
         if (localStorage.getItem("ACCESS_TOKEN_LESSON")) {
@@ -140,18 +144,18 @@ function MeterManage(props) {
     useEffect(() => {
         fetchData();
         fetchMonthlyValueData();
-        fetchLastMonthValueData();
+        // fetchLastMonthValueData();
         initialCreateMonthlyValue();
-        reArrangeArray();
+        // reArrangeArray();
     }, [userInfo])
 
     useEffect(() => {
         console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit, monthlyValueData, lastMonthlyValueData })
         fetchMonthlyValueData();
-        fetchLastMonthValueData();
+        // fetchLastMonthValueData();
         initialCreateMonthlyValue();
-        reArrangeArray();
-    }, [selectedYear, selectedMonth,blur])
+        // reArrangeArray();
+    }, [selectedYear, selectedMonth, blur])
 
 
 
@@ -212,14 +216,14 @@ function MeterManage(props) {
         const newNewMonthlyValue = []
         newMonthlyValue.map(async (obj) => {
             if (obj.id == targetId) {
-                console.log(`OK in loop ${obj.id}`)
+                // console.log(`OK in loop ${obj.id}`)
                 // obj.editThisMonthEEMeter = true
                 // console.log(obj)
                 const body = {
                     ElectricityMeter: textEEMeter,
                 }
-                const newValue = await axios.patch(`/monthlyValue//editSomeValue/${targetId}`, body)
-                console.log(newValue.data.newEditMonthlyValue)
+                const newValue = await axios.patch(`/monthlyValue/editSomeValue/${targetId}`, body)
+                // console.log(newValue.data.newEditMonthlyValue)
                 const newNewValue = newValue.data.newEditMonthlyValue
                 setBlur(!blur)
                 return newNewValue
@@ -261,21 +265,39 @@ function MeterManage(props) {
         setMonthlyValueData(newMonthlyValue)
     }
 
+
+
+
+    const [textWaterMeter, setTextWaterMeter] = useState("")
+
+    const textWaterMeterText = (e) => {
+        console.log(e.currentTarget.value)
+        setTextWaterMeter(e.currentTarget.value);
+    }
+
     const finishedAddWaterMeter = (targetId) => {
-        // console.log(targetId)
+        console.log(targetId)
+        console.log({ textWaterMeter: textWaterMeter })
         const newMonthlyValue = [...monthlyValueData];
-        newMonthlyValue.map(ele => {
+        newMonthlyValue.map(async (ele) => {
             if (ele.id == targetId) {
                 // console.log(ele.id)
-                ele.editThisMonthWaterMeter = true;
-                return ele
+                const body = {
+                    WaterMeter: textWaterMeter,
+                }
+                const newWaterMeterValue = await axios.patch(`/MonthlyValue/editSomeValue/${targetId}`, body)
+                // console.log(newWaterMeterValue)
+                setBlur(!blur)
+                return newWaterMeterValue
             } else {
                 // console.log("same")
+                setBlur(!blur)
                 return ele
             }
         })
-        // console.log(newMonthlyValue)
-        setMonthlyValueData(newMonthlyValue)
+        // console.log(newWaterMeterValue)
+        // setMonthlyValueData(newMonthlyValue)
+        setBlur(!blur)
     }
 
     const editAddWaterMeterStatus = (targetId) => {
@@ -293,6 +315,8 @@ function MeterManage(props) {
         })
         setMonthlyValueData(newMonthlyValue);
     }
+
+
 
 
 
@@ -327,7 +351,7 @@ function MeterManage(props) {
         console.log(newNewNewMonthlyValue)
         setMonthlyValueData(newNewNewMonthlyValue)
     }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -365,22 +389,28 @@ function MeterManage(props) {
                         <th>Total Rent</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {monthlyValueData.map(obj =>
 
-                        <tr key={obj.id}>
-                            <td>{obj.Room.Floor}</td>
-                            <td>{obj.Room.RoomNumber}</td>
-                            <td>{obj.RentPrice}</td>
-                            {/* <td>{obj.lastElectricityMeter}</td> */}
-                            {obj.editThisMonthEEMeter ? <td onDoubleClick={() => editAddEEMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <td> <input onBlur={() => finishedAddEEMeter(obj.id, textEEMeter)} onChange={textEEMeterText} placeholder={obj.ElectricityMeter}></input> </td>}
-                            {/* <td>{obj.lastWaterMeter}</td> */}
-                            {obj.editThisMonthWaterMeter ? <td onDoubleClick={() => editAddWaterMeterStatus(obj.id)}></td> : <td> <input placeholder={obj.id} onBlur={() => finishedAddWaterMeter(obj.id)}></input> </td>}
-                            <td>{obj.TotalRentPrice}</td>
-                        </tr>
+                {monthlyValueData ?
+                    <tbody>
+                        {monthlyValueData.map(obj =>
+                            <tr key={obj.id}>
+                                <td>{obj.Room.Floor}</td>
+                                <td>{obj.Room.RoomNumber}</td>
+                                {obj.editRentPrice ? <td>{obj.RentPrice}</td> : <td><input></input></td>}
+                                {/* <td>{obj.lastElectricityMeter}</td> */}
+                                {obj.editThisMonthEEMeter ? <td onDoubleClick={() => editAddEEMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <td> <input onBlur={() => finishedAddEEMeter(obj.id)} onChange={textEEMeterText} placeholder={obj.ElectricityMeter} ></input> </td>}
+                                {/* <td>{obj.lastWaterMeter}</td> */}
+                                {obj.editThisMonthWaterMeter ? <td onDoubleClick={() => editAddWaterMeterStatus(obj.id)}>{obj.WaterMeter}</td> : <td> <input onBlur={() => finishedAddWaterMeter(obj.id)} onChange={textWaterMeterText} placeholder={obj.id}></input> </td>}
+                                <td>{obj.TotalRentPrice}</td>
+                            </tr>
 
-                    )}
-                </tbody>
+                        )}
+                    </tbody>
+                    :
+                    null
+                }
+
+
             </table>
 
 
