@@ -106,30 +106,52 @@ const getMonthlyValueAndLastMonthlyValueByLessonId = async (req, res) => {
     filters['Month'] = Month;
     filters['$Room.LessonId$'] = LessonId;
     filters['$Room->Occupants->LiveIn.Status$'] = true;
-    
+
     let lastMonth;
     let lastYear;
 
-    if(Month == 1 ){
+    if (Month == 1) {
         lastMonth = 12
-        lastYear = Year -1 ;
-    }else{
-        lastYear = Year ;
+        lastYear = Year - 1;
+    } else {
+        lastYear = Year;
         lastMonth = Month - 1;
     }
-    
-    const lastMonthFilter = {Year : lastYear}
+
+    const lastMonthFilter = { Year: lastYear }
     lastMonthFilter['Month'] = lastMonth;
     lastMonthFilter['$Room.LessonId$'] = LessonId;
     lastMonthFilter['$Room->Occupants->LiveIn.Status$'] = true;
-    
+
 
 
     try {
         console.log("-------------------------------------------------------------------------------------------------------------------------------------")
         const MonthlyValueByLessonId = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
         const lastMonthlyValueByLessonId = await db.MonthlyValue.findAll({ where: lastMonthFilter, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
-        res.send({ MonthlyValueByLessonId: MonthlyValueByLessonId,lastMonthlyValueByLessonId:lastMonthlyValueByLessonId , length: MonthlyValueByLessonId.length })
+        const onlyEEMeterAndWaterMeterLastMonth = lastMonthlyValueByLessonId.map(ele => ({ RoomId: ele.RoomId, WaterMeter: ele.WaterMeter, ElectricityMeter: ele.ElectricityMeter }))
+
+        const MonthlyValueAndLastMonthlyValueByLessonId = [];
+        MonthlyValueByLessonId.map(
+            obj => {
+            onlyEEMeterAndWaterMeterLastMonth.map(lastMonthObj => {
+                if (obj.RoomId == lastMonthObj.RoomId) {
+                    // console.log(obj.RoomId)
+                    // console.log(lastMonthObj.WaterMeter)
+                    obj.lastMonthWaterMeter = lastMonthObj.WaterMeter;
+                    obj.lastMonthElectricityMeter = lastMonthObj.ElectricityMeter;
+                    // console.log(obj)
+                    return MonthlyValueAndLastMonthlyValueByLessonId.push(obj)
+                }else{}
+            }
+            )
+        }
+        )
+        console.log(MonthlyValueAndLastMonthlyValueByLessonId)
+        res.send({ MonthlyValueAndLastMonthlyValueByLessonId: MonthlyValueAndLastMonthlyValueByLessonId })
+
+        // res.send({ MonthlyValueByLessonId: MonthlyValueByLessonId, lastMonthlyValueByLessonId: lastMonthlyValueByLessonId, onlyEEMeterAndWaterMeterLastMonth:onlyEEMeterAndWaterMeterLastMonth,MonthlyValueAndLastMonthlyValueByLessonId:MonthlyValueAndLastMonthlyValueByLessonId, length: MonthlyValueByLessonId.length })
+        // res.send({MonthlyValueAndLastMonthlyValueByLessonId:MonthlyValueAndLastMonthlyValueByLessonId})
     } catch (error) {
         console.log(error)
         res.send(error)
@@ -373,7 +395,11 @@ const editMonthlyValueById = async (req, res) => {
     //     },
     //     { where: { id: id } }
     // );
-    res.status(200).send({ message: "Data updated" })
+
+    const newEditMonthlyValue = await db.MonthlyValue.findOne({where: {id : id}})
+
+    res.status(200).send({newEditMonthlyValue:newEditMonthlyValue})
+    // res.status(200).send({ message: "Data updated" ,newEditMonthlyValue:newEditMonthlyValue})
 
 }
 
