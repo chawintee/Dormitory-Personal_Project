@@ -226,6 +226,7 @@ function MeterManage(props) {
                 // console.log(newValue.data.newEditMonthlyValue)
                 const newNewValue = newValue.data.newEditMonthlyValue
                 setBlur(!blur)
+                setTextEEMeter("")
                 return newNewValue
             } else {
                 setBlur(!blur)
@@ -288,6 +289,7 @@ function MeterManage(props) {
                 const newWaterMeterValue = await axios.patch(`/MonthlyValue/editSomeValue/${targetId}`, body)
                 // console.log(newWaterMeterValue)
                 setBlur(!blur)
+                setTextWaterMeter("")
                 return newWaterMeterValue
             } else {
                 // console.log("same")
@@ -334,16 +336,22 @@ function MeterManage(props) {
     }
 
     const finishedAddRentPrice = (targetId) => {
-        const newMonthlyValueData = monthlyValueData.map(ele => {
+        const newMonthlyValueData = monthlyValueData.map(async (ele) => {
             if (ele.id == targetId) {
-                ele.editRentPrice = true
-                return ele
+                const body = {
+                    RentPrice: textRentPrice,
+                }
+                const newRentPrice = await axios.patch(`/MonthlyValue/editSomeValue/${targetId}`,body)
+                setBlur(!blur)
+                setTextRentPrice("")
+                return newRentPrice
             } else {
+                setBlur(!blur)
                 return ele
             }
         })
-        console.log(newMonthlyValueData)
-        setMonthlyValueData(newMonthlyValueData)
+        // console.log(newMonthlyValueData)
+        // setMonthlyValueData(newMonthlyValueData)
     }
 
     const textRentPriceText = (e) => {
