@@ -335,15 +335,20 @@ function MeterManage(props) {
 
     const finishedAddRentPrice = (targetId) => {
         const newMonthlyValueData = monthlyValueData.map(ele => {
-            if(ele.id == targetId){
+            if (ele.id == targetId) {
                 ele.editRentPrice = true
                 return ele
-            }else  {
+            } else {
                 return ele
             }
         })
         console.log(newMonthlyValueData)
         setMonthlyValueData(newMonthlyValueData)
+    }
+
+    const textRentPriceText = (e) => {
+        // console.log(e.currentTarget.value)
+        setTextRentPrice(e.currentTarget.value)
     }
 
 
@@ -352,104 +357,104 @@ function MeterManage(props) {
 
     ////////////////////////////////////////////////////////////////////////Don't Use/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [newLastMonthlyValue, setNewLastMonthlyValue] = useState([])
-        const reArrangeArray = () => {
-            console.log("test")
-            const newLastMonthlyValue = [...lastMonthlyValueData];
-            const newNewLastMonthlyValue = newLastMonthlyValue.map((obj) => ({ 'RoomId': obj.RoomId, 'ElectricityMeter': obj.ElectricityMeter, 'WaterMeter': obj.WaterMeter }))
-            // newLastMonthlyValue.map(({RoomId}) =>({RoomId}))
-            console.log(newNewLastMonthlyValue)
-            setNewLastMonthlyValue(newNewLastMonthlyValue)
-            const newMonthlyValue = [...monthlyValueData];
-            const newNewNewMonthlyValue = []
-            const newNewMonthlyValue = newMonthlyValue.map(obj => newLastMonthlyValue.map(lastObj => {
-                // console.log(obj.RoomId)
-                // console.log(lastObj.RoomId)
-                // console.log(lastObj.ElectricityMeter)
+    const reArrangeArray = () => {
+        console.log("test")
+        const newLastMonthlyValue = [...lastMonthlyValueData];
+        const newNewLastMonthlyValue = newLastMonthlyValue.map((obj) => ({ 'RoomId': obj.RoomId, 'ElectricityMeter': obj.ElectricityMeter, 'WaterMeter': obj.WaterMeter }))
+        // newLastMonthlyValue.map(({RoomId}) =>({RoomId}))
+        console.log(newNewLastMonthlyValue)
+        setNewLastMonthlyValue(newNewLastMonthlyValue)
+        const newMonthlyValue = [...monthlyValueData];
+        const newNewNewMonthlyValue = []
+        const newNewMonthlyValue = newMonthlyValue.map(obj => newLastMonthlyValue.map(lastObj => {
+            // console.log(obj.RoomId)
+            // console.log(lastObj.RoomId)
+            // console.log(lastObj.ElectricityMeter)
+            // console.log(lastObj.lastElectricityMeter)
+            if (obj.RoomId === lastObj.RoomId) {
+                console.log("In Eq Look")
                 // console.log(lastObj.lastElectricityMeter)
-                if (obj.RoomId === lastObj.RoomId) {
-                    console.log("In Eq Look")
-                    // console.log(lastObj.lastElectricityMeter)
-                    obj.lastElectricityMeter = lastObj.ElectricityMeter;
-                    obj.lastWaterMeter = lastObj.WaterMeter;
-                    return newNewNewMonthlyValue.push(obj)
-                }
-                // else {
-                //     console.log("Not same Loop")
-                //     return obj
-                // }
-            }))
-            console.log(newNewNewMonthlyValue)
-            setMonthlyValueData(newNewNewMonthlyValue)
-        }
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                obj.lastElectricityMeter = lastObj.ElectricityMeter;
+                obj.lastWaterMeter = lastObj.WaterMeter;
+                return newNewNewMonthlyValue.push(obj)
+            }
+            // else {
+            //     console.log("Not same Loop")
+            //     return obj
+            // }
+        }))
+        console.log(newNewNewMonthlyValue)
+        setMonthlyValueData(newNewNewMonthlyValue)
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
-        return (
-            <div>
-                This is MeterManage
-                {lessonData ?
-                    <ShowLessonInfo lessonData={lessonData} />
+    return (
+        <div>
+            This is MeterManage
+            {lessonData ?
+                <ShowLessonInfo lessonData={lessonData} />
+                :
+                null
+            }
+            <hr />
+
+            <ShowSelected handle={handleSelectedYear} defaultValue={selectedYear} arrValue={year} />
+            <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
+
+
+            <InputPricePerUnit name="Electricity price per unit" pricePerUnitValue={electricityPricePerUnit} handle={handleElectricityPricePerUnit} defaultPricePerUnit={electricityPricePerUnit} />
+            <InputPricePerUnit name="Water price per unit" pricePerUnitValue={waterPricePerUnit} handle={handleWaterPricePerUnit} defaultPricePerUnit={waterPricePerUnit} />
+            <InputPricePerUnit name="RentPrice/month" pricePerUnitValue={rentPrice} handle={handleRentPrice} defaultPricePerUnit={rentPrice} />
+
+            <hr />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Floor</th>
+                        <th>Room</th>
+                        <th>Rent/month</th>
+                        {/* <th>Last month EE meter</th> */}
+                        <th>This month EE meter</th>
+                        {/* <th>Last month Water meter</th> */}
+                        <th>This month Water meter</th>
+                        <th>Total Rent</th>
+                    </tr>
+                </thead>
+
+                {monthlyValueData ?
+                    <tbody>
+                        {monthlyValueData.map(obj =>
+                            <tr key={obj.id}>
+                                <td>{obj.Room.Floor}</td>
+                                <td>{obj.Room.RoomNumber}</td>
+                                {obj.editRentPrice ? <td onDoubleClick={() => editRentPriceStatus(obj.id)}>{obj.RentPrice}</td> : <td><input onBlur={() => finishedAddRentPrice(obj.id)} onChange={textRentPriceText}></input></td>}
+                                {/* <td>{obj.lastElectricityMeter}</td> */}
+                                {obj.editThisMonthEEMeter ? <td onDoubleClick={() => editAddEEMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <td> <input onBlur={() => finishedAddEEMeter(obj.id)} onChange={textEEMeterText} placeholder={obj.ElectricityMeter} ></input> </td>}
+                                {/* <td>{obj.lastWaterMeter}</td> */}
+                                {obj.editThisMonthWaterMeter ? <td onDoubleClick={() => editAddWaterMeterStatus(obj.id)}>{obj.WaterMeter}</td> : <td> <input onBlur={() => finishedAddWaterMeter(obj.id)} onChange={textWaterMeterText} placeholder={obj.id}></input> </td>}
+                                <td>{obj.TotalRentPrice}</td>
+                            </tr>
+
+                        )}
+                    </tbody>
                     :
                     null
                 }
-                <hr />
-
-                <ShowSelected handle={handleSelectedYear} defaultValue={selectedYear} arrValue={year} />
-                <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
 
 
-                <InputPricePerUnit name="Electricity price per unit" pricePerUnitValue={electricityPricePerUnit} handle={handleElectricityPricePerUnit} defaultPricePerUnit={electricityPricePerUnit} />
-                <InputPricePerUnit name="Water price per unit" pricePerUnitValue={waterPricePerUnit} handle={handleWaterPricePerUnit} defaultPricePerUnit={waterPricePerUnit} />
-                <InputPricePerUnit name="RentPrice/month" pricePerUnitValue={rentPrice} handle={handleRentPrice} defaultPricePerUnit={rentPrice} />
-
-                <hr />
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Floor</th>
-                            <th>Room</th>
-                            <th>Rent/month</th>
-                            {/* <th>Last month EE meter</th> */}
-                            <th>This month EE meter</th>
-                            {/* <th>Last month Water meter</th> */}
-                            <th>This month Water meter</th>
-                            <th>Total Rent</th>
-                        </tr>
-                    </thead>
-
-                    {monthlyValueData ?
-                        <tbody>
-                            {monthlyValueData.map(obj =>
-                                <tr key={obj.id}>
-                                    <td>{obj.Room.Floor}</td>
-                                    <td>{obj.Room.RoomNumber}</td>
-                                    {obj.editRentPrice ? <td onDoubleClick={() => editRentPriceStatus(obj.id)}>{obj.RentPrice}</td> : <td><input onBlur={() => finishedAddRentPrice(obj.id)}></input></td>}
-                                    {/* <td>{obj.lastElectricityMeter}</td> */}
-                                    {obj.editThisMonthEEMeter ? <td onDoubleClick={() => editAddEEMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <td> <input onBlur={() => finishedAddEEMeter(obj.id)} onChange={textEEMeterText} placeholder={obj.ElectricityMeter} ></input> </td>}
-                                    {/* <td>{obj.lastWaterMeter}</td> */}
-                                    {obj.editThisMonthWaterMeter ? <td onDoubleClick={() => editAddWaterMeterStatus(obj.id)}>{obj.WaterMeter}</td> : <td> <input onBlur={() => finishedAddWaterMeter(obj.id)} onChange={textWaterMeterText} placeholder={obj.id}></input> </td>}
-                                    <td>{obj.TotalRentPrice}</td>
-                                </tr>
-
-                            )}
-                        </tbody>
-                        :
-                        null
-                    }
+            </table>
 
 
-                </table>
+            <hr />
+            <button onClick={showLogLog}>log</button>
+            <button onClick={reArrangeArray}>Rearrange</button>
 
+        </div >
+    )
+}
 
-                <hr />
-                <button onClick={showLogLog}>log</button>
-                <button onClick={reArrangeArray}>Rearrange</button>
-
-            </div >
-        )
-    }
-
-    export default MeterManage
+export default MeterManage
