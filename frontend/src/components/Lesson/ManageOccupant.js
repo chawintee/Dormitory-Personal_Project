@@ -125,6 +125,7 @@ function ManageOccupant(props) {
         // console.log(new Date().getMonth() + 1)
         console.log(new Date());
         const hello = monthlyValueData.map(ele => console.log(typeof(ele.PaidDate)))
+        const hello1 = monthlyValueData.map(ele => console.log(ele.PaidDate))
     }
 
 
