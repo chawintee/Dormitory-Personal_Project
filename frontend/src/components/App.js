@@ -9,6 +9,7 @@ import OccupantFirstPage from './Occupant/OccupantFistPage';
 import LessonFirstPage from './Lesson/LessonFirstPage';
 import AddNewOccupant from './Lesson/AddNewOccupant';
 import MeterManage from './Lesson/MeterManage';
+import ManageOccupant from './Lesson/ManageOccupant';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route exact path='/LessonFirstPage' render={()=><LessonFirstPage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />}  />
         <Route exact path='/AddNewOccupant' render={()=><AddNewOccupant isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
         <Route exact path='/MeterManage' render={()=><MeterManage isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
+        <Route exact path='/OccupantMange' render={()=><ManageOccupant isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo}/>} />
         <Redirect to='/error' />
       </Switch>
     </div>
