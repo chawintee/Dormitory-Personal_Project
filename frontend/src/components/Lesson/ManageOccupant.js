@@ -60,7 +60,7 @@ function ManageOccupant(props) {
 
     useEffect(()=>{
         fetchDataMonthlyValue();
-    },[pushButton])
+    },[pushButton, selectedMonth, selectedYear])
 
 
 
