@@ -97,6 +97,7 @@ function ManageOccupant(props) {
         monthlyValueData.map(async (ele) => {
             if (ele.id == targetId) {
                 const body = {
+                    PaidDate: new Date(),
                     PaidStatus: !ele.PaidStatus
                 }
                 await axios.patch(`/MonthlyValue//editSomeValue/${targetId}`,body)
@@ -122,6 +123,8 @@ function ManageOccupant(props) {
         // genYear();
         // console.log(year)
         // console.log(new Date().getMonth() + 1)
+        console.log(new Date());
+        const hello = monthlyValueData.map(ele => console.log(typeof(ele.PaidDate)))
     }
 
 
@@ -162,7 +165,7 @@ function ManageOccupant(props) {
                                 <td>{obj.ElectricityPrice}</td>
                                 <td>{obj.WaterPrice}</td>
                                 <td>{obj.TotalRentPrice}</td>
-                                <td>{obj.TotalRentPrice}</td>
+                                <td>{obj.PaidDate}</td>
                                 <td>{obj.PaidStatus ? <span>Paid</span> : <span>Waiting</span>}</td>
                                 <td><button onClick={() => PaidStatusToggle(obj.id)}>Paid</button></td>
                             </tr>
