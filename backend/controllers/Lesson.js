@@ -106,6 +106,12 @@ const getLessonById = async (req, res) => {
     res.status(200).send({ result: user });
 }
 
+const getLessonDataByOccupantId = async (req,res) => {
+    console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    console.log("OK")
+    const id = req.params.id;
+    const LessonData = await db.Lesson.findOne({include: [{model: db.Room}]})
+}
 
 
 
@@ -113,5 +119,4 @@ const getLessonById = async (req, res) => {
 
 
 
-
-module.exports = { registerLesson, loginLesson, checkUsername, getLessonById }
+module.exports = { registerLesson, loginLesson, checkUsername, getLessonById, getLessonDataByOccupantId}

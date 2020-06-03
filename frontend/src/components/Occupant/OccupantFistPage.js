@@ -2,10 +2,16 @@ import React, { useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode';
 import axios from '../../config/axios'
 import { Redirect } from 'react-router-dom';
+import ShowSelected from '../Lesson/Components/ShowSelected';
 
 function OccupantFistPage(props) {
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
     const [lessonDataFront, setLessonData] = useState({});
+    const [year, setYear] = useState([]);
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+
+
 
     const fetchData = async () => {
         console.log("fetchData")
@@ -28,6 +34,7 @@ function OccupantFistPage(props) {
             setUserInfo(user)
             // fetchData()
         }
+        genYear();
     }, []);
 
     useEffect(() => {
@@ -42,33 +49,81 @@ function OccupantFistPage(props) {
 
 
 
+    const genYear = () => {
+        const nowYear = new Date().getFullYear();
+        console.log(nowYear)
+        const ArrYear = [];
+        for (let i = nowYear; i >= nowYear - 100; i--) {
+            // console.log(i)
+            ArrYear.push(i)
+        }
+        setYear(ArrYear)
+    }
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const handleSelectedMonth = (e) => {
+        // console.log(e.target.value);
+        const numberMonth = months.findIndex(ele => ele == e.target.value) + 1;
+        // console.log(numberMonth);
+        setSelectedMonth(numberMonth);
+    }
+
+    
+
+    const handleSelectedYear = (e) => {
+        // console.log(e.target.value)
+        setSelectedYear(e.target.value)
+    }
+
+
+
+    const logLogLog = () => {
+        console.log({ year,selectedYear, selectedMonth })
+        // console.log(new Date().getFullYear())
+        // console.log(new Date().getMonth()   )
+    }
+
     return (
         <div>
             {/* <h1>{userInfo.id}</h1> */}
             {/* This is OccupantFistPage */}
             <span>
-                <span style={{ fontSize: "20px" }}>Lesson Id: &nbsp; </span>
+                <span style={{ fontSize: "20px" }}>Occupant Id: &nbsp; </span>
                 <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
-
                 <span style={{ fontSize: "20px" }}>Name: &nbsp; </span>
 
                 {/* <span style={{fontSize:"28px"}}>{lessonData.Name} &nbsp; {lessonData.Surname}  &nbsp;&nbsp;</span> */}
-                {lessonDataFront ? <span style={{fontSize:"28px"}}>{lessonDataFront.Name} &nbsp; {lessonDataFront.Surname}  &nbsp;&nbsp;</span> : null}
+                {lessonDataFront ? <span style={{ fontSize: "28px" }}>{lessonDataFront.Name} &nbsp; {lessonDataFront.Surname}  &nbsp;&nbsp;</span> : null}
                 {/* <span style={{ fontSize: "28px" }}> {lessonDataFront.data.LessonData.Name} &nbsp;   &nbsp;&nbsp;</span> */}
 
                 <span style={{ fontSize: "20px" }}>Room: &nbsp; </span>
                 <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
-
-
-                <div>
-                <button onClick={logout}>Log Out</button>
-                </div>
-
-
-
-
-                {isLogin||lessonDataFront ? null : <Redirect to='/'/>}
             </span>
+
+            <hr />
+
+            <ShowSelected handle={handleSelectedYear} defaultValue={selectedYear} arrValue={year} />
+            <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
+
+            <hr />
+
+
+
+
+
+
+
+
+            <hr />
+            <div>
+                <button onClick={logout}>Log Out</button>
+            </div>
+
+
+            <button onClick={logLogLog}>Log</button>
+
+            {isLogin || lessonDataFront ? null : <Redirect to='/' />}
         </div>
     )
 }
