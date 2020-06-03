@@ -106,11 +106,21 @@ const getLessonById = async (req, res) => {
     res.status(200).send({ result: user });
 }
 
-const getLessonDataByOccupantId = async (req,res) => {
-    console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-    console.log("OK")
+const getLessonDataByOccupantId = async (req, res) => {
+    // console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    // console.log("OK")
     const id = req.params.id;
-    const LessonData = await db.Lesson.findOne({include: [{model: db.Room}]})
+    const filters = {} ;
+    filters['$Rooms.Occupants.id$'] = id;
+    filters['$Rooms.Occupants.LiveIn.Status$'] = 1;
+    console.log(filters)
+    try {
+        const LessonData = await db.Lesson.findAll({ where: filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
+        res.send({ LessonData: LessonData })
+    } catch (e) {
+        console.log(e)
+        res.send({ message: "error" })
+    }
 }
 
 
@@ -119,4 +129,4 @@ const getLessonDataByOccupantId = async (req,res) => {
 
 
 
-module.exports = { registerLesson, loginLesson, checkUsername, getLessonById, getLessonDataByOccupantId}
+module.exports = { registerLesson, loginLesson, checkUsername, getLessonById, getLessonDataByOccupantId }
