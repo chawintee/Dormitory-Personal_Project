@@ -12,6 +12,8 @@ function OccupantFistPage(props) {
     const [year, setYear] = useState([]);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+    const [monthlyValueData, setMonthlyValueData] = useState({})
+
 
 
 
@@ -35,6 +37,17 @@ function OccupantFistPage(props) {
     }
 
 
+    const fetchMonthlyValueData = async () => {
+        const body = {
+            Year: selectedYear,
+            Month: selectedMonth,
+        }
+        const monthlyValueData = await axios.post(`MonthlyValue/getMonthlyValueDataByYearMonthOccupantId/${userInfo.id}`, body);
+        console.log(monthlyValueData.data.MonthlyValueData);
+        setMonthlyValueData(monthlyValueData.data.MonthlyValueData);
+    }
+
+
     useEffect(() => {
         // console.log("Hello")
         if (localStorage.getItem("ACCESS_TOKEN_OCCUPANT")) {
@@ -51,7 +64,19 @@ function OccupantFistPage(props) {
     useEffect(() => {
         fetchData();
         fetchLessonData();
+        fetchMonthlyValueData();
     }, [userInfo])
+    
+    useEffect(() => {
+        fetchMonthlyValueData();
+    }, [selectedMonth, selectedYear])
+
+
+
+
+
+
+
 
     const logout = () => {
         localStorage.removeItem("ACCESS_TOKEN_OCCUPANT");
@@ -129,7 +154,7 @@ function OccupantFistPage(props) {
 
             <hr />
 
-            <span>Total rent : </span>
+            {monthlyValueData ? <span>Total rent : {monthlyValueData.TotalRentPrice}</span> : null}
 
             <table>
                 <thead>
@@ -140,25 +165,33 @@ function OccupantFistPage(props) {
                         <th>Price</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <tr>
-                        <td>Rent </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Electricity </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Water </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    {monthlyValueData ?
+                        <>
+                            <tr>
+                                <td>Rent </td>
+                                <td>{monthlyValueData.RentPrice / monthlyValueData.RentPrice}</td>
+                                <td>{monthlyValueData.RentPrice}</td>
+                                <td>{monthlyValueData.RentPrice}</td>
+                            </tr>
+                            <tr>
+                                <td>Electricity </td>
+                                <td>{monthlyValueData.ElectricityPrice / monthlyValueData.ElectricityPricePerUnit}</td>
+                                <td>{monthlyValueData.ElectricityPricePerUnit}</td>
+                                <td>{monthlyValueData.ElectricityPrice}</td>
+                            </tr>
+                            <tr>
+                                <td>Water </td>
+                                <td>{monthlyValueData.WaterPrice / monthlyValueData.WaterPricePerUnit}</td>
+                                <td>{monthlyValueData.WaterPricePerUnit}</td>
+                                <td>{monthlyValueData.WaterPrice}</td>
+                            </tr>
+                        </>
+                        :
+
+
+                        null}
 
                 </tbody>
 

@@ -134,18 +134,18 @@ const getMonthlyValueAndLastMonthlyValueByLessonId = async (req, res) => {
         const MonthlyValueAndLastMonthlyValueByLessonId = [];
         MonthlyValueByLessonId.map(
             obj => {
-            onlyEEMeterAndWaterMeterLastMonth.map(lastMonthObj => {
-                if (obj.RoomId == lastMonthObj.RoomId) {
-                    // console.log(obj.RoomId)
-                    // console.log(lastMonthObj.WaterMeter)
-                    obj.lastMonthWaterMeter = lastMonthObj.WaterMeter;
-                    obj.lastMonthElectricityMeter = lastMonthObj.ElectricityMeter;
-                    // console.log(obj)
-                    return MonthlyValueAndLastMonthlyValueByLessonId.push(obj)
-                }else{}
+                onlyEEMeterAndWaterMeterLastMonth.map(lastMonthObj => {
+                    if (obj.RoomId == lastMonthObj.RoomId) {
+                        // console.log(obj.RoomId)
+                        // console.log(lastMonthObj.WaterMeter)
+                        obj.lastMonthWaterMeter = lastMonthObj.WaterMeter;
+                        obj.lastMonthElectricityMeter = lastMonthObj.ElectricityMeter;
+                        // console.log(obj)
+                        return MonthlyValueAndLastMonthlyValueByLessonId.push(obj)
+                    } else { }
+                }
+                )
             }
-            )
-        }
         )
         console.log(MonthlyValueAndLastMonthlyValueByLessonId)
         res.send({ MonthlyValueAndLastMonthlyValueByLessonId: MonthlyValueAndLastMonthlyValueByLessonId })
@@ -396,9 +396,9 @@ const editMonthlyValueById = async (req, res) => {
     //     { where: { id: id } }
     // );
 
-    const newEditMonthlyValue = await db.MonthlyValue.findOne({where: {id : id}})
+    const newEditMonthlyValue = await db.MonthlyValue.findOne({ where: { id: id } })
 
-    res.status(200).send({newEditMonthlyValue:newEditMonthlyValue})
+    res.status(200).send({ newEditMonthlyValue: newEditMonthlyValue })
     // res.status(200).send({ message: "Data updated" ,newEditMonthlyValue:newEditMonthlyValue})
 
 }
@@ -429,6 +429,30 @@ const deleteMonthlyValueByYearMonthLessonId = async (req, res) => {
 
 
 
+const getMonthlyValueByYearMonthOccupantId = async (req, res) => {
+    const OccupantId = req.params.occupantId;
+    const Year = req.body.Year;
+    const Month = req.body.Month;
+    console.log("----------------------------------------------------------------------------------------------------")
+    const filters = {};
+    filters['Year'] = Year;
+    filters['Month'] = Month;
+    filters['$Room->Occupants->LiveIn.Status$'] = 1;
+    filters['$Room->Occupants.id$'] = OccupantId;
+
+    try {
+        const MonthlyValueData = await db.MonthlyValue.findAll({where:filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] });
+        const objMonthlyValueData = MonthlyValueData[0];
+        res.send({ message: "OK", MonthlyValueData: objMonthlyValueData })
+    } catch (e) {
+        console.log(e)
+        res.send("Error")
+    }
+
+}
+
+
+
 
 
 
@@ -448,5 +472,6 @@ module.exports =
     initialMonthlyValue,
     getMonthlyValueByLessonId,
     deleteMonthlyValueByYearMonthLessonId,
-    getMonthlyValueAndLastMonthlyValueByLessonId
+    getMonthlyValueAndLastMonthlyValueByLessonId,
+    getMonthlyValueByYearMonthOccupantId
 }

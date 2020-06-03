@@ -9,7 +9,7 @@ router.post('/initialCreate/:LessonId', MonthlyValueController.initialMonthlyVal
 router.post('/getMonthlyValueByLessonId/:LessonId', MonthlyValueController.getMonthlyValueByLessonId)
 router.delete('/deleteByYearMonthLessonId/:LessonId',MonthlyValueController.deleteMonthlyValueByYearMonthLessonId)
 router.post('/getMonthlyValueAndLastMonthlyValueByLessonId/:LessonId',MonthlyValueController.getMonthlyValueAndLastMonthlyValueByLessonId)
-router.post('/getMonthlyValueDataByYearMonthOccupantId/:OccupantId')
+router.post('/getMonthlyValueDataByYearMonthOccupantId/:occupantId',MonthlyValueController.getMonthlyValueByYearMonthOccupantId)
 
 
 module.exports = router;
