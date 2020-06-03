@@ -66,7 +66,7 @@ function OccupantFistPage(props) {
         fetchLessonData();
         fetchMonthlyValueData();
     }, [userInfo])
-    
+
     useEffect(() => {
         fetchMonthlyValueData();
     }, [selectedMonth, selectedYear])
@@ -153,8 +153,17 @@ function OccupantFistPage(props) {
             <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
 
             <hr />
-
-            {monthlyValueData ? <span>Total rent : {monthlyValueData.TotalRentPrice}</span> : null}
+            <span>
+                {monthlyValueData ?
+                    <>
+                        <span>Total rent :<strong>{monthlyValueData.TotalRentPrice}</strong> </span>
+                        {monthlyValueData.PaidStatus ? <span style={{ color: "Blue" }}>&nbsp;&nbsp;&nbsp;&nbsp;Paid</span> : <span style={{ color: "red" }}>&nbsp;&nbsp;&nbsp;&nbsp;Waiting</span>}
+                    </>
+                    :
+                    null
+                }
+            </span>
+            <br/>
 
             <table>
                 <thead>
