@@ -6,10 +6,13 @@ import ShowSelected from '../Lesson/Components/ShowSelected';
 
 function OccupantFistPage(props) {
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
-    const [lessonDataFront, setLessonData] = useState({});
+    const [occupantData, setOccupantData] = useState({});
+    const [lessonData, setLessonData] = useState({});
+    const [roomData, setRoomData] = useState({});
     const [year, setYear] = useState([]);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+
 
 
 
@@ -19,8 +22,16 @@ function OccupantFistPage(props) {
         // console.log(LessonData)
         // console.log(LessonData.data)
         console.log(LessonData.data.LessonData)
-        setLessonData(LessonData.data.LessonData)
-        // setLessonData(LessonData)
+        setOccupantData(LessonData.data.LessonData)
+        // setOccupantData(LessonData)
+    }
+
+
+    const fetchLessonData = async () => {
+        const LessonData = await axios.get(`/lesson/getLessonDataByOccupantId/${userInfo.id}`)
+        console.log(LessonData.data.lessonData)
+        setLessonData(LessonData.data.lessonData)
+        setRoomData(LessonData.data.RoomData)
     }
 
 
@@ -39,11 +50,13 @@ function OccupantFistPage(props) {
 
     useEffect(() => {
         fetchData();
+        fetchLessonData();
     }, [userInfo])
 
     const logout = () => {
         localStorage.removeItem("ACCESS_TOKEN_OCCUPANT");
         setUserInfo({})
+        setOccupantData({})
         setIsLogin(false)
     }
 
@@ -69,7 +82,7 @@ function OccupantFistPage(props) {
         setSelectedMonth(numberMonth);
     }
 
-    
+
 
     const handleSelectedYear = (e) => {
         // console.log(e.target.value)
@@ -79,7 +92,7 @@ function OccupantFistPage(props) {
 
 
     const logLogLog = () => {
-        console.log({ year,selectedYear, selectedMonth })
+        console.log({ year, selectedYear, selectedMonth, lessonData })
         // console.log(new Date().getFullYear())
         // console.log(new Date().getMonth()   )
     }
@@ -88,18 +101,26 @@ function OccupantFistPage(props) {
         <div>
             {/* <h1>{userInfo.id}</h1> */}
             {/* This is OccupantFistPage */}
-            <span>
-                <span style={{ fontSize: "20px" }}>Occupant Id: &nbsp; </span>
-                <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
-                <span style={{ fontSize: "20px" }}>Name: &nbsp; </span>
+            <div>
+                <span>
+                    <span style={{ fontSize: "20px" }}>Occupant Id: &nbsp; </span>
+                    <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
+                    <span style={{ fontSize: "20px" }}>Name: &nbsp; </span>
+                    {occupantData ? <span style={{ fontSize: "28px" }}>{occupantData.Name} &nbsp; {occupantData.Surname}  &nbsp;&nbsp;</span> : null}
+                    <span style={{ fontSize: "20px" }}>Room: &nbsp; </span>
+                    {roomData ? <span style={{ fontSize: "28px" }}>{roomData.RoomNumber}   &nbsp;&nbsp;</span> : null}
+                </span>
+            </div>
+            <div>
+                <span>
+                    <span style={{ fontSize: "20px" }}>Your Lesson Id: &nbsp; </span>
+                    {lessonData ? <span style={{ fontSize: "28px" }}>{lessonData.id}   &nbsp;&nbsp;</span> : null}
+                    <span style={{ fontSize: "20px" }}>Your Dormitory Name : &nbsp; </span>
+                    {lessonData ? <span style={{ fontSize: "28px" }}>{lessonData.DormitoryName}</span> : null}
+                </span>
+            </div>
 
-                {/* <span style={{fontSize:"28px"}}>{lessonData.Name} &nbsp; {lessonData.Surname}  &nbsp;&nbsp;</span> */}
-                {lessonDataFront ? <span style={{ fontSize: "28px" }}>{lessonDataFront.Name} &nbsp; {lessonDataFront.Surname}  &nbsp;&nbsp;</span> : null}
-                {/* <span style={{ fontSize: "28px" }}> {lessonDataFront.data.LessonData.Name} &nbsp;   &nbsp;&nbsp;</span> */}
 
-                <span style={{ fontSize: "20px" }}>Room: &nbsp; </span>
-                <span style={{ fontSize: "28px" }}>{userInfo.id}   &nbsp;&nbsp;</span>
-            </span>
 
             <hr />
 
@@ -107,6 +128,42 @@ function OccupantFistPage(props) {
             <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
 
             <hr />
+
+            <span>Total rent : </span>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Unit</th>
+                        <th>Change</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Rent </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Electricity </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Water </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+
+
+            </table>
 
 
 
@@ -123,7 +180,7 @@ function OccupantFistPage(props) {
 
             <button onClick={logLogLog}>Log</button>
 
-            {isLogin || lessonDataFront ? null : <Redirect to='/' />}
+            {isLogin || occupantData ? null : <Redirect to='/' />}
         </div>
     )
 }

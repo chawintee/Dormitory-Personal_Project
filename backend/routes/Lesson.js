@@ -7,7 +7,7 @@ router.post('/Register', LessonController.registerLesson);
 router.post('/Login', LessonController.loginLesson);
 router.post('/checkUsername', LessonController.checkUsername);
 router.get('/getLessonById/:id', LessonController.getLessonById);
-router.get('/getLessonDataByOccupantId/:id', LessonController.getLessonDataByOccupantId)
+router.get('/getLessonDataByOccupantId/:occupantId', LessonController.getLessonDataByOccupantId)
 
 
 module.exports = router;
