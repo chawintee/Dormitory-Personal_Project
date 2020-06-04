@@ -36,36 +36,42 @@ function LoginForm(props) {
                 setPassword("");
                 setGoToOccupantFirstPage(true)
             } catch (error){
-                console.log("Invalid Username or Password")
+                alert('Invalid Username or Password');
+                // console.log(error)
+                // console.log("Invalid Username or Password")
             }
         }else {
             // console.log("you are Lesson")
             if(lesson === true){
-                console.log("you are Lesson")
+                // console.log("you are Lesson")
                 const body = {
                     Username: username,
                     Password: password,
                 }
+                try{
+                    const result = await axios.post('/lesson/Login',body);
+                    // console.log(result)
+                    localStorage.setItem('ACCESS_TOKEN_LESSON',result.data.token)
+                    const user = jwtDecode(result.data.token)
+                    user.role = "Lesson";
+                    // console.log(user)
+                    setUserInfo(user)
+                    setIsLogin(true)
+                    setUsername("");
+                    setPassword("");
+                    setGoToLessonFirstPage(true)
+                } catch (err) {
+                    alert('Invalid Username or Password');
+                }
                 
-                const result = await axios.post('/lesson/Login',body);
-                // console.log(result)
-                localStorage.setItem('ACCESS_TOKEN_LESSON',result.data.token)
-                const user = jwtDecode(result.data.token)
-                user.role = "Lesson";
-                console.log(user)
-                setUserInfo(user)
-                setIsLogin(true)
-                setUsername("");
-                setPassword("");
-                setGoToLessonFirstPage(true)
-
-
+                
             }else{
+                alert("You aren't both")
                 console.log("You are not both")
             }
         }
     }
-
+    
     const logout = async () => {
         localStorage.removeItem("ACCESS_TOKEN");
         setUserInfo({});
@@ -86,7 +92,7 @@ function LoginForm(props) {
                 {isLogin ? <button onClick={logout}>LogOut</button> : null}
 
             </div>
-            <button onClick={() => console.log(`You are lesson ${lesson} username is ${username} Password is ${password}`)}>Log</button>
+            {/* <button onClick={() => console.log(`You are lesson ${lesson} username is ${username} Password is ${password}`)}>Log</button> */}
 
 
 

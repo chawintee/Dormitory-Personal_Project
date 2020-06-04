@@ -35,7 +35,7 @@ function Landing(props) {
                     <Link to='/RegisterOccupant'>RegisterOccupant</Link>
                 </div>)
             }
-            <button onClick={() => console.log(`You are lesson ${lesson}`)}>Log</button>
+            {/* <button onClick={() => console.log(`You are lesson ${lesson}`)}>Log</button> */}
             
         </div>
     )
