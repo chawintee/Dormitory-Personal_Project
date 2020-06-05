@@ -45,8 +45,6 @@ function AddNewOccupant(props) {
         // console.log(getRoomLiveInOccupantDataByLessonId.data.OccupantRoomData)
         setRoomDetail(getRoomLiveInOccupantDataByLessonId.data.OccupantRoomData)
         console.log(`Roomdetail = ${roomDetail.length}`)
-
-
     }
 
 
@@ -67,11 +65,13 @@ function AddNewOccupant(props) {
         genYear();
     }, [userInfo])
 
+
     useEffect(() => {
         console.log(selectedYear)
         console.log(selectedMonth)
         // handleSelectedYear();
     }, [selectedYear])
+
 
     useEffect(() => {
         fetchRoomData();
@@ -130,6 +130,12 @@ function AddNewOccupant(props) {
         // console.log(StatusIndex)
         setSelectedStatus(StatusIndex);
         // console.log(selectedStatus)
+    }
+
+
+
+    const genFloor = async () => {
+
     }
 
 
@@ -282,75 +288,6 @@ function AddNewOccupant(props) {
             </table>
 
             <button onClick={logLogLog}>log</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* <table>
-                <thead>
-                    <tr>
-                        <th>Floor</th>
-                        <th>Room Detail</th>
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Mobile</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {floor.map(item =>
-                        <tr>
-                            <td>{item}</td>
-                            <tr>
-                                <th>Room</th>
-                                <th>Occupant Id</th>
-                                <th>Name</th>
-                                <th>Surname</th>
-                                <th>Mobile</th>
-                                <th>Add</th>
-                            </tr>
-                            <tr>
-                                <th><input placeholder="Room Number" value={roomNumber} onChange={textRoomNumber} ></input></th>
-                                <th><input placeholder="Occupant Id" value={occupantId} onChange={textOccupantId} onBlur={getOccupantData}></input></th>
-                                <td>{occupantData.Name}</td>
-                                <td>{occupantData.Surname}</td>
-                                <td>{occupantData.Mobile}</td>
-                                <th><button onClick={() => addOccupantToRoom(item)}>{item}Add</button></th>
-                            </tr>
-                            {roomDetail.map(occupant =>
-                                <tbody>
-                                    <tr>
-                                        <td>{occupant.Room}</td>
-                                        <td>{occupant.id}</td>
-                                        <td>{occupant.Name}</td>
-                                        <td>{occupant.Surname}</td>
-                                        <td>{occupant.Mobile}</td>
-                                    </tr>
-                                </tbody>
-                            )}
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-            <button onClick={AddFloor}>Add Floor</button> */}
-
-
-
 
         </div>
     )

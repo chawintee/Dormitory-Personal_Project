@@ -66,5 +66,13 @@ const getRoomLiveInOccupantDataByLessonId = async (req, res) => {
 
 
 
+const getFloorByLessonId = (req,res) => {
+    const Floor = req.body.Floor;
+    filters = {Floor: Floor};
 
-module.exports = { createRoom, getRoomByLessonId, getRoomLiveInOccupantDataByLessonId }
+    const roomFloor = db.Room
+}
+
+
+
+module.exports = { createRoom, getRoomByLessonId, getRoomLiveInOccupantDataByLessonId, getFloorByLessonId }
