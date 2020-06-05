@@ -53,22 +53,11 @@ const createRoom = async (req, res) => {
             // res.status(200).send({message: 'This Room can Create',roomHaveOccupant:roomHaveOccupant})
         }
         // res.send({roomHaveOccupant:roomHaveOccupant})
-
     }catch(error)  {
         console.log(error)
         res.send({message: 'Error'})
     }
-
-
-
-
 }
-
-
-
-
-
-
 
 
 

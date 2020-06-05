@@ -213,18 +213,24 @@ function AddNewOccupant(props) {
     const addOccupantToRoom = async () => {
         const body = {
             RoomNumber: roomNumber,
-            Floor: floor,
-            Status: true,
+            Floor: textFloor,
+            // Status: true,
             OccupantId: occupantId,
             // DateCheckIn: new Date(),
         }
         // console.log(floor)
-        const data = await axios.post(`/room/createRoom/${userInfo.id}`, body);
-        console.log(data);
-        setTextFloor("")
-        setRoomNumber("");
-        setOccupantId("");
-        setOccupantData({});
+        try{
+            const data = await axios.post(`/room/createRoom/${userInfo.id}`, body);
+            console.log(data);
+            setTextFloor("")
+            setRoomNumber("");
+            setOccupantId("");
+            setOccupantData({});
+            setMotion(!motion)
+        } catch (error) {
+            // console.log(error)
+            alert('Room have occupant or Occupant have LiveIn Room')
+        }
     }
 
     const logLogLog = () => {
