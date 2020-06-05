@@ -88,8 +88,8 @@ const getFloorByLessonId = async (req,res) => {
         const roomFloor = await db.Room.findAll({where: filters, include:[{model: db.Occupant }]}).map(ele=> ele.Floor)
         const setRoomFloor =[...new Set(roomFloor)]
         // console.log(roomFloor)
-        res.send({roomFloor:roomFloor,setRoomFloor:setRoomFloor ,LengthRoomFloor: roomFloor.length})
-        // res.send({setRoomFloor:setRoomFloor })
+        // res.send({roomFloor:roomFloor,setRoomFloor:setRoomFloor ,LengthRoomFloor: roomFloor.length})
+        res.send({setRoomFloor:setRoomFloor })
     } catch (error) {
         console.log(error)
         res.send({Message: "Error"})
