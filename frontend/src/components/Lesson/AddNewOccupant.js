@@ -233,12 +233,26 @@ function AddNewOccupant(props) {
         }
     }
 
+    const CheckOutLiveIn = (targetId) => {
+        console.log(targetId)
+    }
+
+
+
+
+
+
+
+
+
+
     const logLogLog = () => {
         console.log(roomDetail)
         console.log(`Roomdetail = ${roomDetail.length}`)
         console.log(floor)
         console.log(selectedFloor)
         console.log(selectedStatus)
+        console.log(roomDetail)
     }
 
 
@@ -308,6 +322,7 @@ function AddNewOccupant(props) {
                     <th>Name</th>
                     <th>Surname</th>
                     <th>Mobile</th>
+                    <th>CheckOut</th>
                 </tr>
 
                 {roomDetail.length > 0 ?
@@ -323,6 +338,7 @@ function AddNewOccupant(props) {
                                     <td>{item.Surname}</td>
                                     <td>{item.Mobile}</td>
                                 </>)}
+                            <td> <button onClick={()=>CheckOutLiveIn(obj.id)}>{obj.id}</button> </td>
                         </tr>
                     ) :
                     null
