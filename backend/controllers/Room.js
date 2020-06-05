@@ -24,8 +24,13 @@ const createRoom = async (req, res) => {
     const occupantFilter = {id:OccupantId};
     occupantFilter['$Rooms->LiveIn.Status$'] = true;
 
-    const value = {RoomNumber: RoomNumber};
-    value['Floor'] = Floor;
+    const roomValue = {RoomNumber: RoomNumber};
+    roomValue['Floor'] = Floor;
+    roomValue['LessonId'] = LessonId;
+
+    const liveInValue = {Status: true};
+    liveInValue['DateCheckIn'] = DateCheckIn;
+    liveInValue['OccupantId'] = OccupantId;
 
     console.log(roomFilters)
     try{
@@ -41,10 +46,9 @@ const createRoom = async (req, res) => {
                 res.status(400).send({message: 'This occupant have room now',occupantHaveRoom:occupantHaveRoom})
             }
             if(occupantHaveRoom.length == 0){
-                const roomCreated = await db.Room.create(value,)
-
-
-                res.status(200).send({message: "Room and Occupant can create Room"})
+                const roomCreated = await db.Room.create(roomValue)
+                const liveInCreated = await db.LiveIn.create({...liveInValue,RoomId:roomCreated.id})
+                res.status(200).send({message: "Room and Occupant can create Room",liveInCreated:liveInCreated,roomCreated:roomCreated})
             }
             // res.status(200).send({message: 'This Room can Create',roomHaveOccupant:roomHaveOccupant})
         }
