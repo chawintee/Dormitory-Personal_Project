@@ -214,15 +214,14 @@ function AddNewOccupant(props) {
         const body = {
             RoomNumber: roomNumber,
             Floor: floor,
-            LessonId: lessonData.id,
             Status: true,
             OccupantId: occupantId,
             // DateCheckIn: new Date(),
         }
         // console.log(floor)
-        const data = await axios.post('/room/createRoom', body);
+        const data = await axios.post(`/room/createRoom/${userInfo.id}`, body);
         console.log(data);
-        setFloor("");
+        setTextFloor("")
         setRoomNumber("");
         setOccupantId("");
         setOccupantData({});

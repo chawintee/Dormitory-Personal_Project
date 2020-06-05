@@ -3,6 +3,79 @@ const db = require('../models');
 const createRoom = async (req, res) => {
     const RoomNumber = req.body.RoomNumber;
     const Floor = req.body.Floor;
+    const LessonId = req.params.LessonId;
+    const Status = req.body.Status;
+    // const DateCheckIn = req.body.DateCheckIn;
+    const DateCheckIn = new Date();
+    const OccupantId = req.body.OccupantId;
+    const RoomId = req.body.RoomId;
+    console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+    console.log(RoomNumber);
+
+    const roomFilters = {LessonId: LessonId} ;
+    if(RoomNumber){
+        roomFilters['RoomNumber'] = RoomNumber;
+    }
+    if(Floor){
+        roomFilters['Floor'] = Floor;
+    }
+    roomFilters['$Occupants->LiveIn.Status$'] = true ;
+
+    const occupantFilter = {id:OccupantId};
+    occupantFilter['$Rooms->LiveIn.Status$'] = true;
+
+    const value = {RoomNumber: RoomNumber};
+    value['Floor'] = Floor;
+
+    console.log(roomFilters)
+    try{
+        const roomHaveOccupant = await db.Room.findAll({where: roomFilters,include:[{model:db.Occupant}]})
+        console.log(Boolean(roomHaveOccupant.length > 0))
+        if(roomHaveOccupant.length > 0){
+            res.status(400).send({message: 'This room have occupant now'})
+        }
+        if(roomHaveOccupant.length == 0){
+            console.log("Loop-------------------------------------------------------------------------------------------------------------------")
+            const occupantHaveRoom = await db.Occupant.findAll({where: occupantFilter,include:[{model: db.Room}]})
+            if(occupantHaveRoom.length > 0){
+                res.status(400).send({message: 'This occupant have room now',occupantHaveRoom:occupantHaveRoom})
+            }
+            if(occupantHaveRoom.length == 0){
+                const roomCreated = await db.Room.create(value,)
+
+
+                res.status(200).send({message: "Room and Occupant can create Room"})
+            }
+            // res.status(200).send({message: 'This Room can Create',roomHaveOccupant:roomHaveOccupant})
+        }
+        // res.send({roomHaveOccupant:roomHaveOccupant})
+
+    }catch(error)  {
+        console.log(error)
+        res.send({message: 'Error'})
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+const createRoom = async (req, res) => {
+    const RoomNumber = req.body.RoomNumber;
+    const Floor = req.body.Floor;
     const LessonId = req.body.LessonId;
     const Status = req.body.Status;
     // const DateCheckIn = req.body.DateCheckIn;
@@ -33,6 +106,9 @@ const createRoom = async (req, res) => {
     //     res.status(201).send({ result: roomInput ,result1: LiveInInput })
     // }
 }
+*/
+
+
 
 const getRoomByLessonId = async (req, res) => {
     const LessonId = req.params.LessonId;
