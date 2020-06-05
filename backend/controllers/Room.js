@@ -66,11 +66,34 @@ const getRoomLiveInOccupantDataByLessonId = async (req, res) => {
 
 
 
-const getFloorByLessonId = (req,res) => {
+const getFloorByLessonId = async (req,res) => {
+    const Lesson = req.params.LessonId;
     const Floor = req.body.Floor;
-    filters = {Floor: Floor};
+    const Status = req.body.Status;
+    console.log(Floor)
+    const filters = {LessonId: Lesson};
+    // filters['Floor'] = Floor;
+    if(Floor){
+        filters['Floor'] = Floor;
+    }
+    if(Status){
+        filters['$Occupants->LiveIn.Status$'] = Status == "true" || Status === '1' ;
+    }
 
-    const roomFloor = db.Room
+    console.log(filters)
+    console.log("----------------------------------------------------------------------------------------------------------------------------------------")
+
+    try{
+        // const roomFloor = await db.Room.findAll({where: filters, include:[{model: db.Occupant }]})
+        const roomFloor = await db.Room.findAll({where: filters, include:[{model: db.Occupant }]}).map(ele=> ele.Floor)
+        const setRoomFloor =[...new Set(roomFloor)]
+        // console.log(roomFloor)
+        res.send({roomFloor:roomFloor,setRoomFloor:setRoomFloor ,LengthRoomFloor: roomFloor.length})
+        // res.send({setRoomFloor:setRoomFloor })
+    } catch (error) {
+        console.log(error)
+        res.send({Message: "Error"})
+    }
 }
 
 
