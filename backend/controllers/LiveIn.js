@@ -1,9 +1,11 @@
 const db = require('../models');
 
 const editStatusAndCheckoutByRoomId = async (req, res) => {
+    console.log('--------------------------------------------------------------------------------------------------------------------------------')
     const RoomId = req.params.RoomId;
     const OccupantId = req.body.OccupantId;
-    const Status = req.body.Status;
+    // const Status = req.body.Status;
+    const Status = false;
     const DateCheckOut = new Date();
 
     try {

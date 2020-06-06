@@ -233,8 +233,19 @@ function AddNewOccupant(props) {
         }
     }
 
-    const CheckOutLiveIn = (targetId) => {
-        console.log(targetId)
+    const CheckOutLiveIn = async (RoomId,OccupantId) => {
+        // console.log(RoomId,OccupantId)
+        try{
+            const body = {
+                OccupantId,
+            }
+            const checkOutRoom = await axios.patch(`/LiveInRoute/editStatusAndCheckoutByRoomId/${RoomId}`,body);
+            setMotion(!motion)
+        } catch(e){
+            console.log(e)
+            alert("error");
+        }
+        
     }
 
 
@@ -337,8 +348,8 @@ function AddNewOccupant(props) {
                                     <td>{item.Name}</td>
                                     <td>{item.Surname}</td>
                                     <td>{item.Mobile}</td>
+                            <td> <button onClick={()=>CheckOutLiveIn(obj.id,item.id)}>{obj.id}</button> </td>
                                 </>)}
-                            <td> <button onClick={()=>CheckOutLiveIn(obj.id)}>{obj.id}</button> </td>
                         </tr>
                     ) :
                     null
