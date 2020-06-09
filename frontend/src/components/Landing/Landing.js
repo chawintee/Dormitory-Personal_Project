@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Input from './component/Input';
 import jwtDecode from 'jwt-decode';
 import LoginForm from './component/Loginform';
+import Navbar from './component/Navbar';
 
 function Landing(props) {
 
@@ -16,7 +17,9 @@ function Landing(props) {
 
     return (
         <div>
-            <h1>Landing</h1>
+            <Navbar/>
+            <h1>Welcome to our Dorm</h1>
+
             <span>
                 <span style={{ color: lesson ? "#FFDE17" : "#A6A6A6", fontSize: "24px" }} onClick={() => setLesson(true)}>Lesson</span>
                 <span style={{ color: lesson ? "#A6A6A6" : "#FFDE17", fontSize: "24px" }} onClick={() => setLesson(false)}>Occupant</span>

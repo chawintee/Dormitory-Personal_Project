@@ -230,6 +230,11 @@ function AddNewOccupant(props) {
         } catch (error) {
             // console.log(error)
             alert('Room have occupant or Occupant have LiveIn Room')
+            setTextFloor("")
+            setRoomNumber("");
+            setOccupantId("");
+            setOccupantData({});
+            setMotion(!motion)
         }
     }
 
