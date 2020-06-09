@@ -402,7 +402,7 @@ function MeterManage(props) {
 
     return (
         <div>
-            <NavbarLesson/>
+            <NavbarLesson isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />
             This is MeterManage
             {lessonData ?
                 <ShowLessonInfo lessonData={lessonData} />

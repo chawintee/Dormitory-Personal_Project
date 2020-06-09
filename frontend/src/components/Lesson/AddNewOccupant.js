@@ -279,7 +279,7 @@ function AddNewOccupant(props) {
 
     return (
         <div>
-            <NavbarLesson/>
+            <NavbarLesson isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />
             {/* This is AddNewOccupant */}
             {lessonData ?
                 <ShowLessonInfo lessonData={lessonData} />

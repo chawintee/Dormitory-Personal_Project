@@ -2,10 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import NavbarLesson from './Components/NavbarLesson'
 
-function LessonFirstPage() {
+function LessonFirstPage(props) {
+
+    const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
+
     return (
         <div>
-            <NavbarLesson/>
+            <NavbarLesson isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />
             <h1>This is LessonFirstPage</h1>
             <div><Link to='/AddNewOccupant'> Add New Occupants </Link></div>
             <div><Link to='/MeterManage'> Meter Manage </Link></div>

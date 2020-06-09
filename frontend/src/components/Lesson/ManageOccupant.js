@@ -135,7 +135,7 @@ function ManageOccupant(props) {
 
     return (
         <div>
-            <NavbarLesson/>
+            <NavbarLesson isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />
             {/* <div>Hello ManageOccupant</div> */}
             {lessonData ? <ShowLessonInfo lessonData={lessonData} /> : null}
             <hr />

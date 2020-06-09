@@ -2,13 +2,18 @@ import React,{useState} from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import './NavbarLesson.css'
 
-function NavbarLesson() {
+function NavbarLesson(props) {
 
+    const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
     const [logout, setLogout] = useState(false)
 
     const logoutNow = () => {
+        localStorage.removeItem("ACCESS_TOKEN_LESSON");
+        setUserInfo({});
         setLogout(true)
+        setIsLogin(false);
     }
+
 
     
 
