@@ -4,27 +4,27 @@
     margin: 0;
     padding: 0;
     background-color: rgb(255, 248, 248);
-}.NavHome ul {
+}.NavOccupant ul {
     list-style: none;
     padding: 0;
     margin: 0;
     background-color: #FFDE17;
     text-align: left; 
-}.NavHome .NavLi {
+}.NavOccupant .NavOccupantLi {
   display: inline-block; 
   width: 10%; 
   margin-right: 0px; 
   text-align: center;
-}.NavHome a {
+}.NavOccupant a {
   display: block; 
   text-decoration: none; 
 }
-.NavHome a {
+.NavOccupant a {
   font-family: sans-serif;
   height: 100%; 
   line-height: 100%; 
   color: #fff;
-}.NavHome a:hover {
+}.NavOccupant a:hover {
   background-color: #FF6600;
 }
  

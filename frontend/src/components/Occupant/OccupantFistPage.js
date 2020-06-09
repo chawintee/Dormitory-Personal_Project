@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode';
 import axios from '../../config/axios'
 import { Redirect } from 'react-router-dom';
 import ShowSelected from '../Lesson/Components/ShowSelected';
+import NavbarOccupant from './Components/NavbarOccupant';
 
 function OccupantFistPage(props) {
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
@@ -124,6 +125,7 @@ function OccupantFistPage(props) {
 
     return (
         <div>
+            <NavbarOccupant  isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />
             {/* <h1>{userInfo.id}</h1> */}
             {/* This is OccupantFistPage */}
             <div>
@@ -207,20 +209,13 @@ function OccupantFistPage(props) {
 
             </table>
 
-
-
-
-
-
-
-
             <hr />
             <div>
-                <button onClick={logout}>Log Out</button>
+                {/* <button onClick={logout}>Log Out</button> */}
             </div>
 
 
-            <button onClick={logLogLog}>Log</button>
+            {/* <button onClick={logLogLog}>Log</button> */}
 
             {isLogin || occupantData ? null : <Redirect to='/' />}
         </div>
