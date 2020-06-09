@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Input from './Components/Input'
 import axios from '../../config/axios'
 import {Redirect} from 'react-router-dom'
+import Navbar from '../Landing/component/Navbar'
 
 function RegisterOccupant() {
     const [username, setUsername] = useState("");
@@ -132,6 +133,7 @@ function RegisterOccupant() {
 
     return (
         <div>
+            <Navbar/>
             <h1>RegisterOccupant</h1>
             <form>
                 <Input name="Username" text={textUsername} value={username} type="text" onblur={checkUserName} />{checkUsernameSt ? <div style={{ color: "red" }}>Invalid your username</div> : null}
