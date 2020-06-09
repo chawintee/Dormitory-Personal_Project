@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode'
 import axios from '../../config/axios'
 import ShowLessonInfo from './Components/ShowLessonInfo';
 import ShowSelected from './Components/ShowSelected';
+import NavbarLesson from './Components/NavbarLesson';
 
 function ManageOccupant(props) {
 
@@ -134,6 +135,7 @@ function ManageOccupant(props) {
 
     return (
         <div>
+            <NavbarLesson/>
             {/* <div>Hello ManageOccupant</div> */}
             {lessonData ? <ShowLessonInfo lessonData={lessonData} /> : null}
             <hr />

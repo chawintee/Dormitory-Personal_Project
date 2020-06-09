@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode'
 import axios from '../../config/axios'
 import './AddNewOccupant.css'
 import ShowLessonInfo from './Components/ShowLessonInfo';
+import NavbarLesson from './Components/NavbarLesson';
 
 function AddNewOccupant(props) {
 
@@ -278,6 +279,7 @@ function AddNewOccupant(props) {
 
     return (
         <div>
+            <NavbarLesson/>
             {/* This is AddNewOccupant */}
             {lessonData ?
                 <ShowLessonInfo lessonData={lessonData} />

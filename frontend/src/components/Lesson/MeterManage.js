@@ -4,6 +4,7 @@ import axios from '../../config/axios'
 import ShowLessonInfo from './Components/ShowLessonInfo';
 import ShowSelected from './Components/ShowSelected';
 import InputPricePerUnit from './Components/InputPricePerUnit';
+import NavbarLesson from './Components/NavbarLesson';
 
 function MeterManage(props) {
 
@@ -401,6 +402,7 @@ function MeterManage(props) {
 
     return (
         <div>
+            <NavbarLesson/>
             This is MeterManage
             {lessonData ?
                 <ShowLessonInfo lessonData={lessonData} />

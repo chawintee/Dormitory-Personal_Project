@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Input from './Components/Input';
 import axios from '../../config/axios';
 import {Redirect} from 'react-router-dom';
+import Navbar from '../Landing/component/Navbar';
 
 function RegisterLesson() {
     const [username, setUsername] = useState("");
@@ -160,6 +161,7 @@ function RegisterLesson() {
 
     return (
         <div>
+            <Navbar/>
             <h1>RegisterLesson</h1>
             <Input name="Username" type="text" text={textUsername} value={username} check={checkUsername} />{checkUsernameSame ? <div style={{ color: "red" }}>Invalid Username</div> : null}
             <Input name="Password" type="password" text={textPassword} value={password} check={checkConfirmPassword} />

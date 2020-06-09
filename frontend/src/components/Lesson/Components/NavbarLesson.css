@@ -4,27 +4,27 @@
     margin: 0;
     padding: 0;
     background-color: rgb(255, 248, 248);
-}.NavHome ul {
+}nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
     background-color: #FFDE17;
-    text-align: left; /* step 6 */
-}.NavHome .NavLi {
+    text-align: center; /* step 6 */
+}nav li {
   display: inline-block; /* step 1 */
-  width: 10%; /* step 4 */
+  width: 20%; /* step 4 */
   margin-right: 0px; /* step 5 */
   text-align: center;
-}.NavHome a {
+}nav a {
   display: block; /* step 2 */
   text-decoration: none; /* step 3 */
 }/* common text style */
-.NavHome a {
+nav a {
   font-family: sans-serif;
   height: 100%; /* vertically center */
   line-height: 100%; /* vertically center */
   color: #fff;
-}.NavHome a:hover {
+}nav a:hover {
   background-color: #FF6600;
 }
  
