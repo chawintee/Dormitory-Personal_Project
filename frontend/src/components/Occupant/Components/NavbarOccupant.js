@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {Link, Redirect} from 'react-router-dom'
+import './NavbarOccupant.css'
 
 function NavbarOccupant(props) {
 
@@ -17,8 +18,8 @@ function NavbarOccupant(props) {
         <div>
             <header>
                 <nav className="NavOccupant">
-                    <ul>
-                        <li className="NavOccupantLi"><a><Link to='/OccupantFirstPage'>Home</Link></a></li>
+                    <ul className="ulOccupant">
+                        <li className="Home"><a><Link to='/OccupantFirstPage'>Home</Link></a></li>
                         <li className="NavOccupantLi"><a onClick={LogOut}>LogOut</a></li>
                     </ul>
                 </nav>
