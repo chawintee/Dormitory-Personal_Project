@@ -162,7 +162,7 @@ function RegisterLesson() {
     return (
         <div>
             <Navbar/>
-            <h1>RegisterLesson</h1>
+            <h1>RegisterLessor</h1>
             <Input name="Username" type="text" text={textUsername} value={username} check={checkUsername} />{checkUsernameSame ? <div style={{ color: "red" }}>Invalid Username</div> : null}
             <Input name="Password" type="password" text={textPassword} value={password} check={checkConfirmPassword} />
             <Input name="Confirm Password" type="password" text={textConfirmPassword} value={confirmPassword} check={checkConfirmPassword} />{checkPasswordConfirmPassword ? null : <div style={{color: "red"}}>Password and Confirm Password are not same</div>}

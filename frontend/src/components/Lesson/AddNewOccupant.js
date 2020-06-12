@@ -57,6 +57,7 @@ function AddNewOccupant(props) {
         if (localStorage.getItem("ACCESS_TOKEN_LESSON")) {
             // console.log(jwtDecode(localStorage.getItem("ACCESS_TOKEN_LESSON")))
             const user = jwtDecode(localStorage.getItem("ACCESS_TOKEN_LESSON"))
+            user.role = "Lesson";
             setIsLogin(true)
             setUserInfo(user)
         }

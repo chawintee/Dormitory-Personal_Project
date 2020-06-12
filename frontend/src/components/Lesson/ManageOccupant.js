@@ -47,6 +47,7 @@ function ManageOccupant(props) {
         if (localStorage.getItem('ACCESS_TOKEN_LESSON')) {
             // console.log("Have ACCESS_TOKEN_LESSON");
             const user = jwtDecode(localStorage.getItem('ACCESS_TOKEN_LESSON'));
+            user.role = "Lesson";
             // console.log(user)
             setIsLogin(true);
             setUserInfo(user);

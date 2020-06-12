@@ -21,7 +21,7 @@ function Landing(props) {
             <h1>Welcome to our Dorm</h1>
 
             <span>
-                <span style={{ color: lesson ? "#FFDE17" : "#A6A6A6", fontSize: "24px" }} onClick={() => setLesson(true)}>Lesson</span>
+                <span style={{ color: lesson ? "#FFDE17" : "#A6A6A6", fontSize: "24px" }} onClick={() => setLesson(true)}>Lessor</span>
                 <span style={{ color: lesson ? "#A6A6A6" : "#FFDE17", fontSize: "24px" }} onClick={() => setLesson(false)}>Occupant</span>
             </span>
 
@@ -31,7 +31,7 @@ function Landing(props) {
 
             {lesson ?
                 (<div>
-                    <Link to='/RegisterLesson'>RegisterLesson</Link>
+                    <Link to='/RegisterLesson'>RegisterLessor</Link>
                 </div>)
                 :
                 (<div>

@@ -140,7 +140,7 @@ function OccupantFistPage(props) {
             </div>
             <div>
                 <span>
-                    <span style={{ fontSize: "20px" }}>Your Lesson Id: &nbsp; </span>
+                    <span style={{ fontSize: "20px" }}>Your Lessor Id: &nbsp; </span>
                     {lessonData ? <span style={{ fontSize: "28px" }}>{lessonData.id}   &nbsp;&nbsp;</span> : null}
                     <span style={{ fontSize: "20px" }}>Your Dormitory Name : &nbsp; </span>
                     {lessonData ? <span style={{ fontSize: "28px" }}>{lessonData.DormitoryName}</span> : null}

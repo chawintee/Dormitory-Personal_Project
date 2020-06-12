@@ -6,7 +6,7 @@ function ShowLessonInfo(props) {
         <div>
             {/* ShowLessonInfo */}
             <span>
-                <span>Lesson id : </span><span>&nbsp;{lessonData.id}</span>
+                <span>Lessor id : </span><span>&nbsp;{lessonData.id}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>Dormitory Name : </span><span>&nbsp;{lessonData.DormitoryName}</span>
             </span>
