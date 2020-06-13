@@ -141,30 +141,27 @@ function MeterManage(props) {
             setUserInfo(user)
         }
         genYear();
-        // initialCreateMonthlyValue();
         // console.log({ selectedYear, selectedMonth})
     }, [])
 
     useEffect(() => {
         fetchData();
         fetchMonthlyValueData();
-        // fetchLastMonthValueData();
-        // initialCreateMonthlyValue();
-        // reArrangeArray();
     }, [userInfo])
 
     useEffect(() => {
         console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit, monthlyValueData, lastMonthlyValueData })
         fetchMonthlyValueData();
-        // fetchLastMonthValueData();
-        // initialCreateMonthlyValue();
         // reArrangeArray();
-    }, [selectedYear, selectedMonth, blur])
+    }, [selectedYear, selectedMonth])
     
     useEffect(()=>{
         initialCreateMonthlyValue();
     },[selectedMonth])
-
+    
+    useEffect(()=>{
+        fetchMonthlyValueData();
+    },[blur])
 
 
     const genYear = () => {
@@ -358,6 +355,7 @@ function MeterManage(props) {
                 return ele
             }
         })
+        setBlur(!blur)
         // console.log(newMonthlyValueData)
         // setMonthlyValueData(newMonthlyValueData)
     }
@@ -452,7 +450,7 @@ function MeterManage(props) {
                                 {/* <td>{obj.lastElectricityMeter}</td> */}
                                 {obj.editThisMonthEEMeter ? <td onDoubleClick={() => editAddEEMeterStatus(obj.id)}>{obj.ElectricityMeter}</td> : <td> <input onBlur={() => finishedAddEEMeter(obj.id)} onChange={textEEMeterText} placeholder={obj.ElectricityMeter} ></input> </td>}
                                 {/* <td>{obj.lastWaterMeter}</td> */}
-                                {obj.editThisMonthWaterMeter ? <td onDoubleClick={() => editAddWaterMeterStatus(obj.id)}>{obj.WaterMeter}</td> : <td> <input onBlur={() => finishedAddWaterMeter(obj.id)} onChange={textWaterMeterText} placeholder={obj.id}></input> </td>}
+                                {obj.editThisMonthWaterMeter ? <td onDoubleClick={() => editAddWaterMeterStatus(obj.id)}>{obj.WaterMeter}</td> : <td> <input onBlur={() => finishedAddWaterMeter(obj.id)} onChange={textWaterMeterText} placeholder={obj.WaterMeter} /*placeholder={obj.id}*/></input> </td>}
                                 <td>{obj.TotalRentPrice}</td>
                             </tr>
 
@@ -467,8 +465,8 @@ function MeterManage(props) {
 
 
             <hr />
-            <button onClick={showLogLog}>log</button>
-            <button onClick={reArrangeArray}>Rearrange</button>
+            {/* <button onClick={showLogLog}>log</button> */}
+            {/* <button onClick={reArrangeArray}>Rearrange</button> */}
 
         </div >
     )
