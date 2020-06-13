@@ -31,6 +31,7 @@ function MeterManage(props) {
             RentPrice: rentPrice,
         }
         await axios.post(`/monthlyValue/initialCreate/${userInfo.id}`, body)
+        setBlur(!blur)
     }
 
 
@@ -140,6 +141,7 @@ function MeterManage(props) {
             setUserInfo(user)
         }
         genYear();
+        // initialCreateMonthlyValue();
         // console.log({ selectedYear, selectedMonth})
     }, [])
 
@@ -147,7 +149,7 @@ function MeterManage(props) {
         fetchData();
         fetchMonthlyValueData();
         // fetchLastMonthValueData();
-        initialCreateMonthlyValue();
+        // initialCreateMonthlyValue();
         // reArrangeArray();
     }, [userInfo])
 
@@ -155,9 +157,13 @@ function MeterManage(props) {
         console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit, monthlyValueData, lastMonthlyValueData })
         fetchMonthlyValueData();
         // fetchLastMonthValueData();
-        initialCreateMonthlyValue();
+        // initialCreateMonthlyValue();
         // reArrangeArray();
     }, [selectedYear, selectedMonth, blur])
+    
+    useEffect(()=>{
+        initialCreateMonthlyValue();
+    },[selectedMonth])
 
 
 
