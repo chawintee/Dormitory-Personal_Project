@@ -356,7 +356,7 @@ function AddNewOccupant(props) {
                                     <td>{item.Name}</td>
                                     <td>{item.Surname}</td>
                                     <td>{item.Mobile}</td>
-                            <td> <button onClick={()=>CheckOutLiveIn(obj.id,item.id)}>{obj.id}</button> </td>
+                             {item.LiveIn.Status ? <td><button onClick={()=>CheckOutLiveIn(obj.id,item.id)}>Check Out{/*obj.id*/}</button> </td> : <td> </td>} 
                                 </>)}
                         </tr>
                     ) :

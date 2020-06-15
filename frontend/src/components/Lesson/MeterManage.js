@@ -7,9 +7,9 @@ import InputPricePerUnit from './Components/InputPricePerUnit';
 import NavbarLesson from './Components/NavbarLesson';
 
 function MeterManage(props) {
-
+    
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
-
+    
     const [lessonData, setLessonData] = useState({});
     const [year, setYear] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -21,7 +21,8 @@ function MeterManage(props) {
     const [blur, setBlur] = useState(true)
     const [textEEMeter, setTextEEMeter] = useState("");
     const [selectedFloor, setSelectedFloor] = useState(null)
-
+    const [floor, setFloor] =useState([])
+    
     const initialCreateMonthlyValue = async () => {
         const body = {
             Month: selectedMonth,
@@ -33,7 +34,6 @@ function MeterManage(props) {
         await axios.post(`/monthlyValue/initialCreate/${userInfo.id}`, body)
         setBlur(!blur)
     }
-
 
     const fetchData = async () => {
         // console.log(userInfo.id)
@@ -214,7 +214,9 @@ function MeterManage(props) {
 
 
     const showLogLog = () => {
-        console.log({ monthlyValueData, lastMonthlyValueData, newLastMonthlyValue, textEEMeter })
+        genFloor();
+        console.log(floor)
+        // console.log({ monthlyValueData, lastMonthlyValueData, newLastMonthlyValue, textEEMeter })
     }
 
 
@@ -372,7 +374,6 @@ function MeterManage(props) {
     }
 
 
-    const [floor, setFloor] =useState([])
 
     const genFloor = async () => {
         const body = {
@@ -496,7 +497,7 @@ function MeterManage(props) {
 
 
             <hr />
-            {/* <button onClick={showLogLog}>log</button> */}
+            <button onClick={showLogLog}>log</button>
             {/* <button onClick={reArrangeArray}>Rearrange</button> */}
 
         </div >
