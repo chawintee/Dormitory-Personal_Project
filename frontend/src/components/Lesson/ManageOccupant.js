@@ -33,16 +33,6 @@ function ManageOccupant(props) {
         setMonthlyValueData(MonthlyValue.data.MonthlyValueByLessonId)
     }
 
-
-
-
-
-
-
-
-
-
-
     useEffect(() => {
         if (localStorage.getItem('ACCESS_TOKEN_LESSON')) {
             // console.log("Have ACCESS_TOKEN_LESSON");
@@ -62,12 +52,7 @@ function ManageOccupant(props) {
 
     useEffect(()=>{
         fetchDataMonthlyValue();
-    },[pushButton, selectedMonth, selectedYear])
-
-
-
-
-
+    },[pushButton, selectedMonth, selectedYear,monthlyValueData])
 
     const genYear = () => {
         const thisYear = new Date().getFullYear();
@@ -100,25 +85,17 @@ function ManageOccupant(props) {
             if (ele.id == targetId) {
                 const body = {
                     PaidDate: new Date(),
-                    PaidStatus: !ele.PaidStatus
+                    // PaidStatus: !ele.PaidStatus
+                    PaidStatus: true
                 }
                 await axios.patch(`/MonthlyValue//editSomeValue/${targetId}`,body)
-                setPushButton(!pushButton);
+                // setPushButton(!pushButton);
+                setPushButton(true);
             }
         })
-        setPushButton(!pushButton);
+        // setPushButton(!pushButton);
+        setPushButton(true);
     }
-
-
-
-
-
-
-
-
-
-
-
 
     const logLogLog = () => {
         console.log({ userInfo, lessonData, selectedMonth, selectedYear });
@@ -129,10 +106,6 @@ function ManageOccupant(props) {
         const hello = monthlyValueData.map(ele => console.log(typeof(ele.PaidDate)))
         const hello1 = monthlyValueData.map(ele => console.log(ele.PaidDate))
     }
-
-
-
-
 
     return (
         <div>
@@ -171,7 +144,8 @@ function ManageOccupant(props) {
                                 <td>{obj.TotalRentPrice}</td>
                                 <td>{obj.PaidDate}</td>
                                 <td>{obj.PaidStatus ? <span>Paid</span> : <span>Waiting</span>}</td>
-                                <td><button onClick={() => PaidStatusToggle(obj.id)}>Paid</button></td>
+                                {obj.PaidStatus ? <td></td>  : <td><button onClick={() => PaidStatusToggle(obj.id)}>Paid</button></td>}
+                                
                             </tr>
                         )}
 

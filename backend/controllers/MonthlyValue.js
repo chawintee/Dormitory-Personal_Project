@@ -80,11 +80,14 @@ const getMonthlyValueByLessonId = async (req, res) => {
     const LessonId = req.params.LessonId;
     const Year = req.body.Year;
     const Month = req.body.Month;
+    const Floor = req.body.Floor;
     const filters = { Year: Year };
     filters['Month'] = Month;
     filters['$Room.LessonId$'] = LessonId;
     filters['$Room->Occupants->LiveIn.Status$'] = true;
-
+    if(Floor){
+        filters['$Room.Floor$'] = Floor;
+    }
 
     try {
         console.log("-------------------------------------------------------------------------------------------------------------------------------------")

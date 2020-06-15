@@ -20,7 +20,7 @@ function MeterManage(props) {
     // const [editThisMonthWaterMeter, setEditThisMonthWaterMeter] = useState(false);
     const [blur, setBlur] = useState(true)
     const [textEEMeter, setTextEEMeter] = useState("");
-
+    const [selectedFloor, setSelectedFloor] = useState(null)
 
     const initialCreateMonthlyValue = async () => {
         const body = {
@@ -46,6 +46,7 @@ function MeterManage(props) {
         const body = {
             Year: selectedYear,
             Month: selectedMonth,
+            Floor: selectedFloor,
         }
         const monthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
         // console.log({result: monthlyValueData, lessonId : userInfo.id})
@@ -86,6 +87,7 @@ function MeterManage(props) {
             }
         })
         setMonthlyValueData(monthlyValueAddEdit);
+        console.log(monthlyValueAddEdit)
         // setMonthlyValueData(monthlyValueData.data.MonthlyValueByLessonId)
     }
 
@@ -147,13 +149,14 @@ function MeterManage(props) {
     useEffect(() => {
         fetchData();
         fetchMonthlyValueData();
+        genFloor();
     }, [userInfo])
 
     useEffect(() => {
         console.log({ selectedYear, selectedMonth, electricityPricePerUnit, waterPricePerUnit, monthlyValueData, lastMonthlyValueData })
         fetchMonthlyValueData();
         // reArrangeArray();
-    }, [selectedYear, selectedMonth])
+    }, [selectedYear, selectedMonth,selectedFloor])
     
     useEffect(()=>{
         initialCreateMonthlyValue();
@@ -293,17 +296,20 @@ function MeterManage(props) {
                 }
                 const newWaterMeterValue = await axios.patch(`/MonthlyValue/editSomeValue/${targetId}`, body)
                 // console.log(newWaterMeterValue)
-                setBlur(!blur)
-                setTextWaterMeter("")
+                setTextWaterMeter("");
+                console.log("in If")
+                setBlur(!blur);
                 return newWaterMeterValue
-            } else {
+            }else {
                 // console.log("same")
                 setBlur(!blur)
+                console.log("in else")
                 return ele
             }
         })
         // console.log(newWaterMeterValue)
         // setMonthlyValueData(newMonthlyValue)
+        console.log("Now")
         setBlur(!blur)
     }
 
@@ -366,6 +372,31 @@ function MeterManage(props) {
     }
 
 
+    const [floor, setFloor] =useState([])
+
+    const genFloor = async () => {
+        const body = {
+            Status : true,
+        }
+        const Floor = await axios.post(`/room/getFloorByLessonId/${userInfo.id}`, body);
+        Floor.data.setRoomFloor.unshift("All")
+        setFloor(Floor.data.setRoomFloor);
+        console.log(Floor)
+    }
+    
+    
+    const handleSelectedFloor = (e) => {
+        console.log(e.target.value)
+        if(e.target.value == "All"){
+            setSelectedFloor(null)
+            setBlur(!blur)
+        }else{
+            setSelectedFloor(e.target.value)
+            setBlur(!blur)
+        }
+    }
+
+
 
 
 
@@ -418,7 +449,7 @@ function MeterManage(props) {
 
             <ShowSelected handle={handleSelectedYear} defaultValue={selectedYear} arrValue={year} />
             <ShowSelected handle={handleSelectedMonth} defaultValue={months[selectedMonth - 1]} arrValue={months} />
-
+            <ShowSelected handle={handleSelectedFloor} defaultValue={selectedFloor} arrValue={floor} />
 
             <InputPricePerUnit name="Electricity price per unit" pricePerUnitValue={electricityPricePerUnit} handle={handleElectricityPricePerUnit} defaultPricePerUnit={electricityPricePerUnit} />
             <InputPricePerUnit name="Water price per unit" pricePerUnitValue={waterPricePerUnit} handle={handleWaterPricePerUnit} defaultPricePerUnit={waterPricePerUnit} />
