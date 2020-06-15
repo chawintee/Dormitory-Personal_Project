@@ -16,8 +16,6 @@ function MeterManage(props) {
     const [selectedMonth, setSelectMonth] = useState(new Date().getMonth() + 1);
     const [monthlyValueData, setMonthlyValueData] = useState([]);
     const [lastMonthlyValueData, setLastMonthlyValueData] = useState([]);
-    // const [editThisMonthEEMeter, setEditThisMonthEEMeter] = useState(false);
-    // const [editThisMonthWaterMeter, setEditThisMonthWaterMeter] = useState(false);
     const [blur, setBlur] = useState(true)
     const [textEEMeter, setTextEEMeter] = useState("");
     const [selectedFloor, setSelectedFloor] = useState(null)
@@ -92,28 +90,6 @@ function MeterManage(props) {
     }
 
 
-    /////////////////////////////////////////////////////////////////////////////////Don't Use//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // const fetchMonthlyValueData = async () => {
-    //     const body = {
-    //         Year: selectedYear,
-    //         Month: selectedMonth,
-    //     }
-    //     const monthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueAndLastMonthlyValueByLessonId/${userInfo.id}`, body)
-    //     // console.log({result: monthlyValueData, lessonId : userInfo.id})
-    //     // console.log(monthlyValueData.data.MonthlyValueByLessonId)
-    //     const tempMonthlyValueData = monthlyValueData.data.MonthlyValueAndLastMonthlyValueByLessonId
-    //     const monthlyValueAddEdit = tempMonthlyValueData.map(ele => {
-    //         return {
-    //             ...ele,
-    //             editThisMonthEEMeter: false,
-    //             editThisMonthWaterMeter: false,
-    //             editTextMonthEEMeter: "",
-    //             editTextMonthWaterMeter: "",
-    //         }
-    //     })
-    //     setMonthlyValueData(monthlyValueAddEdit);
-    //     // setMonthlyValueData(monthlyValueData.data.MonthlyValueByLessonId)
-    // }
 
     const fetchLastMonthValueData = async () => {
         let lastYear;
@@ -132,7 +108,6 @@ function MeterManage(props) {
         const lastMonthlyValueData = await axios.post(`/MonthlyValue/getMonthlyValueByLessonId/${userInfo.id}`, body)
         setLastMonthlyValueData(lastMonthlyValueData.data.MonthlyValueByLessonId)
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     useEffect(() => {
         if (localStorage.getItem("ACCESS_TOKEN_LESSON")) {
@@ -165,7 +140,6 @@ function MeterManage(props) {
     useEffect(()=>{
         fetchMonthlyValueData();
     },[blur])
-
 
     const genYear = () => {
         const nowYear = new Date().getFullYear();
@@ -401,7 +375,7 @@ function MeterManage(props) {
 
 
 
-    ////////////////////////////////////////////////////////////////////////Don't Use/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/****************************************************************************************Don't Use***************************************************************************************************************************************************/
     const [newLastMonthlyValue, setNewLastMonthlyValue] = useState([])
     const reArrangeArray = () => {
         console.log("test")
@@ -432,8 +406,7 @@ function MeterManage(props) {
         console.log(newNewNewMonthlyValue)
         setMonthlyValueData(newNewNewMonthlyValue)
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/**********************************************************************************************************************************************************************************************************/
 
 
 
@@ -499,6 +472,7 @@ function MeterManage(props) {
             <hr />
             <button onClick={showLogLog}>log</button>
             {/* <button onClick={reArrangeArray}>Rearrange</button> */}
+            <button>blur</button>
 
         </div >
     )
