@@ -274,19 +274,10 @@ function MeterManage(props) {
                 // console.log(newWaterMeterValue)
                 setTextWaterMeter("");
                 console.log("in If")
-                setBlur(!blur);
-                return newWaterMeterValue
-            }else {
-                // console.log("same")
-                setBlur(!blur)
-                console.log("in else")
-                return ele
             }
         })
-        // console.log(newWaterMeterValue)
-        // setMonthlyValueData(newMonthlyValue)
         console.log("Now")
-        setBlur(!blur)
+        setTimeout(fetchMonthlyValueData, 210)
     }
 
     const editAddWaterMeterStatus = (targetId) => {
@@ -323,6 +314,7 @@ function MeterManage(props) {
     }
 
     const finishedAddRentPrice = (targetId) => {
+        console.log("sonter")
         const newMonthlyValueData = monthlyValueData.map(async (ele) => {
             if (ele.id == targetId) {
                 const body = {
