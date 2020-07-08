@@ -66,7 +66,7 @@ const loginOccupant = async (req, res) => {
 const getOccupantById = async (req,res) => {
     const id = req.params.id;
     // console.log(id)
-    const LessonData = await db.Occupant.findOne({where : {id : id}});
+    const LessonData = await db.Occupant.findOne({where : {id : id}, attributes: ['id', 'Username','Name','Surname','Mobile','Address']});
     // console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
     // console.log(LessonData)
     if(LessonData){
