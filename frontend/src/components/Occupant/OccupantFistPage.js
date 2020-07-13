@@ -26,7 +26,6 @@ function OccupantFistPage(props) {
     }, []);
     
     
-    
     const fetchData = async () => {
         try{
             const occupantData = await axios.get(`/Occupant/get/${userInfo.id}`)
@@ -62,7 +61,6 @@ function OccupantFistPage(props) {
     }
 
 
-
     useEffect(() => {
         fetchData();
         fetchLessorData();
@@ -81,7 +79,6 @@ function OccupantFistPage(props) {
     }
 
 
-
     const genYear = () => {
         const nowYear = new Date().getFullYear();
         const ArrYear = [];
@@ -97,7 +94,6 @@ function OccupantFistPage(props) {
         const numberMonth = months.findIndex(ele => ele == e.target.value) + 1;
         setSelectedMonth(numberMonth);
     }
-
 
 
     const handleSelectedYear = (e) => {
