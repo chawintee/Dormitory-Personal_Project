@@ -10,10 +10,8 @@ const registerOccupant = async (req, res) => {
     const Mobile = req.body.Mobile;
     const Address = req.body.Address;
     const Photo = req.body.Photo;
-    // console.log(Username)
 
     const user = await db.Occupant.findOne({ where: { Username: Username } });
-    // res.send(user)
 
     if (user) {
         res.status(201).send({ message: "Invalid Username or Password" });
@@ -31,8 +29,6 @@ const registerOccupant = async (req, res) => {
         })
 
         const user1 = await db.Occupant.findOne({where :{Username: Username}})
-        // console.log(user1.data)
-        // res.status(201).send({ message: "User created" });
         res.status(201).send({result : user1,message:"User created"});
     }
 }
@@ -47,13 +43,9 @@ const loginOccupant = async (req, res) => {
         res.status(201).send({ message: "Invalid Username or Password" });
     } else {
         const isSuccess = bcryptjs.compareSync(Password, user.Password);
-        // res.send(isSuccess);
         if (isSuccess) {
             const payload = {
                 id: user.id,
-                // Name: user.Name,
-                // Surname: user.Surname,
-                // Photo: user.Photo,
             }
             const token = jwt.sign(payload, "Dorm", { expiresIn: 7200 });
             res.status(200).send({token: token})
@@ -64,12 +56,8 @@ const loginOccupant = async (req, res) => {
 }
 
 const getOccupantById = async (req,res) => {
-    // const id = req.user.id;
     const id = req.params.id;
-    // console.log(id)
     const occupantData = await db.Occupant.findOne({where : {id : id}, attributes: ['id', 'Username','Name','Surname','Mobile','Address']});
-    // console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-    // console.log(LessonData)
     if(occupantData){
         res.status(200).send({occupantData:occupantData})
     }else{
@@ -80,7 +68,6 @@ const getOccupantById = async (req,res) => {
 
 const checkUsername = async (req,res) => {
     const username = req.body.username;
-    // console.log(username)
     const user = await db.Occupant.findOne({where : {Username: username}});
     if(user){
         res.status(404).send({message:"Invalid Username"})
@@ -89,18 +76,5 @@ const checkUsername = async (req,res) => {
         res.status(201).send({result:user})
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = { registerOccupant, loginOccupant,getOccupantById,checkUsername }
