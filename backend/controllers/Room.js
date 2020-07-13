@@ -83,7 +83,7 @@ const getRoomLiveInOccupantDataByLessonId = async (req, res) => {
         }
 
         // const OccupantRoomData = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant, attributes: ['id', 'Name','Surname','Mobile','Address','Photo'] }], order: [['Floor', 'ASC'], ['RoomNumber', 'ASC']], attributes: ['RoomNumber', 'Floor'] })
-        const OccupantRoomData = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant }], order: [['Floor', 'ASC'], ['RoomNumber', 'ASC']]})
+        const OccupantRoomData = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant }], order: [['Floor', 'ASC'], ['RoomNumber', 'ASC']],attributes: ['RoomNumber', 'Floor','id']})
         res.status(200).send({ OccupantRoomData, length: OccupantRoomData.length, message: "OK" });
 
     } catch (e) {
