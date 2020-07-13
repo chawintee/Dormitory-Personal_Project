@@ -202,9 +202,9 @@ function AddNewOccupant(props) {
     const getOccupantData = async () => {
         try {
             const result = await axios.get(`/Occupant/getOccupantById/${occupantId}`)
-            console.log(result.data.LessonData);
-            setOccupantData(result.data.LessonData);
-        } catch{
+            // console.log(result.data.occupantData);
+            setOccupantData(result.data.occupantData);
+        } catch (err){
             alert("Don't have data of occupantId")
             setOccupantData({})
             setOccupantId("")

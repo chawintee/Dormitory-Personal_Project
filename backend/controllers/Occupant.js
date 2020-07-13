@@ -31,7 +31,7 @@ const registerOccupant = async (req, res) => {
         })
 
         const user1 = await db.Occupant.findOne({where :{Username: Username}})
-        console.log(user1.data)
+        // console.log(user1.data)
         // res.status(201).send({ message: "User created" });
         res.status(201).send({result : user1,message:"User created"});
     }
@@ -64,13 +64,14 @@ const loginOccupant = async (req, res) => {
 }
 
 const getOccupantById = async (req,res) => {
+    // const id = req.user.id;
     const id = req.params.id;
     // console.log(id)
-    const LessonData = await db.Occupant.findOne({where : {id : id}, attributes: ['id', 'Username','Name','Surname','Mobile','Address']});
+    const occupantData = await db.Occupant.findOne({where : {id : id}, attributes: ['id', 'Username','Name','Surname','Mobile','Address']});
     // console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
     // console.log(LessonData)
-    if(LessonData){
-        res.status(200).send({LessonData:LessonData})
+    if(occupantData){
+        res.status(200).send({occupantData:occupantData})
     }else{
         res.status(400).send({message:"Don't have data of occupantId"})
     }

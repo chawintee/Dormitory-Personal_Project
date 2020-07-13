@@ -3,12 +3,23 @@ const router = express.Router();
 const occupantController = require('../controllers/Occupant');
 const passport = require('passport');
 
-const auth = passport.authenticate('jwr-authentication',{session: false});
+const authLessor = passport.authenticate('jwt-authentication-occupant', { session: false });
+const authOccupant = passport.authenticate('jwt-authentication-lessor', { session: false });
 
- router.post('/register',occupantController.registerOccupant)
- router.post('/login',occupantController.loginOccupant)
- router.get('/getOccupantById/:id',auth,occupantController.getOccupantById) 
- router.post('/checkUsername',occupantController.checkUsername)
+let auth ;
+
+if (authLessor) {
+    auth = passport.authenticate('jwt-authentication-lessor', { session: false });
+}
+if (authOccupant) {
+    auth = passport.authenticate('jwt-authentication-occupant', { session: false });
+}
+
+router.post('/register', occupantController.registerOccupant)
+router.post('/login', occupantController.loginOccupant)
+router.get('/getOccupantById/:id', auth, occupantController.getOccupantById)
+// router.get('/get/',auth, occupantController.getOccupantById)
+router.post('/checkUsername', occupantController.checkUsername)
 
 
 

@@ -14,41 +14,8 @@ function OccupantFistPage(props) {
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
     const [monthlyValueData, setMonthlyValueData] = useState({})
-
-
-
-
-
-    const fetchData = async () => {
-        console.log("fetchData")
-        const LessonData = await axios.get(`/Occupant/getOccupantById/${userInfo.id}`)
-        // console.log(LessonData)
-        // console.log(LessonData.data)
-        console.log(LessonData.data.LessonData)
-        setOccupantData(LessonData.data.LessonData)
-        // setOccupantData(LessonData)
-    }
-
-
-    const fetchLessonData = async () => {
-        const LessonData = await axios.get(`/lesson/getLessonDataByOccupantId/${userInfo.id}`)
-        console.log(LessonData.data.lessonData)
-        setLessonData(LessonData.data.lessonData)
-        setRoomData(LessonData.data.RoomData)
-    }
-
-
-    const fetchMonthlyValueData = async () => {
-        const body = {
-            Year: selectedYear,
-            Month: selectedMonth,
-        }
-        const monthlyValueData = await axios.post(`MonthlyValue/getMonthlyValueDataByYearMonthOccupantId/${userInfo.id}`, body);
-        console.log(monthlyValueData.data.MonthlyValueData);
-        setMonthlyValueData(monthlyValueData.data.MonthlyValueData);
-    }
-
-
+    
+    
     useEffect(() => {
         // console.log("Hello")
         if (localStorage.getItem("ACCESS_TOKEN_OCCUPANT")) {
@@ -61,6 +28,42 @@ function OccupantFistPage(props) {
         }
         genYear();
     }, []);
+    
+    
+    
+    const fetchData = async () => {
+        console.log(userInfo)
+        // console.log("fetchData")
+        const occupantData = await axios.get(`/Occupant/getOccupantById/${userInfo.id}`)
+        // const occupantData = await axios.get(`/Occupant/get`)
+        console.log(occupantData)
+        // console.log(occupantData.data)
+        // console.log(occupantData.data.occupantData)
+        setOccupantData(occupantData.data.occupantData)
+        // setOccupantData(LessonData)
+    }
+
+
+    const fetchLessonData = async () => {
+        // console.log(localStorage.getItem("ACCESS_TOKEN_OCCUPANT"))
+        const LessonData = await axios.get(`/lesson/getLessonDataByOccupantId/${userInfo.id}`);
+        // console.log(LessonData.data.lessonData);
+        setLessonData(LessonData.data.lessonData);
+        setRoomData(LessonData.data.RoomData);
+    }
+
+
+    const fetchMonthlyValueData = async () => {
+        const body = {
+            Year: selectedYear,
+            Month: selectedMonth,
+        }
+        const monthlyValueData = await axios.post(`MonthlyValue/getMonthlyValueDataByYearMonthOccupantId/${userInfo.id}`, body);
+        // console.log(monthlyValueData.data.MonthlyValueData);
+        setMonthlyValueData(monthlyValueData.data.MonthlyValueData);
+    }
+
+
 
     useEffect(() => {
         fetchData();
@@ -71,13 +74,6 @@ function OccupantFistPage(props) {
     useEffect(() => {
         fetchMonthlyValueData();
     }, [selectedMonth, selectedYear])
-
-
-
-
-
-
-
 
     const logout = () => {
         localStorage.removeItem("ACCESS_TOKEN_OCCUPANT");
@@ -90,7 +86,7 @@ function OccupantFistPage(props) {
 
     const genYear = () => {
         const nowYear = new Date().getFullYear();
-        console.log(nowYear)
+        // console.log(nowYear)
         const ArrYear = [];
         for (let i = nowYear; i >= nowYear - 100; i--) {
             // console.log(i)
@@ -115,6 +111,9 @@ function OccupantFistPage(props) {
         setSelectedYear(e.target.value)
     }
 
+    const logHello = () => {
+        console.log(occupantData.Name)
+    }
 
 
     const logLogLog = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Landing from './Landing/Landing'
@@ -13,9 +13,10 @@ import ManageOccupant from './Lesson/ManageOccupant';
 
 function App() {
 
+  
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-
+  
   return (
     <div className="App">
       <Switch>
