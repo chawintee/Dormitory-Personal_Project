@@ -115,8 +115,8 @@ const getLessonDataByOccupantId = async (req, res) => {
     filters['$Rooms.Occupants.LiveIn.Status$'] = 1;
     console.log(filters)
     try {
-        const RoomData = await db.Room.findOne({include:[{model: db.Occupant ,where:{id: id}}]})
-        const lessonData = await db.Lesson.findAll({ where: filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
+        const RoomData = await db.Room.findOne({include:[{model: db.Occupant ,where:{id: id},attributes:['id']}],attributes:['RoomNumber']})
+        const lessonData = await db.Lesson.findAll({ where: filters, include: [{ model: db.Room, attributes:['RoomNumber'], include: [{ model: db.Occupant, attributes:['id'] }] }], attributes:['id','DormitoryName'] })
         const objLessonData = lessonData[0];
         // res.send({ lessonData: lessonData ,objLessonData:objLessonData })
         res.send({lessonData:objLessonData ,RoomData:RoomData})

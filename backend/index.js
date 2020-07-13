@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
 const LessonRoute = require('./routes/Lesson');
 app.use('/Lesson', LessonRoute);
 
+app.use('/Lessor', LessonRoute);
+
 const OccupantRoute = require('./routes/Occupant');
 app.use('/Occupant', OccupantRoute);
 

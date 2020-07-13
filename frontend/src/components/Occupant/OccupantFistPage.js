@@ -28,15 +28,23 @@ function OccupantFistPage(props) {
     
     
     const fetchData = async () => {
-        const occupantData = await axios.get(`/Occupant/get/${userInfo.id}`)
-        setOccupantData(occupantData.data.occupantData)
+        try{
+            const occupantData = await axios.get(`/Occupant/get/${userInfo.id}`)
+            setOccupantData(occupantData.data.occupantData)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
-    const fetchLessonData = async () => {
-        const LessonData = await axios.get(`/lesson/getLessonDataByOccupantId/${userInfo.id}`);
-        setLessonData(LessonData.data.lessonData);
-        setRoomData(LessonData.data.RoomData);
+    const fetchLessorData = async () => {
+        try{
+            const LessorData = await axios.get(`/lessor/data/${userInfo.id}`);
+            setLessonData(LessorData.data.lessonData);
+            setRoomData(LessorData.data.RoomData);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -45,15 +53,19 @@ function OccupantFistPage(props) {
             Year: selectedYear,
             Month: selectedMonth,
         }
-        const monthlyValueData = await axios.post(`MonthlyValue/getMonthlyValueDataByYearMonthOccupantId/${userInfo.id}`, body);
-        setMonthlyValueData(monthlyValueData.data.MonthlyValueData);
+        try{
+            const monthlyValueData = await axios.post(`MonthlyValue/getMonthlyValueDataByYearMonthOccupantId/${userInfo.id}`, body);
+            setMonthlyValueData(monthlyValueData.data.MonthlyValueData);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
 
     useEffect(() => {
         fetchData();
-        fetchLessonData();
+        fetchLessorData();
         fetchMonthlyValueData();
     }, [userInfo])
 
