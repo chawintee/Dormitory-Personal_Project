@@ -5,21 +5,21 @@ axios.defaults.baseURL = "http://localhost:8000";
 axios.interceptors.request.use(
 
    async (config) => {
-       console.log('in head')
+    //    console.log('in head')
         const occupantToken = await localStorage.getItem("ACCESS_TOKEN_OCCUPANT")
         const lessorToken = await localStorage.getItem("ACCESS_TOKEN_LESSON")
         if (!occupantToken && !lessorToken) {
-            console.log('in not')
+            // console.log('in not')
             return config;
         }
         if (occupantToken) {
-            console.log('in occupant')
+            // console.log('in occupant')
             config.headers['Authorization'] = `Bearer ${occupantToken}`;
-            console.log(config)
+            // console.log(config)
             return config;
         }
         if (lessorToken) {
-            console.log('in lesson')
+            // console.log('in lesson')
             config.headers['Authorization'] = `Bearer ${lessorToken}`;
             return config;
         }

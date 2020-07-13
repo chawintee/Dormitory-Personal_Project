@@ -32,11 +32,11 @@ function OccupantFistPage(props) {
     
     
     const fetchData = async () => {
-        console.log(userInfo)
+        // console.log(userInfo)
         // console.log("fetchData")
-        const occupantData = await axios.get(`/Occupant/getOccupantById/${userInfo.id}`)
+        const occupantData = await axios.get(`/Occupant/get/${userInfo.id}`)
         // const occupantData = await axios.get(`/Occupant/get`)
-        console.log(occupantData)
+        // console.log(occupantData)
         // console.log(occupantData.data)
         // console.log(occupantData.data.occupantData)
         setOccupantData(occupantData.data.occupantData)

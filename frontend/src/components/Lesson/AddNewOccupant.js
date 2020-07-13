@@ -201,7 +201,7 @@ function AddNewOccupant(props) {
 
     const getOccupantData = async () => {
         try {
-            const result = await axios.get(`/Occupant/getOccupantById/${occupantId}`)
+            const result = await axios.get(`/Occupant/get/${occupantId}`)
             // console.log(result.data.occupantData);
             setOccupantData(result.data.occupantData);
         } catch (err){

@@ -17,7 +17,7 @@ if (authOccupant) {
 
 router.post('/register', occupantController.registerOccupant)
 router.post('/login', occupantController.loginOccupant)
-router.get('/getOccupantById/:id', auth, occupantController.getOccupantById)
+router.get('/get/:id', auth, occupantController.getOccupantById)
 // router.get('/get/',auth, occupantController.getOccupantById)
 router.post('/checkUsername', occupantController.checkUsername)
 
