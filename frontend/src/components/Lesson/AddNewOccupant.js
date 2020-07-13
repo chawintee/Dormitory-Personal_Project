@@ -10,15 +10,12 @@ function AddNewOccupant(props) {
     const { isLogin, setIsLogin, userInfo, setUserInfo } = props;
     const [lessonData, setLessonData] = useState({});
     const [year, setYear] = useState([]);
-    // const [month, setMonth] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
     const [selectedStatus, setSelectedStatus] = useState(1);
     const [selectedFloor, setSelectedFloor] = useState(null)
 
-    // const [status, setStatus] = useState([])
     const [floor, setFloor] = useState([]);
-    // const [roomDetail, setRoomDetail] = useState([{ Room: "101", id: '1', Name: "Oca", Surname: "OcA", Mobile: "0990200201" }, { Room: "102", id: '2', Name: "OcB", Surname: "OcB", Mobile: '0990200201' }, { Room: '103', id: '3', Name: 'OcC', Surname: 'OcC', Mobile: '0990200201' }])
     const [roomDetail, setRoomDetail] = useState([])
 
     const [occupantId, setOccupantId] = useState("");

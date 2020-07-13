@@ -12,94 +12,52 @@ const createRoom = async (req, res) => {
     console.log("----------------------------------------------------------------------------------------------------------------------------------------------------------------------")
     console.log(RoomNumber);
 
-    const roomFilters = {LessonId: LessonId} ;
-    if(RoomNumber){
+    const roomFilters = { LessonId: LessonId };
+    if (RoomNumber) {
         roomFilters['RoomNumber'] = RoomNumber;
     }
-    if(Floor){
+    if (Floor) {
         roomFilters['Floor'] = Floor;
     }
-    roomFilters['$Occupants->LiveIn.Status$'] = true ;
+    roomFilters['$Occupants->LiveIn.Status$'] = true;
 
-    const occupantFilter = {id:OccupantId};
+    const occupantFilter = { id: OccupantId };
     occupantFilter['$Rooms->LiveIn.Status$'] = true;
 
-    const roomValue = {RoomNumber: RoomNumber};
+    const roomValue = { RoomNumber: RoomNumber };
     roomValue['Floor'] = Floor;
     roomValue['LessonId'] = LessonId;
 
-    const liveInValue = {Status: true};
+    const liveInValue = { Status: true };
     liveInValue['DateCheckIn'] = DateCheckIn;
     liveInValue['OccupantId'] = OccupantId;
 
     console.log(roomFilters)
-    try{
-        const roomHaveOccupant = await db.Room.findAll({where: roomFilters,include:[{model:db.Occupant}]})
+    try {
+        const roomHaveOccupant = await db.Room.findAll({ where: roomFilters, include: [{ model: db.Occupant }] })
         console.log(Boolean(roomHaveOccupant.length > 0))
-        if(roomHaveOccupant.length > 0){
-            res.status(400).send({message: 'This room have occupant now'})
+        if (roomHaveOccupant.length > 0) {
+            res.status(400).send({ message: 'This room have occupant now' })
         }
-        if(roomHaveOccupant.length == 0){
+        if (roomHaveOccupant.length == 0) {
             console.log("Loop-------------------------------------------------------------------------------------------------------------------")
-            const occupantHaveRoom = await db.Occupant.findAll({where: occupantFilter,include:[{model: db.Room}]})
-            if(occupantHaveRoom.length > 0){
-                res.status(400).send({message: 'This occupant have room now',occupantHaveRoom:occupantHaveRoom})
+            const occupantHaveRoom = await db.Occupant.findAll({ where: occupantFilter, include: [{ model: db.Room }] })
+            if (occupantHaveRoom.length > 0) {
+                res.status(400).send({ message: 'This occupant have room now', occupantHaveRoom: occupantHaveRoom })
             }
-            if(occupantHaveRoom.length == 0){
+            if (occupantHaveRoom.length == 0) {
                 const roomCreated = await db.Room.create(roomValue)
-                const liveInCreated = await db.LiveIn.create({...liveInValue,RoomId:roomCreated.id})
-                res.status(200).send({message: "Room and Occupant can create Room",liveInCreated:liveInCreated,roomCreated:roomCreated})
+                const liveInCreated = await db.LiveIn.create({ ...liveInValue, RoomId: roomCreated.id })
+                res.status(200).send({ message: "Room and Occupant can create Room", liveInCreated: liveInCreated, roomCreated: roomCreated })
             }
             // res.status(200).send({message: 'This Room can Create',roomHaveOccupant:roomHaveOccupant})
         }
         // res.send({roomHaveOccupant:roomHaveOccupant})
-    }catch(error)  {
+    } catch (error) {
         console.log(error)
-        res.send({message: 'Error'})
+        res.send({ message: 'Error' })
     }
 }
-
-
-
-
-
-
-/*
-
-const createRoom = async (req, res) => {
-    const RoomNumber = req.body.RoomNumber;
-    const Floor = req.body.Floor;
-    const LessonId = req.body.LessonId;
-    const Status = req.body.Status;
-    // const DateCheckIn = req.body.DateCheckIn;
-    const DateCheckIn = new Date();
-    const OccupantId = req.body.OccupantId;
-    const RoomId = req.body.RoomId;
-    console.log(RoomNumber);
-    // const room = await db.Room.findOne({ where: { RoomNumber: RoomNumber, LessonId : LessonId} });
-    // res.send(room)
-
-    // if (room) {
-    //     res.status(400).send({ message: "Room already token" })
-    // } else {
-    //     await db.Room.create({
-    //         RoomNumber,
-    //         Floor,
-    //         LessonId,
-    //     })
-    //     res.status(201).send({ message: "Room created" })
-    // }
-
-    // const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId, include: [{ model: db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId}) }] })
-    const roomInput = await db.Room.create({ RoomNumber, Floor, LessonId });
-    const LiveInInput = await db.LiveIn.create({ Status, DateCheckIn, OccupantId, RoomId: roomInput.id });
-    res.status(201).send({ result: roomInput, result1: LiveInInput })
-    // if(roomInput){
-    //     const LiveInInput = await db.LiveIn.create({Status, DateCheckIn, OccupantId,RoomId:roomInput.id});
-    //     res.status(201).send({ result: roomInput ,result1: LiveInInput })
-    // }
-}
-*/
 
 
 
@@ -121,10 +79,11 @@ const getRoomLiveInOccupantDataByLessonId = async (req, res) => {
             filters['Floor'] = Floor
         }
         if (Status) {
-            filters['$Occupants->LiveIn.Status$'] = Status === 'true' || Status ==='1'
+            filters['$Occupants->LiveIn.Status$'] = Status === 'true' || Status === '1'
         }
 
-        const OccupantRoomData = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant }] })
+        // const OccupantRoomData = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant, attributes: ['id', 'Name','Surname','Mobile','Address','Photo'] }], order: [['Floor', 'ASC'], ['RoomNumber', 'ASC']], attributes: ['RoomNumber', 'Floor'] })
+        const OccupantRoomData = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant }], order: [['Floor', 'ASC'], ['RoomNumber', 'ASC']]})
         res.status(200).send({ OccupantRoomData, length: OccupantRoomData.length, message: "OK" });
 
     } catch (e) {
@@ -135,33 +94,33 @@ const getRoomLiveInOccupantDataByLessonId = async (req, res) => {
 
 
 
-const getFloorByLessonId = async (req,res) => {
+const getFloorByLessonId = async (req, res) => {
     const Lesson = req.params.LessonId;
     const Floor = req.body.Floor;
     const Status = req.body.Status;
     console.log(Floor)
-    const filters = {LessonId: Lesson};
+    const filters = { LessonId: Lesson };
     // filters['Floor'] = Floor;
-    if(Floor){
+    if (Floor) {
         filters['Floor'] = Floor;
     }
-    if(Status){
-        filters['$Occupants->LiveIn.Status$'] = Status == "true" || Status === '1' ;
+    if (Status) {
+        filters['$Occupants->LiveIn.Status$'] = Status == "true" || Status === '1';
     }
 
     console.log(filters)
     console.log("----------------------------------------------------------------------------------------------------------------------------------------")
 
-    try{
+    try {
         // const roomFloor = await db.Room.findAll({where: filters, include:[{model: db.Occupant }]})
-        const roomFloor = await db.Room.findAll({where: filters, include:[{model: db.Occupant }]}).map(ele=> ele.Floor)
-        const setRoomFloor =[...new Set(roomFloor)]
+        const roomFloor = await db.Room.findAll({ where: filters, include: [{ model: db.Occupant }] }).map(ele => ele.Floor)
+        const setRoomFloor = [...new Set(roomFloor)]
         // console.log(roomFloor)
         // res.send({roomFloor:roomFloor,setRoomFloor:setRoomFloor ,LengthRoomFloor: roomFloor.length})
-        res.send({setRoomFloor:setRoomFloor })
+        res.send({ setRoomFloor: setRoomFloor })
     } catch (error) {
         console.log(error)
-        res.send({Message: "Error"})
+        res.send({ Message: "Error" })
     }
 }
 
