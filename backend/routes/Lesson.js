@@ -13,8 +13,8 @@ if (authOccupant) {
     auth = passport.authenticate('jwt-authentication-occupant', { session: false });
 }
 
-router.post('/Register', LessorController.registerLesson);
-router.post('/Login', LessorController.loginLesson);
+router.post('/Register', LessorController.register);
+router.post('/Login', LessorController.login);
 router.post('/checkUsername', LessorController.checkUsername);
 router.get('/get/:id',authLessor, LessorController.get);
 router.get('/data/:occupantId', auth, LessorController.getLessonDataByOccupantId)

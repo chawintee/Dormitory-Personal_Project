@@ -3,7 +3,7 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
-const registerLesson = async (req, res) => {
+const register = async (req, res) => {
     const Username = req.body.Username;
     const Password = req.body.Password;
     const Name = req.body.Name;
@@ -43,7 +43,7 @@ const registerLesson = async (req, res) => {
 }
 
 
-const loginLesson = async (req, res) => {
+const login = async (req, res) => {
     const Username = req.body.Username;
     const Password = req.body.Password;
 
@@ -102,4 +102,4 @@ const getLessonDataByOccupantId = async (req, res) => {
     }
 }
 
-module.exports = { registerLesson, loginLesson, checkUsername, get, getLessonDataByOccupantId }
+module.exports = { register, login, checkUsername, get, getLessonDataByOccupantId }
