@@ -17,14 +17,10 @@ function OccupantFistPage(props) {
     
     
     useEffect(() => {
-        // console.log("Hello")
         if (localStorage.getItem("ACCESS_TOKEN_OCCUPANT")) {
             setIsLogin(true);
-            // console.log(jwtDecode(localStorage.getItem("ACCESS_TOKEN_OCCUPANT")));
             const user = jwtDecode(localStorage.getItem("ACCESS_TOKEN_OCCUPANT"))
-            // console.log(user)
             setUserInfo(user)
-            // fetchData()
         }
         genYear();
     }, []);
@@ -32,22 +28,13 @@ function OccupantFistPage(props) {
     
     
     const fetchData = async () => {
-        // console.log(userInfo)
-        // console.log("fetchData")
         const occupantData = await axios.get(`/Occupant/get/${userInfo.id}`)
-        // const occupantData = await axios.get(`/Occupant/get`)
-        // console.log(occupantData)
-        // console.log(occupantData.data)
-        // console.log(occupantData.data.occupantData)
         setOccupantData(occupantData.data.occupantData)
-        // setOccupantData(LessonData)
     }
 
 
     const fetchLessonData = async () => {
-        // console.log(localStorage.getItem("ACCESS_TOKEN_OCCUPANT"))
         const LessonData = await axios.get(`/lesson/getLessonDataByOccupantId/${userInfo.id}`);
-        // console.log(LessonData.data.lessonData);
         setLessonData(LessonData.data.lessonData);
         setRoomData(LessonData.data.RoomData);
     }
@@ -59,7 +46,6 @@ function OccupantFistPage(props) {
             Month: selectedMonth,
         }
         const monthlyValueData = await axios.post(`MonthlyValue/getMonthlyValueDataByYearMonthOccupantId/${userInfo.id}`, body);
-        // console.log(monthlyValueData.data.MonthlyValueData);
         setMonthlyValueData(monthlyValueData.data.MonthlyValueData);
     }
 
@@ -86,10 +72,8 @@ function OccupantFistPage(props) {
 
     const genYear = () => {
         const nowYear = new Date().getFullYear();
-        // console.log(nowYear)
         const ArrYear = [];
         for (let i = nowYear; i >= nowYear - 100; i--) {
-            // console.log(i)
             ArrYear.push(i)
         }
         setYear(ArrYear)
@@ -98,16 +82,13 @@ function OccupantFistPage(props) {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     const handleSelectedMonth = (e) => {
-        // console.log(e.target.value);
         const numberMonth = months.findIndex(ele => ele == e.target.value) + 1;
-        // console.log(numberMonth);
         setSelectedMonth(numberMonth);
     }
 
 
 
     const handleSelectedYear = (e) => {
-        // console.log(e.target.value)
         setSelectedYear(e.target.value)
     }
 
@@ -118,15 +99,11 @@ function OccupantFistPage(props) {
 
     const logLogLog = () => {
         console.log({ year, selectedYear, selectedMonth, lessonData })
-        // console.log(new Date().getFullYear())
-        // console.log(new Date().getMonth()   )
     }
 
     return (
         <div>
             <NavbarOccupant  isLogin={isLogin} setIsLogin={setIsLogin} userInfo={userInfo} setUserInfo={setUserInfo} />
-            {/* <h1>{userInfo.id}</h1> */}
-            {/* This is OccupantFistPage */}
             <div>
                 <span>
                     <span style={{ fontSize: "20px" }}>Occupant Id: &nbsp; </span>
