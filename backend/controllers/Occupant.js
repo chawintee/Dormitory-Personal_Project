@@ -2,7 +2,7 @@ const db = require('../models');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const registerOccupant = async (req, res) => {
+const register = async (req, res) => {
     const Username = req.body.Username;
     const Password = req.body.Password;
     const Name = req.body.Name;
@@ -28,12 +28,12 @@ const registerOccupant = async (req, res) => {
             Photo,
         })
 
-        const user1 = await db.Occupant.findOne({where :{Username: Username}})
-        res.status(201).send({result : user1,message:"User created"});
+        const user1 = await db.Occupant.findOne({ where: { Username: Username } })
+        res.status(201).send({ result: user1, message: "User created" });
     }
 }
 
-const loginOccupant = async (req, res) => {
+const login = async (req, res) => {
     const Username = req.body.Username;
     const Password = req.body.Password;
 
@@ -48,33 +48,33 @@ const loginOccupant = async (req, res) => {
                 id: user.id,
             }
             const token = jwt.sign(payload, "Dorm", { expiresIn: 7200 });
-            res.status(200).send({token: token})
+            res.status(200).send({ token: token })
         } else {
             res.status(400).send({ message: "Invalid Username or Password" })
         }
     }
 }
 
-const getOccupantById = async (req,res) => {
+const get = async (req, res) => {
     const id = req.params.id;
-    const occupantData = await db.Occupant.findOne({where : {id : id}, attributes: ['id', 'Username','Name','Surname','Mobile','Address']});
-    if(occupantData){
-        res.status(200).send({occupantData:occupantData})
-    }else{
-        res.status(400).send({message:"Don't have data of occupantId"})
+    const occupantData = await db.Occupant.findOne({ where: { id: id }, attributes: ['id', 'Username', 'Name', 'Surname', 'Mobile', 'Address'] });
+    if (occupantData) {
+        res.status(200).send({ occupantData: occupantData })
+    } else {
+        res.status(400).send({ message: "Don't have data of occupantId" })
     }
 }
 
 
-const checkUsername = async (req,res) => {
+const checkUsername = async (req, res) => {
     const username = req.body.username;
-    const user = await db.Occupant.findOne({where : {Username: username}});
-    if(user){
-        res.status(404).send({message:"Invalid Username"})
+    const user = await db.Occupant.findOne({ where: { Username: username } });
+    if (user) {
+        res.status(404).send({ message: "Invalid Username" })
     }
-    else{
-        res.status(201).send({result:user})
+    else {
+        res.status(201).send({ result: user })
     }
 }
 
-module.exports = { registerOccupant, loginOccupant,getOccupantById,checkUsername }
+module.exports = { register, login, get, checkUsername }

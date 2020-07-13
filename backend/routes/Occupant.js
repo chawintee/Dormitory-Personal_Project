@@ -15,15 +15,9 @@ if (authOccupant) {
     auth = passport.authenticate('jwt-authentication-occupant', { session: false });
 }
 
-router.post('/register', occupantController.registerOccupant)
-router.post('/login', occupantController.loginOccupant)
-router.get('/get/:id', auth, occupantController.getOccupantById)
-router.post('/checkUsername',authLessor, occupantController.checkUsername)
-
-
-
-
-
-
+router.post('/register', occupantController.register)
+router.post('/login', occupantController.login)
+router.get('/get/:id', auth, occupantController.get)
+router.post('/checkUsername', occupantController.checkUsername)
 
 module.exports = router;
