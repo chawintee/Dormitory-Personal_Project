@@ -16,7 +16,7 @@ if (authOccupant) {
 router.post('/Register', LessonController.registerLesson);
 router.post('/Login', LessonController.loginLesson);
 router.post('/checkUsername', LessonController.checkUsername);
-router.get('/getLessonById/:id', LessonController.getLessonById);
+router.get('/get/:id', LessonController.get);
 router.get('/data/:occupantId', auth, LessonController.getLessonDataByOccupantId)
 
 

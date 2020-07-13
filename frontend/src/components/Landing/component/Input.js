@@ -1,7 +1,8 @@
 import React from 'react'
 
 function Input(props) {
-    const { textValue, name, value, type } = props
+    const { textValue, name, value, type, login } = props
+
     return (
         <div>
             <label>{name}</label>

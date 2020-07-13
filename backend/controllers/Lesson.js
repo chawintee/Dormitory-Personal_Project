@@ -100,9 +100,9 @@ const checkUsername = async (req, res) => {
 }
 
 
-const getLessonById = async (req, res) => {
+const get = async (req, res) => {
     const id = req.params.id;
-    const user = await db.Lesson.findOne({ where: { id: id } })
+    const user = await db.Lesson.findOne({ where: { id: id }, attributes:['id','Name','Surname','DormitoryName'] })
     res.status(200).send({ result: user });
 }
 
@@ -132,4 +132,4 @@ const getLessonDataByOccupantId = async (req, res) => {
 
 
 
-module.exports = { registerLesson, loginLesson, checkUsername, getLessonById, getLessonDataByOccupantId }
+module.exports = { registerLesson, loginLesson, checkUsername, get, getLessonDataByOccupantId }

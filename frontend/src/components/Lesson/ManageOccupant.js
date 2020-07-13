@@ -17,7 +17,7 @@ function ManageOccupant(props) {
     const [pushButton, setPushButton] = useState(false)
 
     const fetchData = async () => {
-        const lessonData = await axios.get(`/lesson/getLessonById/${userInfo.id}`);
+        const lessonData = await axios.get(`/lessor/get/${userInfo.id}`);
         setLessonData(lessonData.data.result);
         // const useLessonData = lessonData.data.result;
         // console.log(lessonData.data.result)

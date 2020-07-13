@@ -35,7 +35,7 @@ function MeterManage(props) {
 
     const fetchData = async () => {
         // console.log(userInfo.id)
-        const lessonData = await axios.get(`/lesson/getLessonById/${userInfo.id}`)
+        const lessonData = await axios.get(`/lessor/get/${userInfo.id}`)
         setLessonData(lessonData.data.result);
         // console.log(lessonData)
     }

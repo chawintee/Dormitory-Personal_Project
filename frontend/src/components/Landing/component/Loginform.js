@@ -84,7 +84,7 @@ function LoginForm(props) {
         <div>
             {isLogin ? <div>{userInfo.id}{userInfo.role}</div> : null}
             <Input name="Username" type="text" value={username} textValue={textUsername} />
-            <Input name="Password" type="password" value={password} textValue={textPassword} />
+            <Input name="Password" type="password" value={password} textValue={textPassword} login={login}/>
             <div>
                 <button onClick={login}>Login</button>
             </div>

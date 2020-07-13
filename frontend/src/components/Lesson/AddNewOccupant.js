@@ -28,11 +28,12 @@ function AddNewOccupant(props) {
 
 
     const fetchData = async () => {
-        const lessonData = await axios.get(`/lesson/getLessonById/${userInfo.id}`);
-        console.log(lessonData);
-        setLessonData(lessonData.data.result);
-        console.log(selectedYear);
-        console.log(selectedMonth);
+        try{
+            const lessorData = await axios.get(`/lessor/get/${userInfo.id}`);
+            setLessonData(lessorData.data.result);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 
