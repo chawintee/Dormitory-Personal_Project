@@ -3,8 +3,8 @@ const router = express.Router();
 const LessonController = require('../controllers/Lesson');
 const passport = require('passport');
 
-const authLessor = passport.authenticate('jwt-authentication-occupant', { session: false });
-const authOccupant = passport.authenticate('jwt-authentication-lessor', { session: false });
+const authOccupant = passport.authenticate('jwt-authentication-occupant', { session: false });
+const authLessor = passport.authenticate('jwt-authentication-lessor', { session: false });
 let auth;
 if (authLessor) {
     auth = passport.authenticate('jwt-authentication-lessor', { session: false });
@@ -16,7 +16,7 @@ if (authOccupant) {
 router.post('/Register', LessonController.registerLesson);
 router.post('/Login', LessonController.loginLesson);
 router.post('/checkUsername', LessonController.checkUsername);
-router.get('/get/:id', LessonController.get);
+router.get('/get/:id',authLessor, LessonController.get);
 router.get('/data/:occupantId', auth, LessonController.getLessonDataByOccupantId)
 
 
