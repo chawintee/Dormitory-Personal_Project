@@ -58,8 +58,10 @@ function RegisterOccupant() {
                     alert(result.data.message)
                     alert(`Your id is ${result.data.result.id}`)
                     setGo(true)
-                } catch {
-                    alert("Cannot Register")
+                } catch (error){
+                    console.log(error)
+                    alert(error)
+                    // alert("Cannot Register")
                 }
                 // alert("OK")
             }
