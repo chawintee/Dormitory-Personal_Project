@@ -112,7 +112,7 @@ function RegisterOccupant() {
                 setUsernameSt(false)
             }
         } catch {
-            setUsernameSt(true)
+            setUsernameSt(false)
         }
     }
 
