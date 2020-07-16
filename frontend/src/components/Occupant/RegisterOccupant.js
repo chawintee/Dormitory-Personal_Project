@@ -109,7 +109,7 @@ function RegisterOccupant() {
         }
         try {
             const result = await axios.post(`/occupant/checkUsername`, body);
-            // console.log(result.data)
+            console.log(result.data)
             if (result.data) {
                 setUsernameSt(false)
             }

@@ -27,9 +27,8 @@ const register = async (req, res) => {
             Address,
             Photo,
         })
-        // const user1 = await db.Occupant.findOne({ where: { Username: Username } })
-        // res.status(201).send({ result: user1, message: "User created" });
-        res.status(201).send({ message: "User created" });
+        const user1 = await db.Occupant.findOne({ where: { Username: Username } })
+        res.status(201).send({ result: user1, message: "User created" });
     }
 }
 
