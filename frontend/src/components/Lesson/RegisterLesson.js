@@ -179,7 +179,7 @@ function RegisterLesson() {
 
 
             <button onClick={submit}>Submit</button>
-            <button onClick={logLogLog}>log</button>
+            {/* <button onClick={logLogLog}>log</button> */}
 
 
            {go ? <Redirect to='/'/> : null}

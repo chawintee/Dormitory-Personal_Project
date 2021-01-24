@@ -464,9 +464,9 @@ function MeterManage(props) {
 
 
             <hr />
-            <button onClick={showLogLog}>log</button>
+            {/* <button onClick={showLogLog}>log</button> */}
             {/* <button onClick={reArrangeArray}>Rearrange</button> */}
-            <button>blur</button>
+            {/* <button>blur</button> */}
 
         </div >
     )

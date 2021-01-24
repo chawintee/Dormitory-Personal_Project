@@ -91,7 +91,7 @@ const getMonthlyValueByLessonId = async (req, res) => {
 
     try {
         console.log("-------------------------------------------------------------------------------------------------------------------------------------")
-        const MonthlyValueByLessonId = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }] })
+        const MonthlyValueByLessonId = await db.MonthlyValue.findAll({ where: filters, include: [{ model: db.Room, include: [{ model: db.Occupant }] }]})
         res.send({ MonthlyValueByLessonId: MonthlyValueByLessonId, length: MonthlyValueByLessonId.length })
     } catch (error) {
         console.log(error)

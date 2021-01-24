@@ -363,7 +363,7 @@ function AddNewOccupant(props) {
 
             </table>
 
-            <button onClick={logLogLog}>log</button>
+            {/* <button onClick={logLogLog}>log</button> */}
 
         </div>
     )

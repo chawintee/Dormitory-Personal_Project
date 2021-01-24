@@ -158,7 +158,7 @@ function ManageOccupant(props) {
 
 
             <hr />
-            <button onClick={logLogLog}>Log</button>
+            {/* <button onClick={logLogLog}>Log</button> */}
         </div>
     )
 }

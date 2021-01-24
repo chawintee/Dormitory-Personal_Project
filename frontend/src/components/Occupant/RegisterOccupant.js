@@ -151,7 +151,7 @@ function RegisterOccupant() {
             </div>
 
             <button onClick={submit}>Submit</button>
-            <button onClick={logLogLog}>Log</button>
+            {/* <button onClick={logLogLog}>Log</button> */}
 
             {go ? <Redirect to='/'/> : null}
         </div>
