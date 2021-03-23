@@ -1,13 +1,13 @@
 # Dormitory-Personal_Project
  
- Database
+ Database - 
  MySQL 
  Sequelize
  
- Backend
+ Backend - 
  Node.js
  Express
  Passport.js
  
- Frontend
+ Frontend - 
  React.js
